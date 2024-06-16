@@ -81,37 +81,4 @@ if part_to_run in ['GA', 'GA_LS', 'LS_GA']:
         population_size=500,
         fitness_function=fitness,
         num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 3,
-        gene_range=(2 * m_ + 2 * m_ * (2 * m_ + 1)) * [(-0.2, 0.2)] + [(0.85, 1.15), (0.5, 1.5), (0.5, 1.5)],
-        num_generations=10,
-        elitism=2,
-        crossover_rate=0.95,
-        mutation_rate=0.01,
-        mutation_range=0.5,
-        name=name
-    )
-
-    # Display the individuals in the final generation
-    '''
-    for i, individual in enumerate(final_generation[1]):
-        print(f"Final Generation - Individual {i + 1}: {individual}")
-    '''
-    days = data['julian_day'].values
-    plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='last')
-    plt.plot(days, double_fourier_sequence(final_generation[4], m_, days), label='best')
-
-    plt.scatter(days, data['noisy_flux'].values, c='gray', marker='+', s=5)
-    plt.errorbar(days, data['noisy_flux'].values, yerr=data['deviation_used'].values, fmt='none', color='black',
-                 elinewidth=1.5, capsize=0)
-
-    plt.xlabel('Time [days]')
-    plt.ylabel('Normalized light flux')
-    plt.legend()
-
-    plt.savefig('Results/GA/' + name + '_graph.pdf')
-    plt.show()
-    plt.close()
-
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Elapsed time: {elapsed_time:.2f} seconds")
-# ---------------------------------------------------------------------------------------------------------------------
+        gene_ran
