@@ -35,8 +35,6 @@ class TestCases(unittest.TestCase):
         thread = Thread(target=run)
         thread.start()
 
-        print("")
-
         while True:
             if keyboard.is_pressed("k"):
                 running = False
