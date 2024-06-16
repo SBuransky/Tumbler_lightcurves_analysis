@@ -1,7 +1,7 @@
 # name: Samuel Buranský
 # MUNI UČO: 506073
 # mail: 506073@mail.muni.cz
-
+import unittest
 import time
 import numpy as np
 import pandas as pd
@@ -15,19 +15,32 @@ from LS_periodogram.clean_periodogram import iteration_scheme, dirty_spectrum_lo
 
 np.set_printoptions(threshold=np.inf)
 
-# set part_to_run to 'GA' for Genetic algorithm or 'LS' for Lomb-Scargle periodogram or 'GA_LS', 'LS_GA' for both
-part_to_run = 'LS'
-# part_to_run = 'GA'
-# part_to_run = 'LS_GA'
-
 # load data
 name = 'ID1918_001'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                  appendix='.flux')
 
+
+def fitness(solution):
+    """
+    Fitness function
+    :param solution: set of the free parameters
+    :return: fitness value
+    """
+    m_ = 1
+    x, y, delta = data['julian_day'], data['noisy_flux'], data['deviation_used']
+
+    # Vectorized calculation of Fourier values
+    y_model = double_fourier_sequence(solution, m_, x)
+
+    # calculation of the chi^2 and returning 1/chi^2
+    chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
+    return 1 / chi2
+
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Periodogram of lightcurve
-if part_to_run in ['LS', 'GA_LS', 'LS_GA']:
+def tumbler_periodogram():
     result = fourier_transform(
         data['julian_day'].values,
         data['noisy_flux'].values,
@@ -51,32 +64,18 @@ if part_to_run in ['LS', 'GA_LS', 'LS_GA']:
     plt.title('Cleaned Spectrum')
     plt.show()
 
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Genetic algorithm
 # add:  repair one_generation to do not crossover same gene
 #          stopping function,
 #       adaptive mutation...
-if part_to_run in ['GA', 'GA_LS', 'LS_GA']:
-    start_time = time.time()
+running = True
+
+
+def tumbler_genetic_algorithm_fit():
     m_ = 1
-
-
-    def fitness(solution):
-        """
-        Fitness function
-        :param solution: set of the free parameters
-        :return: fitness value
-        """
-        x, y, delta = data['julian_day'], data['noisy_flux'], data['deviation_used']
-
-        # Vectorized calculation of Fourier values
-        y_model = double_fourier_sequence(solution, m_, x)
-
-        # calculation of the chi^2 and returning 1/chi^2
-        chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
-        return 1 / chi2
-
-
+    start_time = time.time()
     final_generation = run_genetic_algorithm(
         population_size=500,
         fitness_function=fitness,
@@ -114,4 +113,12 @@ if part_to_run in ['GA', 'GA_LS', 'LS_GA']:
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(f"Elapsed time: {elapsed_time:.2f} seconds")
+
+
 # ---------------------------------------------------------------------------------------------------------------------
+class TestCases(unittest.TestCase):
+    def test_ls(self):
+        tumbler_periodogram()
+
+    def test_ga(self):
+        tumbler_genetic_algorithm_fit()
