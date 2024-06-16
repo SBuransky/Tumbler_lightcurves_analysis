@@ -78,7 +78,7 @@ def tumbler_genetic_algorithm_fit():
         fitness_function=fitness,
         num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 3,
         gene_range=(2 * m_ + 2 * m_ * (2 * m_ + 1)) * [(-0.2, 0.2)] + [(0.85, 1.15), (0.5, 1.5), (0.5, 1.5)],
-        num_generations=10,
+        num_generations=100,
         elitism=2,
         crossover_rate=0.95,
         mutation_rate=0.01,
