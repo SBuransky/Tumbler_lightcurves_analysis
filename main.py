@@ -70,9 +70,6 @@ def tumbler_periodogram():
 # add:  repair one_generation to do not crossover same gene
 #          stopping function,
 #       adaptive mutation...
-running = True
-
-
 def tumbler_genetic_algorithm_fit():
     m_ = 1
     start_time = time.time()
@@ -89,11 +86,6 @@ def tumbler_genetic_algorithm_fit():
         name=name
     )
 
-    # Display the individuals in the final generation
-    '''
-    for i, individual in enumerate(final_generation[1]):
-        print(f"Final Generation - Individual {i + 1}: {individual}")
-    '''
     days = data['julian_day'].values
     plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='last')
     plt.plot(days, double_fourier_sequence(final_generation[4], m_, days), label='best')
