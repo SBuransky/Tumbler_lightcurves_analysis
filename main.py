@@ -13,12 +13,21 @@ from utils.load_dataset import load_data
 
 from LS_periodogram.clean_periodogram import iteration_scheme, dirty_spectrum_lombscargle
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Periodogram of lightcurve
+from service.ls_service import tumbler_periodogram
+# ---------------------------------------------------------------------------------------------------------------------
+# Genetic algorithm
+# add: stopping function
+from service.ga_service import tumbler_genetic_algorithm_fit
+
 np.set_printoptions(threshold=np.inf)
 
 # load data
 name = 'ID1919_001'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                  appendix='.flux')
+m_ = 1
 
 
 def fitness(solution):
@@ -27,7 +36,6 @@ def fitness(solution):
     :param solution: set of the free parameters
     :return: fitness value
     """
-    m_ = 1
     x, y, delta = data['julian_day'], data['noisy_flux'], data['deviation_used']
 
     # Vectorized calculation of Fourier values
@@ -39,80 +47,14 @@ def fitness(solution):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Periodogram of lightcurve
-def tumbler_periodogram():
-    result = fourier_transform(
-        data['julian_day'].values,
-        data['noisy_flux'].values,
-        data['deviation_used'].values,
-        path_graph='Results/LS/Graphs/' + name + '_graph.pdf',
-        path_periodogram='Results/LS/Periodograms/' + name + '_LS.pdf'
-    )
-
-    # Example usage:
-    time = data['julian_day'].values  # Time array
-    flux = data['noisy_flux'].values  # Data array with noise
-    dev = np.abs(data['deviation_used'].values)
-    freqs = np.linspace(0.15, 10, 90000)  # Frequency array for Lomb-Scargle
-    g = 0.25  # Fraction
-
-    result_ = iteration_scheme(time, flux, dev, freqs, g, 200)
-    plt.plot(freqs, dirty_spectrum_lombscargle(time, flux, dev, freqs))
-    plt.plot(freqs, np.abs(result_) ** 2)
-    plt.xlabel('Frequency')
-    plt.ylabel('Power')
-    plt.title('Cleaned Spectrum')
-    plt.savefig('Results/LS/Periodograms/' + name + '_clean_LS.pdf')
-    plt.show()
-    plt.close()
-
-
-# ---------------------------------------------------------------------------------------------------------------------
-# Genetic algorithm
-# add:  repair one_generation to do not crossover same gene
-#          stopping function,
-#       adaptive mutation...
-def tumbler_genetic_algorithm_fit():
-    m_ = 1
-    start_time = time.time()
-    final_generation = run_genetic_algorithm(
-        population_size=500,
-        fitness_function=fitness,
-        num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 3,
-        gene_range=(2 * m_ + 2 * m_ * (2 * m_ + 1)) * [(-0.2, 0.2)] + [(0.85, 1.15), (0.5, 1.5), (0.5, 1.5)],
-        num_generations=100,
-        elitism=2,
-        crossover_rate=0.95,
-        mutation_rate=0.01,
-        mutation_range=0.5,
-        name=name
-    )
-
-    days = data['julian_day'].values
-    plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='last')
-    plt.plot(days, double_fourier_sequence(final_generation[4], m_, days), label='best')
-
-    plt.scatter(days, data['noisy_flux'].values, c='gray', marker='+', s=5)
-    plt.errorbar(days, data['noisy_flux'].values, yerr=data['deviation_used'].values, fmt='none', color='black',
-                 elinewidth=1.5, capsize=0)
-
-    plt.xlabel('Time [days]')
-    plt.ylabel('Normalized light flux')
-    plt.legend()
-
-    plt.savefig('Results/GA/' + name + '_graph.pdf')
-    plt.show()
-    plt.close()
-
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Elapsed time: {elapsed_time:.2f} seconds")
-
-
-# ---------------------------------------------------------------------------------------------------------------------
 class TestCases(unittest.TestCase):
     def test_ls(self):
-        tumbler_periodogram()
+        tumbler_periodogram(data)
 
     def test_ga(self):
-        tumbler_genetic_algorithm_fit()
+        tumbler_genetic_algorithm_fit(data,
+                                      fitness,
+                                      m_=m_,
+                                      population_size=500,
+                                      gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
+                                      name=name, num_generations=5)
