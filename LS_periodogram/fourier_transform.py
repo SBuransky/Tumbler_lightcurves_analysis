@@ -17,8 +17,7 @@ def fourier_transform(t, y, frequency, dev=None):
     if dev:
         dev = np.abs(dev)
     ls = LombScargle(t=t, y=y, dy=dev)
-    # else:
-    #    ls = LombScargle(t=t, y=y)
+
     power = ls.power(frequency)
 
     temp = find_local_maxima(frequency, power)

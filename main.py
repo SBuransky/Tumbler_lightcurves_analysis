@@ -12,9 +12,9 @@ from service.ls_service import tumbler_periodogram
 np.set_printoptions(threshold=np.inf)
 
 # load data
-name = 'ID1916_007'
+name = 'ID1917_001'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
-                 appendix='.txt')
+                 appendix='.flux')
 m_ = 1
 
 def fitness(solution):
