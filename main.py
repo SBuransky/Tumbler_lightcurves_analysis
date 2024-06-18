@@ -24,9 +24,9 @@ from service.ga_service import tumbler_genetic_algorithm_fit
 np.set_printoptions(threshold=np.inf)
 
 # load data
-name = 'ID1919_001'
+name = 'ID1916_007'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
-                 appendix='.flux')
+                 appendix='.txt')
 m_ = 1
 
 
@@ -49,7 +49,7 @@ def fitness(solution):
 # ---------------------------------------------------------------------------------------------------------------------
 class TestCases(unittest.TestCase):
     def test_ls(self):
-        tumbler_periodogram(data)
+        tumbler_periodogram(data, name=name)
 
     def test_ga(self):
         tumbler_genetic_algorithm_fit(data,

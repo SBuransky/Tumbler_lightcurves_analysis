@@ -1,5 +1,10 @@
-# Periodogram of lightcurve
-def tumbler_periodogram(data, g = 0.25, n_iter = 200):
+from LS_periodogram.fourier_transform import fourier_transform
+from LS_periodogram.clean_periodogram import iteration_scheme, dirty_spectrum_lombscargle
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def tumbler_periodogram(data, name, g = 0.25, n_iter = 200):
     result = fourier_transform(
         data['julian_day'].values,
         data['noisy_flux'].values,
