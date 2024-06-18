@@ -1,30 +1,23 @@
-from LS_periodogram.fourier_transform import fourier_transform, fourier_transform_without_noise
-from LS_periodogram.clean_periodogram import iteration_scheme, dirty_spectrum_lombscargle
-
-import numpy as np
+from LS_periodogram.fourier_transform import fourier_transform
 import matplotlib.pyplot as plt
+import numpy as np
 
-def tumbler_periodogram(data, name, g = 0.25, n_iter = 200):
-    result = fourier_transform_without_noise(
-        data['julian_day'].values,
-        data['noisy_flux'].values,
-        #'''data['deviation_used'].values,'''
-        path_graph='Results/LS/Graphs/' + name + '_graph.pdf',
-        path_periodogram='Results/LS/Periodograms/' + name + '_LS.pdf'
-    )
+def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=None):
+    periodogram, maximas = fourier_transform(t, y, frequency, dev)
 
-    # Example usage:
-    time = data['julian_day'].values  # Time array
-    flux = data['noiseless_flux'].values  # Data array with noise
-    dev = 0.00001#np.abs(data['deviation_used'].values)
-    freqs = np.linspace(0.001, 10, 90000)  # Frequency array for Lomb-Scargle
-
-    result_ = iteration_scheme(time, flux, dev, freqs, g, n_iter)
-    plt.plot(freqs, dirty_spectrum_lombscargle(time, flux, freqs))
-    plt.plot(freqs, np.abs(result_) ** 2)
-    plt.xlabel('Frequency')
-    plt.ylabel('Power')
-    plt.title('Cleaned Spectrum')
-    plt.savefig('Results/LS/Periodograms/' + name + '_clean_LS.pdf')
+    plt.errorbar(t, y, dev)
+    plt.xlabel('"JD"')
+    plt.ylabel('Normalized flux')
+    plt.savefig('Results/LS/Graphs/' + name + '_graph.pdf')
     plt.show()
     plt.close()
+
+    plt.plot(periodogram[0], periodogram[1])
+    plt.scatter(maximas[0], maximas[1])
+    plt.xlabel('Frequency' + r'$[d^{-1}]$')
+    plt.ylabel('Power')
+    plt.savefig('Results/LS/Periodograms/' + name + '_LS.pdf')
+    plt.show()
+    plt.close()
+
+    np.savetxt('Results/LS/Results/' + name + '_LS.txt', maximas, delimiter=" ")
