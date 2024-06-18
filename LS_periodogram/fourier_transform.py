@@ -38,3 +38,30 @@ def fourier_transform(t, y, dev, path_graph, path_periodogram):
     periodogram = frequency, power
 
     return periodogram,  temp
+
+
+def fourier_transform_without_noise(t, y, path_graph, path_periodogram):
+    frequency = np.linspace(0.001, 10, 1000000)
+    ls = LombScargle(t=t, y=y)
+    power = ls.power(frequency)
+
+    plt.errorbar(t, y)
+    plt.xlabel('"JD"')
+    plt.ylabel('Normalized flux')
+    plt.savefig(path_graph)
+    plt.show()
+    plt.close()
+
+    temp = find_local_maxima(frequency, power)
+
+    plt.plot(frequency, power)
+    plt.scatter(temp[0], temp[1])
+    plt.xlabel('Frequency' + r'$[d^{-1}]$')
+    plt.ylabel('Power')
+    plt.savefig(path_periodogram)
+    plt.show()
+    plt.close()
+
+    periodogram = frequency, power
+
+    return periodogram,  temp

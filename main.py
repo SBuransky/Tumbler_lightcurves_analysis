@@ -2,12 +2,7 @@
 # MUNI UČO: 506073
 # mail: 506073@mail.muni.cz
 import unittest
-import time
 import numpy as np
-import pandas as pd
-from matplotlib import pyplot as plt
-from GA.run.one_run import run_genetic_algorithm
-from LS_periodogram.fourier_transform import fourier_transform
 from utils.fourier_series_value import double_fourier_value, double_fourier_sequence
 from utils.load_dataset import load_data
 
