@@ -1,5 +1,5 @@
 Samuel Buranský
-506073
+
 506073@mail.muni.cz
 
 Tumbler lightcurve analysis
