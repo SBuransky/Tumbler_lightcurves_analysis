@@ -6,17 +6,16 @@ import numpy as np
 from utils.fourier_series_value import double_fourier_value, double_fourier_sequence
 from utils.load_dataset import load_data
 
-from service.ls_service import tumbler_periodogram
 from service.ga_service import tumbler_genetic_algorithm_fit
+from service.ls_service import tumbler_periodogram
 
 np.set_printoptions(threshold=np.inf)
 
 # load data
-name = 'ID1916_007'
+name = 'ID1917_001'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
-                 appendix='.txt')
+                 appendix='.flux')
 m_ = 1
-
 
 def fitness(solution):
     """
@@ -37,7 +36,7 @@ def fitness(solution):
 # ---------------------------------------------------------------------------------------------------------------------
 class TestCases(unittest.TestCase):
     def test_ls(self):
-        tumbler_periodogram(data, name=name)
+        tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name)
 
     def test_ga(self):
         tumbler_genetic_algorithm_fit(data,
