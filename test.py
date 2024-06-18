@@ -80,3 +80,12 @@ if __name__ == "__main__":
             running = False
             break
 
+
+for file in dir_list:
+    if re.search("..*\.docx$", file):
+        ts = dt.now()
+        ending = str(ts.year)[2:] + '{:02d}'.format(ts.month) + \
+                 '{:02d}'.format(ts.day) + '-' + '{:02d}'.format(ts.hour) + \
+                 '{:02d}'.format(ts.minute) + '{:02d}'.format(ts.second)
+        print(file[:-5] + '_' + ending)
+
