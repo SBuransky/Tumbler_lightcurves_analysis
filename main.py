@@ -16,7 +16,7 @@ from LS_periodogram.clean_periodogram import iteration_scheme, dirty_spectrum_lo
 np.set_printoptions(threshold=np.inf)
 
 # load data
-name = 'ID1918_001'
+name = 'ID1919_001'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                  appendix='.flux')
 
@@ -53,16 +53,18 @@ def tumbler_periodogram():
     time = data['julian_day'].values  # Time array
     flux = data['noisy_flux'].values  # Data array with noise
     dev = np.abs(data['deviation_used'].values)
-    freqs = np.linspace(0.25, 10, 90000)  # Frequency array for Lomb-Scargle
-    g = 0.1  # Fraction
+    freqs = np.linspace(0.15, 10, 90000)  # Frequency array for Lomb-Scargle
+    g = 0.25  # Fraction
 
-    result_ = iteration_scheme(time, flux, dev, freqs, g, 10)
+    result_ = iteration_scheme(time, flux, dev, freqs, g, 200)
     plt.plot(freqs, dirty_spectrum_lombscargle(time, flux, dev, freqs))
     plt.plot(freqs, np.abs(result_) ** 2)
     plt.xlabel('Frequency')
     plt.ylabel('Power')
     plt.title('Cleaned Spectrum')
+    plt.savefig('Results/LS/Periodograms/' + name + '_clean_LS.pdf')
     plt.show()
+    plt.close()
 
 
 # ---------------------------------------------------------------------------------------------------------------------
