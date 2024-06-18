@@ -2,6 +2,7 @@ import time
 from GA.run.one_run import run_genetic_algorithm
 import matplotlib.pyplot as plt
 from utils.fourier_series_value import double_fourier_sequence
+from datetime import datetime as dt
 
 def tumbler_genetic_algorithm_fit(data,
                                   fitness_function,
@@ -26,6 +27,10 @@ def tumbler_genetic_algorithm_fit(data,
         mutation_range=mutation_range,
         name=name
     )
+    ts = dt.now()
+    ending = str(ts.year)[2:] + '{:02d}'.format(ts.month) + \
+             '{:02d}'.format(ts.day) + '-' + '{:02d}'.format(ts.hour) + \
+             '{:02d}'.format(ts.minute) + '{:02d}'.format(ts.second)
 
     days = data['julian_day'].values
     plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='last')
@@ -39,11 +44,11 @@ def tumbler_genetic_algorithm_fit(data,
     plt.ylabel('Normalized light flux')
     plt.legend()
 
-    plt.savefig('Results/GA/' + name + '_graph.pdf')
+    plt.savefig('Results/GA/' + name + '_graph_' + ending + '.pdf')
     plt.show()
     plt.close()
 
-    with open('Results/GA/' + name + '_result.txt', 'w') as file:
+    with open('Results/GA/' + name + '_result_' + ending + '.txt', 'w') as file:
         file.write('Best in last gen:')
         file.write(str(final_generation[0]))
         file.write('\n')
