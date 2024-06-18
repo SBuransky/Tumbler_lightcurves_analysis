@@ -80,4 +80,9 @@ def run_genetic_algorithm(population_size: int,
     plt.close()
 
     # Return the best individual and fitness values across generations
+    # the best individual = best in last generation
+    # population = las pop
+    # fitness_in_pop = fitness of the best in every pop
+    # best_in_pop = best in every pop
+    # best_in_pop[np...] = best over all gen
     return best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)]

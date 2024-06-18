@@ -14,7 +14,6 @@ def tumbler_genetic_algorithm_fit(data,
                                   crossover_rate=0.95,
                                   mutation_rate=0.01,
                                   mutation_range=0.5):
-    start_time = time.time()
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
@@ -44,6 +43,10 @@ def tumbler_genetic_algorithm_fit(data,
     plt.show()
     plt.close()
 
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Elapsed time: {elapsed_time:.2f} seconds")
+    with open('Results/GA/' + name + '_result.txt', 'w') as file:
+        file.write('Best in last gen:')
+        file.write(str(final_generation[0]))
+        file.write('\n')
+        file.write('Best in all:')
+        file.write(str(final_generation[4]))
+
