@@ -11,14 +11,7 @@ from LS_periodogram.fourier_transform import fourier_transform
 from utils.fourier_series_value import double_fourier_value, double_fourier_sequence
 from utils.load_dataset import load_data
 
-from LS_periodogram.clean_periodogram import iteration_scheme, dirty_spectrum_lombscargle
-
-# ---------------------------------------------------------------------------------------------------------------------
-# Periodogram of lightcurve
 from service.ls_service import tumbler_periodogram
-# ---------------------------------------------------------------------------------------------------------------------
-# Genetic algorithm
-# add: stopping function
 from service.ga_service import tumbler_genetic_algorithm_fit
 
 np.set_printoptions(threshold=np.inf)
