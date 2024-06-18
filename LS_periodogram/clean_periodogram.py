@@ -3,9 +3,9 @@ from astropy.timeseries import LombScargle
 import matplotlib.pyplot as plt
 
 
-def dirty_spectrum_lombscargle(time, data, dev, freqs):
+def dirty_spectrum_lombscargle(time, data, freqs):
     # Compute the dirty spectrum Fs(n) using Lomb-Scargle periodogram
-    lomb_scargle = LombScargle(time, data, dev)
+    lomb_scargle = LombScargle(time, data)
     power = lomb_scargle.power(freqs)
     return power
 
@@ -36,7 +36,7 @@ def convolve_with_gaussian(clean_component_array, sigma):
 
 def iteration_scheme(time, data, dev, freqs, g, max_iterations=500, tolerance=1e-6):
     # Step 1: Compute the dirty spectrum Fs(n) using Lomb-Scargle
-    Fs = dirty_spectrum_lombscargle(time, data, dev, freqs)
+    Fs = dirty_spectrum_lombscargle(time, data, freqs)
 
     # Step 2: Initialize the residual spectrum R0 = Fs
     residual = Fs.copy()
@@ -69,18 +69,3 @@ def iteration_scheme(time, data, dev, freqs, g, max_iterations=500, tolerance=1e
     final_spectrum = clean_component_array + residual
 
     return final_spectrum
-
-''''
-# Example usage:
-time = np.linspace(0, 10, 100)  # Time array
-data = np.sin(time) + np.random.randn(100) * 0.1  # Data array with noise
-freqs = np.linspace(0.1, 10, 1000)  # Frequency array for Lomb-Scargle
-g = 0.5  # Fraction
-
-result = iteration_scheme(time, data, freqs, g)
-plt.plot(freqs, dirty_spectrum_lombscargle(time, data, freqs))
-plt.plot(freqs, result)
-plt.xlabel('Frequency')
-plt.ylabel('Power')
-plt.title('Cleaned Spectrum')
-plt.show()'''

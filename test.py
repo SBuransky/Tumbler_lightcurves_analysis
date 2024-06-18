@@ -44,3 +44,39 @@ class TestCases(unittest.TestCase):
 
     def test_ls2(self):
         process("LS2")
+
+import time
+
+from threading import Thread
+
+
+running = True
+
+
+def run():
+    global running
+
+    print("START")
+
+    i = 0
+    while running:
+        i += 1
+        time.sleep(1)
+
+    print(i)
+    print("FINISH")
+
+
+if __name__ == "__main__":
+    thread = Thread(target=run)
+    thread.start()
+
+    print("")
+
+    while True:
+        args = input("Args: ")
+
+        if "end" in args:
+            running = False
+            break
+
