@@ -16,8 +16,7 @@ def run_genetic_algorithm(population_size: int,
                           crossover_rate: float = 0.85,
                           mutation_rate: float = 0.01,
                           mutation_range: float = 0.1,
-                          elitism: int = 2,
-                          name: str = None) -> Tuple[np.ndarray, List[float]]:
+                          elitism: int = 2) -> Tuple[np.ndarray, List[float]]:
     """
     Run a genetic algorithm with real number representation for a specified number of generations.
 
@@ -77,6 +76,6 @@ def run_genetic_algorithm(population_size: int,
     # fitness_in_pop = fitness of the best in every pop
     # best_in_pop = best in every pop
     # best_in_pop[np...] = best over all gen
-    # best_fitness = best fitness in last gen
+    # best_fitness = the best fitness in last gen
     return best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)], \
         best_fitness, np.max(fitness_in_pop)

@@ -5,6 +5,7 @@ from utils.fourier_series_value import double_fourier_sequence
 from datetime import datetime as dt
 import numpy as np
 
+
 def tumbler_genetic_algorithm_fit(data,
                                   fitness_function,
                                   name,
@@ -25,13 +26,11 @@ def tumbler_genetic_algorithm_fit(data,
         elitism=elitism,
         crossover_rate=crossover_rate,
         mutation_rate=mutation_rate,
-        mutation_range=mutation_range,
-        name=name
+        mutation_range=mutation_range
     )
     ts = dt.now()
-    ending = str(ts.year)[2:] + '{:02d}'.format(ts.month) + \
-             '{:02d}'.format(ts.day) + '-' + '{:02d}'.format(ts.hour) + \
-             '{:02d}'.format(ts.minute) + '{:02d}'.format(ts.second)
+    ending = str(ts.year)[2:] + '{:02d}'.format(ts.month) + '{:02d}'.format(ts.day) + '-' + '{:02d}'.format(
+        ts.hour) + '{:02d}'.format(ts.minute) + '{:02d}'.format(ts.second)
 
     days = data['julian_day'].values
     plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='last')
@@ -69,4 +68,3 @@ def tumbler_genetic_algorithm_fit(data,
         file.write(str(final_generation[4]))
         file.write('Best fitness in all:')
         file.write(str(final_generation[6]))
-
