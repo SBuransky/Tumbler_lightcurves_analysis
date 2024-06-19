@@ -17,6 +17,7 @@ data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux
                  appendix='.flux')
 m_ = 1
 
+
 def fitness(solution):
     """
     Fitness function

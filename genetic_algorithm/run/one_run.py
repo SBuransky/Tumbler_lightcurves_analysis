@@ -3,9 +3,9 @@ from typing import Callable, List, Tuple
 import numpy as np
 from matplotlib import pyplot as plt
 
-from GA.core.fitness_evaluation import evaluate_population
-from GA.core.initial_population import initialize_population
-from GA.generation.one_generation import one_gen
+from genetic_algorithm.core.fitness_evaluation import evaluate_population
+from genetic_algorithm.core.initial_population import initialize_population
+from genetic_algorithm.generation.one_generation import one_gen
 
 
 def run_genetic_algorithm(population_size: int,
@@ -76,7 +76,7 @@ def run_genetic_algorithm(population_size: int,
     plt.xlabel('Generation')
     plt.ylabel('Best Fitness')
     plt.title('Fitness Over Generations')
-    plt.savefig('Results/GA/fitness/fitness_' + name + '.pdf')
+    plt.savefig('Results/genetic_algorithm/fitness/fitness_' + name + '.pdf')
     plt.close()
 
     # Return the best individual and fitness values across generations

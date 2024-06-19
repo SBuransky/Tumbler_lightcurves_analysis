@@ -1,9 +1,9 @@
 from typing import List, Callable, Tuple
 import numpy as np
-from GA.core.crossover import crossover
-from GA.core.fitness_evaluation import evaluate_population
-from GA.core.mutation import mutate
-from GA.core.selection import tournament_selection, rank_based_selection
+from genetic_algorithm.core.crossover import crossover
+from genetic_algorithm.core.fitness_evaluation import evaluate_population
+from genetic_algorithm.core.mutation import mutate
+from genetic_algorithm.core.selection import tournament_selection, rank_based_selection
 
 
 def one_gen(population: List,

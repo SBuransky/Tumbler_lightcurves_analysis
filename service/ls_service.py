@@ -1,4 +1,4 @@
-from LS_periodogram.fourier_transform import fourier_transform
+from lombscargle_periodogram.fourier_transform import fourier_transform
 import matplotlib.pyplot as plt
 import numpy as np
 
