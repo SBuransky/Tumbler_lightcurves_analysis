@@ -20,6 +20,6 @@ def fourier_transform(t, y, frequency, dev=None):
 
     power = ls.power(frequency)
 
-    temp = find_local_maxima(frequency, power)
+    maxima_x, maxima_y = find_local_maxima(frequency, power)
     periodogram = frequency, power
-    return periodogram, temp
+    return periodogram, (maxima_x, maxima_y)
