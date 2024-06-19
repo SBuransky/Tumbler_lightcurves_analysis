@@ -1,4 +1,4 @@
-import time
+import os
 from genetic_algorithm.run.one_run import run_genetic_algorithm
 import matplotlib.pyplot as plt
 from utils.fourier_series_value import double_fourier_sequence
@@ -17,6 +17,11 @@ def tumbler_genetic_algorithm_fit(data,
                                   crossover_rate=0.95,
                                   mutation_rate=0.01,
                                   mutation_range=0.5):
+    # Ensure directories exist
+    os.makedirs('Results/genetic_algorithm/graphs/', exist_ok=True)
+    os.makedirs('Results/genetic_algorithm/fitness/', exist_ok=True)
+    os.makedirs('Results/genetic_algorithm/results/', exist_ok=True)
+
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
@@ -33,8 +38,8 @@ def tumbler_genetic_algorithm_fit(data,
         ts.hour) + '{:02d}'.format(ts.minute) + '{:02d}'.format(ts.second)
 
     days = data['julian_day'].values
-    plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='last')
-    plt.plot(days, double_fourier_sequence(final_generation[4], m_, days), label='best')
+    plt.plot(days, double_fourier_sequence(final_generation[0], m_, days), label='Last Generation Best')
+    plt.plot(days, double_fourier_sequence(final_generation[4], m_, days), label='Overall Best')
 
     plt.scatter(days, data['noisy_flux'].values, c='gray', marker='+', s=5)
     plt.errorbar(days, data['noisy_flux'].values, yerr=data['deviation_used'].values, fmt='none', color='black',
@@ -42,9 +47,10 @@ def tumbler_genetic_algorithm_fit(data,
 
     plt.xlabel('Time [days]')
     plt.ylabel('Normalized light flux')
+    plt.title('Genetic Algorithm Fit')
     plt.legend()
 
-    plt.savefig('Results/genetic_algorithm/graphs/' + name + '_graph_' + ending + '.pdf')
+    plt.savefig(f'Results/genetic_algorithm/graphs/{name}_graph_{ending}.pdf')
     plt.show()
     plt.close()
 
@@ -53,18 +59,15 @@ def tumbler_genetic_algorithm_fit(data,
     plt.xlabel('Generation')
     plt.ylabel('Best Fitness')
     plt.title('Fitness Over Generations')
-    plt.savefig('Results/genetic_algorithm/fitness/' + name + 'fitness' + ending + '.pdf')
+    plt.savefig(f'Results/genetic_algorithm/fitness/{name}_fitness_{ending}.pdf')
     plt.close()
 
-    with open('Results/genetic_algorithm/results/' + name + '_result_' + ending + '.txt', 'w') as file:
-        file.write('Best in last gen:')
+    with open(f'Results/genetic_algorithm/results/{name}_result_{ending}.txt', 'w') as file:
+        file.write('Best in last gen:\n')
         file.write(str(final_generation[0]))
-        file.write('Best fitness in last gen:')
+        file.write('\nBest fitness in last gen:\n')
         file.write(str(final_generation[5]))
-
-        file.write('\n')
-
-        file.write('Best in all:')
+        file.write('\n\nBest in all:\n')
         file.write(str(final_generation[4]))
-        file.write('Best fitness in all:')
+        file.write('\nBest fitness in all:\n')
         file.write(str(final_generation[6]))
