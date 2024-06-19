@@ -8,7 +8,7 @@ def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=N
     plt.errorbar(t, y, dev)
     plt.xlabel('"JD"')
     plt.ylabel('Normalized flux')
-    plt.savefig('Results/LS/Graphs/' + name + '_graph.pdf')
+    plt.savefig('Results/lomb_scargle/Graphs/' + name + '_graph.pdf')
     plt.show()
     plt.close()
 
@@ -16,8 +16,8 @@ def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=N
     plt.scatter(maximas[0], maximas[1])
     plt.xlabel('Frequency' + r'$[d^{-1}]$')
     plt.ylabel('Power')
-    plt.savefig('Results/LS/Periodograms/' + name + '_LS.pdf')
+    plt.savefig('Results/lomb_scargle/Periodograms/' + name + '_LS.pdf')
     plt.show()
     plt.close()
 
-    np.savetxt('Results/LS/Results/' + name + '_LS.txt', maximas, delimiter=" ")
+    np.savetxt('Results/lomb_scargle/Results/' + name + '_LS.txt', maximas, delimiter=" ")

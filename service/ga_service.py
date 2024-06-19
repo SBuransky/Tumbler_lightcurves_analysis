@@ -3,6 +3,7 @@ from genetic_algorithm.run.one_run import run_genetic_algorithm
 import matplotlib.pyplot as plt
 from utils.fourier_series_value import double_fourier_sequence
 from datetime import datetime as dt
+import numpy as np
 
 def tumbler_genetic_algorithm_fit(data,
                                   fitness_function,
@@ -44,14 +45,28 @@ def tumbler_genetic_algorithm_fit(data,
     plt.ylabel('Normalized light flux')
     plt.legend()
 
-    plt.savefig('Results/genetic_algorithm/' + name + '_graph_' + ending + '.pdf')
+    plt.savefig('Results/genetic_algorithm/graphs/' + name + '_graph_' + ending + '.pdf')
     plt.show()
     plt.close()
 
-    with open('Results/genetic_algorithm/' + name + '_result_' + ending + '.txt', 'w') as file:
+    # Plot the fitness over generations
+    plt.plot(np.arange(len(final_generation[2])), final_generation[2])
+    plt.xlabel('Generation')
+    plt.ylabel('Best Fitness')
+    plt.title('Fitness Over Generations')
+    plt.savefig('Results/genetic_algorithm/fitness/' + name + 'fitness' + ending + '.pdf')
+    plt.close()
+
+    with open('Results/genetic_algorithm/results/' + name + '_result_' + ending + '.txt', 'w') as file:
         file.write('Best in last gen:')
         file.write(str(final_generation[0]))
+        file.write('Best fitness in last gen:')
+        file.write(str(final_generation[5]))
+
         file.write('\n')
+
         file.write('Best in all:')
         file.write(str(final_generation[4]))
+        file.write('Best fitness in all:')
+        file.write(str(final_generation[6]))
 

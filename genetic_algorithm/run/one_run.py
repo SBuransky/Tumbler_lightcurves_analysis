@@ -71,18 +71,12 @@ def run_genetic_algorithm(population_size: int,
             mutation_range = mutation_range_0
             elitism = elitism_0
 
-    # Plot the fitness over generations
-    plt.plot(np.arange(len(fitness_in_pop)), fitness_in_pop)
-    plt.xlabel('Generation')
-    plt.ylabel('Best Fitness')
-    plt.title('Fitness Over Generations')
-    plt.savefig('Results/genetic_algorithm/fitness/fitness_' + name + '.pdf')
-    plt.close()
-
     # Return the best individual and fitness values across generations
     # the best individual = best in last generation
     # population = las pop
     # fitness_in_pop = fitness of the best in every pop
     # best_in_pop = best in every pop
     # best_in_pop[np...] = best over all gen
-    return best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)]
+    # best_fitness = best fitness in last gen
+    return best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)], \
+        best_fitness, np.max(fitness_in_pop)
