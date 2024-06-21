@@ -43,6 +43,6 @@ class TestCases(unittest.TestCase):
         tumbler_genetic_algorithm_fit(data,
                                       fitness,
                                       m_=m_,
-                                      population_size=50,
+                                      population_size=500,
                                       gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
                                       name=name, num_generations=2)
