@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-from lombscargle_periodogram.fourier_transform import fourier_transform
+from lombscargle_periodogram.fourier_transform import lomb_scargle
 
 
 def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=None):
@@ -11,7 +11,7 @@ def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=N
     os.makedirs('Results/lomb_scargle/Results/', exist_ok=True)
 
     # Compute the periodogram and maxima
-    periodogram, maximas = fourier_transform(t, y, frequency, dev)
+    periodogram, maximas = lomb_scargle(t, y, frequency, dev)
 
     # Plot the observed data with error bars
     plt.errorbar(t, y, yerr=dev, fmt='.', label='Data')

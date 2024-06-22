@@ -13,7 +13,7 @@ def find_local_maxima(x, y):
     return local_maxima_x, local_maxima_y
 
 
-def fourier_transform(t, y, frequency, dev=None):
+def lomb_scargle(t, y, frequency, dev=None):
     if dev is not None:
         dev = np.abs(dev)
     ls = LombScargle(t=t, y=y, dy=dev)
