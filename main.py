@@ -15,7 +15,7 @@ np.set_printoptions(threshold=np.inf)
 name = 'ID1918_001'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                  appendix='.flux')
-m_ = 3
+m_ = 2
 
 
 def fitness(solution):
@@ -35,7 +35,19 @@ def fitness(solution):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-class TestCases(unittest.TestCase):
+if __name__ == '__main__':
+    tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name)
+
+    tumbler_genetic_algorithm_fit(data,
+                                  fitness,
+                                  m_=m_,
+                                  population_size=500,
+                                  gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
+                                  name=name, num_generations=100)
+
+
+
+'''class TestCases(unittest.TestCase):
     def test_ls(self):
         tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name)
 
@@ -45,4 +57,4 @@ class TestCases(unittest.TestCase):
                                       m_=m_,
                                       population_size=500,
                                       gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
-                                      name=name, num_generations=2)
+                                      name=name, num_generations=100)'''

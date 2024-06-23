@@ -2,9 +2,27 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 from lombscargle_periodogram.fourier_transform import lomb_scargle
+from typing import Optional
 
 
-def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=None):
+def tumbler_periodogram(t: np.ndarray,
+                        y: np.ndarray,
+                        name: str,
+                        frequency: np.ndarray = np.linspace(0.1, 10, 10000),
+                        dev: Optional[np.ndarray] = None) -> None:
+    """
+    Compute Lomb-Scargle periodogram and plot results.
+
+    Parameters:
+    - t: Array of time values (Julian Date).
+    - y: Array of corresponding flux values.
+    - name: Name to use for saving plots and results.
+    - frequency: Array of frequencies to evaluate the periodogram.
+    - dev: Optional array of uncertainties in flux values (error bars).
+
+    Returns:
+    - None. Save plots and results to disk.
+    """
     # Ensure directories exist
     os.makedirs('Results/lomb_scargle/Graphs/', exist_ok=True)
     os.makedirs('Results/lomb_scargle/Periodograms/', exist_ok=True)
