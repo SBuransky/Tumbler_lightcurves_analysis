@@ -12,9 +12,9 @@ from service.ls_service import tumbler_periodogram
 np.set_printoptions(threshold=np.inf)
 
 # load data
-name = 'ID1918_001'
+name = 'ID1916_007'
 data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
-                 appendix='.flux')
+                 appendix='.txt')
 m_ = 2
 
 
@@ -37,13 +37,13 @@ def fitness(solution):
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name)
-
+    '''
     tumbler_genetic_algorithm_fit(data,
                                   fitness,
                                   m_=m_,
                                   population_size=500,
                                   gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
-                                  name=name, num_generations=100)
+                                  name=name, num_generations=100)'''
 
 
 

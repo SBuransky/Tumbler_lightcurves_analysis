@@ -1,6 +1,7 @@
 import os
 
-import pandas
+import pandas as pd
+from typing import Callable, Tuple
 
 from genetic_algorithm.run.one_run import run_genetic_algorithm
 import matplotlib.pyplot as plt
