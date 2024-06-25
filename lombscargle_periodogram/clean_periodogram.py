@@ -3,6 +3,7 @@ import numpy as np
 from utils.load_dataset import load_data
 from typing import Tuple
 
+from find_maxima import find_local_maxima
 from fourier_transform import lomb_scargle
 
 
@@ -28,7 +29,6 @@ def frequency_grid(time: np.ndarray, n_b=4) -> np.ndarray:
 
     # Generate frequency grid
     freq = np.arange(0, 2 * m, 1) * df
-    print(freq)
     return freq
 
 
@@ -110,7 +110,7 @@ def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
     return dft
 
 
-def clean(wfn, dft, n_iter=100, gain=0.01):
+def clean(freq, wfn, dft, n_iter=100, gain=0.01):
     clean_components = np.zeros(len(dft))
     residual_spectrum = dft
 
@@ -184,7 +184,8 @@ def clean(wfn, dft, n_iter=100, gain=0.01):
     # strip padding
     cdft = cdft[mb: len(input_array) - mb]
     # Return
-    return cdft
+    clean_max = find_local_maxima(freq, cdft)
+    return (freq, cdft), clean_max
 
 
 dat = load_data('ID1918_001')
@@ -195,7 +196,7 @@ plt.legend()
 plt.show()
 plt.close()
 
-plt.plot(freq[:len(freq) // 2], clean(w, d), label='CLEAN')
+plt.plot(freq[:len(freq) // 2], clean(freq, w, d)[0][1], label='CLEAN')
 plt.legend()
 plt.show()
 plt.close()

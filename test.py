@@ -2,8 +2,9 @@ import unittest
 import time
 from threading import Thread
 import keyboard
+import matplotlib.pyplot as plt
 
-
+'''
 running = True
 
 
@@ -87,5 +88,14 @@ for file in dir_list:
         ending = str(ts.year)[2:] + '{:02d}'.format(ts.month) + \
                  '{:02d}'.format(ts.day) + '-' + '{:02d}'.format(ts.hour) + \
                  '{:02d}'.format(ts.minute) + '{:02d}'.format(ts.second)
-        print(file[:-5] + '_' + ending)
+        print(file[:-5] + '_' + ending)'''
+
+ax1 = plt.subplot(211)
+ax1.plot([1,2], [1,2])
+
+ax2 = plt.subplot(212)
+plt.plot([3,4],[9,7])
+
+plt.show()
+
 
