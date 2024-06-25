@@ -2,9 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from utils.load_dataset import load_data
 from typing import Tuple
+from utils.find_maxima import find_local_maxima
 
-from find_maxima import find_local_maxima
-from fourier_transform import lomb_scargle
 
 
 def frequency_grid(time: np.ndarray, n_b=4) -> np.ndarray:
@@ -186,23 +185,3 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.01):
     # Return
     clean_max = find_local_maxima(freq, cdft)
     return (freq, cdft), clean_max
-
-
-dat = load_data('ID1918_001')
-freq, w, d = fourier_transform(dat['julian_day'].values, dat['noiseless_flux'].values)
-
-plt.plot(freq[:len(freq) // 2], np.abs(d), label='FT')
-plt.legend()
-plt.show()
-plt.close()
-
-plt.plot(freq[:len(freq) // 2], clean(freq, w, d)[0][1], label='CLEAN')
-plt.legend()
-plt.show()
-plt.close()
-
-plt.plot(lomb_scargle(dat['julian_day'].values, dat['noiseless_flux'].values, freq)[0][0],
-         lomb_scargle(dat['julian_day'].values, dat['noiseless_flux'].values, freq)[0][1], label='LS')
-plt.legend()
-plt.show()
-plt.close()

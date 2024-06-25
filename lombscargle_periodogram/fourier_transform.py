@@ -1,8 +1,7 @@
 import numpy as np
 from astropy.timeseries import LombScargle
-from matplotlib import pyplot as plt
 from typing import Tuple, Optional
-from find_maxima import find_local_maxima
+from utils.find_maxima import find_local_maxima
 
 def lomb_scargle(t: np.ndarray,
                  y: np.ndarray,
