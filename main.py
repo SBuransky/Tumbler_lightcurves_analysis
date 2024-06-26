@@ -202,7 +202,7 @@ def tumbler_genetic_algorithm_fit(data: pd.DataFrame,
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     # load data
-    name = 'ID1918_007'
+    name = 'ID1917_007'
     data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                      appendix='.flux')
 
@@ -231,9 +231,9 @@ if __name__ == '__main__':
     tumbler_genetic_algorithm_fit(data,
                                   fitness,
                                   m_=m_,
-                                  population_size=500,
-                                  gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
-                                  name=name, num_generations=10)
+                                  population_size=100,
+                                  gene_range=((-0.2, 0.2), (0.90, 1.10), (0.5, 1.5), (0.5, 1.5)),
+                                  name=name, num_generations=100, elitism=1, mutation_rate=0.9, mutation_range=0.05)
 
 '''
 class TestCases(unittest.TestCase):
