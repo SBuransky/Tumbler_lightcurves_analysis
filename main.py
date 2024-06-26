@@ -1,22 +1,20 @@
 # name: Samuel Buranský
 # MUNI UČO: 506073
 # mail: 506073@mail.muni.cz
-import numpy as np
-from utils.fourier_series_value import double_fourier_value, double_fourier_sequence
-from utils.load_dataset import load_data
 
 import os
-import pandas as pd
-from typing import Callable, Tuple
-from genetic_algorithm.run.one_run import run_genetic_algorithm
-import matplotlib.pyplot as plt
-from utils.fourier_series_value import double_fourier_sequence
 from datetime import datetime as dt
-import os
-from typing import Optional
+from typing import Callable, Optional, Tuple
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from utils.fourier_series_value import double_fourier_value, double_fourier_sequence
+from utils.load_dataset import load_data
+from genetic_algorithm.run.one_run import run_genetic_algorithm
 from periodogram.clean_periodogram import frequency_grid, fourier_transform, clean
 from periodogram.lomb_scargle import lomb_scargle
-from utils.load_dataset import load_data
 
 np.set_printoptions(threshold=np.inf)
 
@@ -26,6 +24,7 @@ def tumbler_periodogram(t: np.ndarray,
                         name: str,
                         n_iter=100,
                         gain=0.5,
+                        dev_use_for_ls=None,
                         dev: Optional[np.ndarray] = None) -> None:
     """
     Compute Lomb-Scargle periodogram and plot results.
@@ -46,7 +45,7 @@ def tumbler_periodogram(t: np.ndarray,
     os.makedirs('Results/lomb_scargle/Results/', exist_ok=True)
     frequency = frequency_grid(t)
     # Compute the periodogram and maxima
-    periodogram_lomb, maximas_lomb = lomb_scargle(t, y, frequency, dev)
+    periodogram_lomb, maximas_lomb = lomb_scargle(t, y, frequency, dev, dev_use_for_ls=dev_use_for_ls)
     periodogram_fourier = fourier_transform(t, y)[0], fourier_transform(t, y)[2]
     clean_periodogram, clean_maximas = clean(fourier_transform(t, y)[0],
                                              fourier_transform(t, y)[1],
@@ -65,8 +64,9 @@ def tumbler_periodogram(t: np.ndarray,
 
     # Plot the periodograms
     ax1 = plt.subplot(311)
+    plt.title(f'Periodogram_{name}')
     ax1.plot(periodogram_lomb[0], periodogram_lomb[1], label='Lomb-Scargle Periodogram')
-    ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
+    # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
     plt.legend()
     plt.xlim(-0.5, 10)
 
@@ -79,11 +79,10 @@ def tumbler_periodogram(t: np.ndarray,
     ax3 = plt.subplot(313)
     ax3.plot(clean_periodogram[0][:len(fourier_transform(t, y)[0]) // 2], np.abs(clean_periodogram[1]) ** 2,
              label='CLEAN Periodogram')
-    ax3.scatter(clean_maximas[0], clean_maximas[1], color='red', label='CLEAN Maxima')
+    # ax3.scatter(clean_maximas[0], clean_maximas[1], color='red', label='CLEAN Maxima')
     plt.legend()
     plt.xlim(-0.5, 10)
 
-    plt.title(f'Periodogram_{name}')
     plt.savefig(f'Results/lomb_scargle/Periodograms/{name}_PERIODOGRAM.pdf')
     plt.show()
     plt.close()
@@ -109,7 +108,7 @@ def tumbler_genetic_algorithm_fit(data: pd.DataFrame,
                                   elitism: int = 2,
                                   crossover_rate: float = 0.95,
                                   mutation_rate: float = 0.01,
-                                  mutation_range: float = 0.5) -> None:
+                                  mutation_range: float = 0.1) -> None:
     """
     Run a genetic algorithm to fit a model to data and visualize results.
 
@@ -203,13 +202,14 @@ def tumbler_genetic_algorithm_fit(data: pd.DataFrame,
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     # load data
-    name = 'ID1917_007'
+    name = 'ID1918_007'
     data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                      appendix='.flux')
 
-    tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name, n_iter=100, gain=0.5)
+    tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values,
+                        name=name, n_iter=10, gain=0.1, dev=data['deviation_used'])
 
-    m_ = 2
+    m_ = 1
 
 
     def fitness(solution):
@@ -227,15 +227,16 @@ if __name__ == '__main__':
         chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
         return 1 / chi2
 
-    '''
+
     tumbler_genetic_algorithm_fit(data,
                                   fitness,
                                   m_=m_,
                                   population_size=500,
                                   gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
-                                  name=name, num_generations=2)'''
+                                  name=name, num_generations=10)
 
-'''class TestCases(unittest.TestCase):
+'''
+class TestCases(unittest.TestCase):
     def test_ls(self):
         tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name)
 
@@ -245,4 +246,5 @@ if __name__ == '__main__':
                                       m_=m_,
                                       population_size=500,
                                       gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
-                                      name=name, num_generations=100)'''
+                                      name=name, num_generations=100)
+'''
