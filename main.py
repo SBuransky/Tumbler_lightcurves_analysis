@@ -207,7 +207,7 @@ if __name__ == '__main__':
                      appendix='.flux')
 
     tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values,
-                        name=name, n_iter=10, gain=0.1, dev=data['deviation_used'])
+                        name=name, n_iter=100, gain=0.1, dev=data['deviation_used'])
 
     m_ = 1
 
