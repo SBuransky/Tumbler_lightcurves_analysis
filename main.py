@@ -24,6 +24,7 @@ def tumbler_periodogram(t: np.ndarray,
                         name: str,
                         n_iter=100,
                         gain=0.5,
+                        n_b=4,
                         dev_use_for_ls=None,
                         dev: Optional[np.ndarray] = None) -> None:
     """
@@ -43,7 +44,7 @@ def tumbler_periodogram(t: np.ndarray,
     os.makedirs('Results/lomb_scargle/Graphs/', exist_ok=True)
     os.makedirs('Results/lomb_scargle/Periodograms/', exist_ok=True)
     os.makedirs('Results/lomb_scargle/Results/', exist_ok=True)
-    frequency = frequency_grid(t)
+    frequency = frequency_grid(t, n_b)
     # Compute the periodogram and maxima
     periodogram_lomb, maximas_lomb = lomb_scargle(t, y, frequency, dev, dev_use_for_ls=dev_use_for_ls)
     periodogram_fourier = fourier_transform(t, y)[0], fourier_transform(t, y)[2]
@@ -202,16 +203,16 @@ def tumbler_genetic_algorithm_fit(data: pd.DataFrame,
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     # load data
-    name = 'ID1917_007'
+    name = 'ID1919_001'
     data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
                      appendix='.flux')
 
     tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values,
-                        name=name, n_iter=100, gain=0.1, dev=data['deviation_used'])
+                        name=name, n_iter=2000, gain=0.1, dev=data['deviation_used'])
 
-    m_ = 1
+    m_ = 2
 
-
+    '''
     def fitness(solution):
         """
         Fitness function
@@ -231,9 +232,9 @@ if __name__ == '__main__':
     tumbler_genetic_algorithm_fit(data,
                                   fitness,
                                   m_=m_,
-                                  population_size=100,
-                                  gene_range=((-0.2, 0.2), (0.90, 1.10), (0.5, 1.5), (0.5, 1.5)),
-                                  name=name, num_generations=100, elitism=1, mutation_rate=0.9, mutation_range=0.05)
+                                  population_size=10,
+                                  gene_range=((-0.2, 0.2), (0.90, 1.10), (0, 4), (0, 4)),
+                                  name=name, num_generations=1, elitism=1, mutation_rate=0.05, mutation_range=0.05)'''
 
 '''
 class TestCases(unittest.TestCase):

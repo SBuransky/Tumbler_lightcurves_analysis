@@ -31,7 +31,7 @@ def frequency_grid(time: np.ndarray, n_b=4) -> np.ndarray:
     return freq
 
 
-def fourier_transform(time: np.ndarray, data_y: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def fourier_transform(time: np.ndarray, data_y: np.ndarray, n_b=4) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Perform Fourier Transform on the given data_y with respect to time.
 
@@ -50,7 +50,7 @@ def fourier_transform(time: np.ndarray, data_y: np.ndarray) -> Tuple[np.ndarray,
     dvec = data_y - np.mean(data_y)
 
     # Generate frequency grid using the centered time vector
-    freq = frequency_grid(tvec)
+    freq = frequency_grid(tvec, n_b)
 
     # Initialize arrays for wave function and DFT coefficients
     wfn = np.zeros(len(freq), dtype=complex)
@@ -110,12 +110,12 @@ def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
 
 
 def clean(freq, wfn, dft, n_iter=100, gain=0.01):
-    clean_components = np.zeros(len(dft))
+    clean_components = np.zeros(len(dft), dtype=np.complex_)
     residual_spectrum = dft
 
     for i in range(n_iter):
         # actual peak index
-        peak = np.argmax(residual_spectrum)
+        peak = np.argmax(np.abs(residual_spectrum)**2)
 
         # amplitude of the peak
         component = gain * (residual_spectrum[peak] - np.conjugate(residual_spectrum[peak]) * wfn[2 * peak]) / (
@@ -124,6 +124,10 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.01):
         residual_spectrum = clean_subtract_ccomp(wfn, residual_spectrum, component, peak)
         # add component to clean spectrum
         clean_components[peak] += component
+
+        if np.max(np.abs(residual_spectrum)**2) / np.mean(np.abs(residual_spectrum)**2) <= 20:
+            print('------xxxx-----', i)
+            break
 
     # ------------------------------------------------------------------------------------------------------------------
     # calculate beam #TODO
