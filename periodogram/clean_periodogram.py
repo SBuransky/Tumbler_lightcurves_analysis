@@ -125,7 +125,7 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.01):
         # add component to clean spectrum
         clean_components[peak] += component
 
-        if np.max(np.abs(residual_spectrum)**2) / np.mean(np.abs(residual_spectrum)**2) <= 20:
+        if np.max(np.abs(residual_spectrum)**2) / np.mean(np.abs(residual_spectrum)**2) <= 3:
             print('------xxxx-----', i)
             break
 

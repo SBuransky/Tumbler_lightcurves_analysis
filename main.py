@@ -203,9 +203,9 @@ def tumbler_genetic_algorithm_fit(data: pd.DataFrame,
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     # load data
-    name = 'ID1919_001'
+    name = 'ID1916_007'
     data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
-                     appendix='.flux')
+                     appendix='.txt')
 
     tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values,
                         name=name, n_iter=2000, gain=0.1, dev=data['deviation_used'])
