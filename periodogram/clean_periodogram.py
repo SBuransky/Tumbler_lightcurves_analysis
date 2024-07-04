@@ -69,6 +69,15 @@ def fourier_transform(time: np.ndarray, data_y: np.ndarray, n_b=4) -> Tuple[np.n
 
 
 def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
+    wfn_full = np.concatenate((np.conjugate(wfn[::-1]), wfn))
+    print(wfn_full)
+    '''print('0',wfn)
+    print('1',wfn_full)
+    print('2',wfn_full[np.arange(len(dft)) + len(wfn) - l])
+    print('3',wfn_full[np.arange(len(dft)) + len(wfn) + l])'''
+    dft -= (ccomp*wfn_full[np.arange(len(dft)) + len(wfn) - l] +
+            np.conjugate(ccomp) * wfn_full[np.arange(len(dft)) + len(wfn) + l])
+    '''
     # max element = nwind - 1
     nwind = len(wfn)
     # max element = ndirt - 1
@@ -106,10 +115,11 @@ def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
     # -------------------------------------------------------------------------
     # return realigned, rescaled window function .
     dft = dft - ccomp * cplus - np.conjugate(ccomp) * cminus
+    '''
     return dft
 
 
-def clean(freq, wfn, dft, n_iter=100, gain=0.01):
+def clean(freq, wfn, dft, n_iter=100, gain=0.1):
     clean_components = np.zeros(len(dft), dtype=np.complex_)
     residual_spectrum = dft
 
@@ -122,13 +132,13 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.01):
                 1 - (np.abs(wfn[2 * peak])) ** 2)
 
         residual_spectrum = clean_subtract_ccomp(wfn, residual_spectrum, component, peak)
+
         # add component to clean spectrum
         clean_components[peak] += component
 
-        if np.max(np.abs(residual_spectrum)**2) / np.mean(np.abs(residual_spectrum)**2) <= 3:
+        if np.std(np.abs(residual_spectrum)**2) <= 0.000015:
             print('------xxxx-----', i)
             break
-
     # ------------------------------------------------------------------------------------------------------------------
     # calculate beam #TODO
 
@@ -185,7 +195,7 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.01):
     # convolve and recenter
     cdft = np.roll(np.convolve(input_array, beam), -mb)
     # strip padding
-    cdft = cdft[mb: len(input_array) - mb] + residual_spectrum
+    cdft = cdft[mb: len(input_array) - mb] #+ residual_spectrum
     # print(cdft)
     # Return
     clean_max = find_local_maxima(freq, np.abs(cdft)**2)

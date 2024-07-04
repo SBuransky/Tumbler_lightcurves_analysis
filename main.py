@@ -47,10 +47,10 @@ def tumbler_periodogram(t: np.ndarray,
     frequency = frequency_grid(t, n_b)
     # Compute the periodogram and maxima
     periodogram_lomb, maximas_lomb = lomb_scargle(t, y, frequency, dev, dev_use_for_ls=dev_use_for_ls)
-    periodogram_fourier = fourier_transform(t, y)[0], fourier_transform(t, y)[2]
-    clean_periodogram, clean_maximas = clean(fourier_transform(t, y)[0],
-                                             fourier_transform(t, y)[1],
-                                             fourier_transform(t, y)[2],
+    periodogram_fourier = fourier_transform(t, y, n_b)[0], fourier_transform(t, y, n_b)[2]
+    clean_periodogram, clean_maximas = clean(fourier_transform(t, y, n_b)[0],
+                                             fourier_transform(t, y, n_b)[1],
+                                             fourier_transform(t, y, n_b)[2],
                                              n_iter=n_iter, gain=gain)
 
     # Plot the observed data with error bars
@@ -72,13 +72,13 @@ def tumbler_periodogram(t: np.ndarray,
     plt.xlim(-0.5, 10)
 
     ax2 = plt.subplot(312)
-    ax2.plot(periodogram_fourier[0][:len(fourier_transform(t, y)[0]) // 2], np.abs(periodogram_fourier[1]) ** 2,
+    ax2.plot(periodogram_fourier[0][:len(fourier_transform(t, y, n_b)[0]) // 2], np.abs(periodogram_fourier[1]) ** 2,
              label='Fourier Periodogram')
     plt.legend()
     plt.xlim(-0.5, 10)
 
     ax3 = plt.subplot(313)
-    ax3.plot(clean_periodogram[0][:len(fourier_transform(t, y)[0]) // 2], np.abs(clean_periodogram[1]) ** 2,
+    ax3.plot(clean_periodogram[0][:len(fourier_transform(t, y, n_b)[0]) // 2], np.abs(clean_periodogram[1]) ** 2,
              label='CLEAN Periodogram')
     # ax3.scatter(clean_maximas[0], clean_maximas[1], color='red', label='CLEAN Maxima')
     plt.legend()
@@ -203,12 +203,12 @@ def tumbler_genetic_algorithm_fit(data: pd.DataFrame,
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     # load data
-    name = 'ID1916_007'
+    name = 'ID1919_007'
     data = load_data(name, column_names=('julian_day', 'noiseless_flux', 'noisy_flux', 'sigma', 'deviation_used'),
-                     appendix='.txt')
+                     appendix='.flux')
 
-    tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values,
-                        name=name, n_iter=2000, gain=0.1, dev=data['deviation_used'])
+    tumbler_periodogram(data['julian_day'].values, data['noiseless_flux'].values,
+                        name=name, n_iter=100000, gain=0.5, dev=data['deviation_used'])
 
     m_ = 2
 
@@ -235,17 +235,3 @@ if __name__ == '__main__':
                                   population_size=10,
                                   gene_range=((-0.2, 0.2), (0.90, 1.10), (0, 4), (0, 4)),
                                   name=name, num_generations=1, elitism=1, mutation_rate=0.05, mutation_range=0.05)'''
-
-'''
-class TestCases(unittest.TestCase):
-    def test_ls(self):
-        tumbler_periodogram(data['julian_day'].values, data['noisy_flux'].values, name=name)
-
-    def test_ga(self):
-        tumbler_genetic_algorithm_fit(data,
-                                      fitness,
-                                      m_=m_,
-                                      population_size=500,
-                                      gene_range=((-0.2, 0.2), (0.85, 1.15), (0.5, 1.5), (0.5, 1.5)),
-                                      name=name, num_generations=100)
-'''
