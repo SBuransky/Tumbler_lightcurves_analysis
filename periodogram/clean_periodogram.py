@@ -136,7 +136,7 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1):
         clean_components[peak] += component
         print(i)
 
-        if np.std(np.abs(residual_spectrum) ** 2) <= 0.1:
+        if np.std(np.abs(residual_spectrum) ** 2) <= 0.006:
             print('------xxxx-----', i)
             break
     # ------------------------------------------------------------------------------------------------------------------
