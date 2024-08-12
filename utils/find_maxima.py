@@ -1,5 +1,7 @@
-import numpy as np
 from typing import Tuple
+
+import numpy as np
+
 
 def find_local_maxima(x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """

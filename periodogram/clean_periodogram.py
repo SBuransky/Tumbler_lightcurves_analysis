@@ -1,7 +1,7 @@
-import matplotlib.pyplot as plt
-import numpy as np
-from utils.load_dataset import load_data
 from typing import Tuple
+
+import numpy as np
+
 from utils.find_maxima import find_local_maxima
 
 

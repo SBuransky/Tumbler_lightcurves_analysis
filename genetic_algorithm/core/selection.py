@@ -1,6 +1,6 @@
 from typing import List, Tuple
+
 import numpy as np
-from typing import List, Tuple
 
 
 def tournament_selection(population: List,

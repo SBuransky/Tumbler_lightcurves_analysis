@@ -1,6 +1,8 @@
+from typing import Tuple, Optional
+
 import numpy as np
 from astropy.timeseries import LombScargle
-from typing import Tuple, Optional
+
 from utils.find_maxima import find_local_maxima
 
 
