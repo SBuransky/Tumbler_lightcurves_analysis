@@ -1,6 +1,6 @@
-import numpy as np
-import time
 from typing import Tuple
+
+import numpy as np
 
 
 def parse_solution(solution: np.ndarray,

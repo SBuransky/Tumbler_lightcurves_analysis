@@ -1,7 +1,6 @@
 from typing import Callable, List, Tuple
 
 import numpy as np
-from matplotlib import pyplot as plt
 
 from genetic_algorithm.core.fitness_evaluation import evaluate_population
 from genetic_algorithm.core.initial_population import initialize_population
