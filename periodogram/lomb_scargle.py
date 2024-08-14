@@ -30,7 +30,7 @@ def lomb_scargle(t: np.ndarray,
         dev = np.abs(dev)
 
     # Compute Lomb-Scargle periodogram
-    if dev_use_for_ls == None:
+    if dev_use_for_ls is None:
         ls = LombScargle(t=t, y=y)
     else:
         ls = LombScargle(t=t, y=y, dy=dev)
