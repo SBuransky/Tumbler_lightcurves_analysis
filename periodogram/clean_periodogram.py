@@ -118,7 +118,7 @@ def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
     return dft
 
 
-def clean(freq, wfn, dft, n_iter=100, gain=0.1):
+def clean(freq, wfn, dft, n_iter=100, gain=0.1, final_noise=0.005):
     clean_components = np.zeros(len(dft), dtype=np.complex_)
     residual_spectrum = dft
 
@@ -136,7 +136,7 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1):
         clean_components[peak] += component
         print(i)
 
-        if np.std(np.abs(residual_spectrum) ** 2) <= 0.0035:
+        if np.std(np.abs(residual_spectrum) ** 2) <= final_noise:
             print('------xxxx-----', i)
             break
     # ------------------------------------------------------------------------------------------------------------------
@@ -196,7 +196,7 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1):
     cdft = np.roll(np.convolve(input_array, beam), -mb)
     # strip padding
     cdft = cdft[mb: len(input_array) - mb] + residual_spectrum
-    cdft = residual_spectrum
+    #cdft = residual_spectrum
     # print(cdft)
     # Return
     clean_max = find_local_maxima(freq, np.abs(cdft) ** 2)

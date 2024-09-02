@@ -26,7 +26,8 @@ def tumbler_periodogram(t: np.ndarray,
                         gain=0.5,
                         n_b=4,
                         dev_use_for_ls=None,
-                        dev: Optional[np.ndarray] = None) -> None:
+                        dev: Optional[np.ndarray] = None,
+                        final_noise: float = 0.005) -> None:
     """
     Compute Lomb-Scargle periodogram and plot results.
 
@@ -51,7 +52,7 @@ def tumbler_periodogram(t: np.ndarray,
     clean_periodogram, clean_maximas = clean(fourier_transform(t, y, n_b)[0],
                                              fourier_transform(t, y, n_b)[1],
                                              fourier_transform(t, y, n_b)[2],
-                                             n_iter=n_iter, gain=gain)
+                                             n_iter=n_iter, gain=gain, final_noise=final_noise)
 
     # Plot the observed data with error bars
     plt.errorbar(t, y, yerr=dev, fmt='.', label='Data')

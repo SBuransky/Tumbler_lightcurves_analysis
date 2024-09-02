@@ -40,4 +40,4 @@ t, y = generate_sine_wave(frequency, num_periods, sampling_rate)
 
 from main import tumbler_periodogram
 
-tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1)
+tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0035)
