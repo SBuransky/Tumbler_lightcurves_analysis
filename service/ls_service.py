@@ -6,9 +6,9 @@ from lombscargle_periodogram.fourier_transform import fourier_transform
 
 def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=None):
     # Ensure directories exist
-    os.makedirs('Results/lomb_scargle/Graphs/', exist_ok=True)
-    os.makedirs('Results/lomb_scargle/Periodograms/', exist_ok=True)
-    os.makedirs('Results/lomb_scargle/Results/', exist_ok=True)
+    os.makedirs('Results/periodograms/Graphs/', exist_ok=True)
+    os.makedirs('Results/periodograms/Periodograms/', exist_ok=True)
+    os.makedirs('Results/periodograms/Results/', exist_ok=True)
 
     # Compute the periodogram and maxima
     periodogram, maximas = fourier_transform(t, y, frequency, dev)
@@ -19,7 +19,7 @@ def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=N
     plt.ylabel('Normalized Flux')
     plt.title('Observed Data')
     plt.legend()
-    plt.savefig(f'Results/lomb_scargle/Graphs/{name}_graph.pdf')
+    plt.savefig(f'Results/periodograms/Graphs/{name}_graph.pdf')
     plt.show()
     plt.close()
 
@@ -30,11 +30,11 @@ def tumbler_periodogram(t, y, name, frequency=np.linspace(0.1, 10, 10000), dev=N
     plt.ylabel('Power')
     plt.title('Lomb-Scargle Periodogram')
     plt.legend()
-    plt.savefig(f'Results/lomb_scargle/Periodograms/{name}_LS.pdf')
+    plt.savefig(f'Results/periodograms/Periodograms/{name}_LS.pdf')
     plt.show()
     plt.close()
 
     # Save the maxima to a text file as two columns
     maxima_array = np.column_stack((maximas[0], maximas[1]))
-    np.savetxt(f'Results/lomb_scargle/Results/{name}_LS.txt', maxima_array, delimiter=" ", header='Frequency Power',
+    np.savetxt(f'Results/periodograms/Results/{name}_LS.txt', maxima_array, delimiter=" ", header='Frequency Power',
                comments='')

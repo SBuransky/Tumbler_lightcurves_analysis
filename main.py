@@ -42,9 +42,9 @@ def tumbler_periodogram(t: np.ndarray,
     - None. Save plots and results to disk.
     """
     # Ensure directories exist
-    os.makedirs('Results/lomb_scargle/Graphs/', exist_ok=True)
-    os.makedirs('Results/lomb_scargle/Periodograms/', exist_ok=True)
-    os.makedirs('Results/lomb_scargle/Results/', exist_ok=True)
+    os.makedirs('Results/periodograms/Graphs/', exist_ok=True)
+    os.makedirs('Results/periodograms/Periodograms/', exist_ok=True)
+    os.makedirs('Results/periodograms/Results/', exist_ok=True)
     frequency = frequency_grid(t, n_b)
     # Compute the periodogram and maxima
     periodogram_lomb, maximas_lomb = lomb_scargle(t, y, frequency, dev, dev_use_for_ls=dev_use_for_ls)
@@ -60,7 +60,7 @@ def tumbler_periodogram(t: np.ndarray,
     plt.ylabel('Normalized Flux')
     plt.title('Observed Data')
     plt.legend()
-    plt.savefig(f'Results/lomb_scargle/Graphs/{name}_graph.pdf')
+    plt.savefig(f'Results/periodograms/Graphs/{name}_graph.pdf')
     plt.show()
     plt.close()
 
@@ -85,16 +85,16 @@ def tumbler_periodogram(t: np.ndarray,
     plt.legend()
     plt.xlim(-0.5, 10)
 
-    plt.savefig(f'Results/lomb_scargle/Periodograms/{name}_PERIODOGRAM.pdf')
+    plt.savefig(f'Results/periodograms/Periodograms/{name}_PERIODOGRAM.pdf')
     plt.show()
     plt.close()
 
     # Save the maxima to a text file as two columns
     ls_maximas_file = np.column_stack((maximas_lomb[0], maximas_lomb[1]))
     clean_maximas_file = np.column_stack((clean_maximas[0], clean_maximas[1]))
-    np.savetxt(f'Results/lomb_scargle/Results/{name}_LS.txt', ls_maximas_file,
+    np.savetxt(f'Results/periodograms/Results/{name}_LS.txt', ls_maximas_file,
                delimiter=" ", header='Frequency Power', comments='')
-    np.savetxt(f'Results/lomb_scargle/Results/{name}_CLEAN.txt', clean_maximas_file,
+    np.savetxt(f'Results/periodograms/Results/{name}_CLEAN.txt', clean_maximas_file,
                delimiter=" ", header='Frequency Power', comments='')
 
 
@@ -209,7 +209,7 @@ if __name__ == '__main__':
                      appendix='.flux')
 
     tumbler_periodogram(data['julian_day'].values, data['noiseless_flux'].values,
-                        name=name, n_iter=100000, gain=0.5, dev=data['deviation_used'])
+                        name=name, n_iter=100000, n_b=20, gain=0.5, final_noise=0.000009, dev=data['deviation_used'])
 
     m_ = 2
 
