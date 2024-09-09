@@ -78,22 +78,24 @@ def generate_pa_rotator(frequency,
 t, y, delta = generate_pa_rotator(frequency=1,
                                   num_periods=5,
                                   sampling_rate=1000,
-                                  noise_amplitude=0.001,
+                                  noise_amplitude=1,
                                   num_holes=20,
                                   min_hole_length=50,
                                   max_hole_length=200,
-                                  num_components=2,
+                                  num_components=1,
                                   seed=0)
 
-from main import tumbler_periodogram, tumbler_genetic_algorithm_fit
+from main import tumbler_periodogram, tumbler_genetic_algorithm_fit, pa_rotator_genetic_algorithm_fit
 from utils.single_fourier_series_value import single_fourier_value
-tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
+
+#tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
 
 data = pd.DataFrame({'julian_day': t, 'noisy_flux': y, 'deviation_used': delta})
 
-
 m_ = 1
 name = 'test'
+
+
 def fitness(solution):
     """
     Fitness function
@@ -110,9 +112,13 @@ def fitness(solution):
     return 1 / chi2
 
 
-tumbler_genetic_algorithm_fit(data,
-                              fitness,
-                              m_=m_,
-                              population_size=100,
-                              gene_range=((-100, 100), (-100, 100), (0, 2), (0, 2)),
-                              name=name, num_generations=100, elitism=1, mutation_rate=0.05, mutation_range=0.05)
+pa_rotator_genetic_algorithm_fit(data,
+                                 fitness,
+                                 m_=m_,
+                                 population_size=1000,
+                                 gene_range=((0, 1), (-0.01, 0.01), (0.9, 1.1)),
+                                 name=name,
+                                 num_generations=100,
+                                 elitism=1,
+                                 mutation_rate=0.05,
+                                 mutation_range=0.05)
