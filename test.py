@@ -78,8 +78,8 @@ def generate_pa_rotator(frequency,
 t, y, delta = generate_pa_rotator(frequency=1,
                                   num_periods=5,
                                   sampling_rate=1000,
-                                  noise_amplitude=1,
-                                  num_holes=20,
+                                  noise_amplitude=0.1,
+                                  num_holes=1,
                                   min_hole_length=50,
                                   max_hole_length=200,
                                   num_components=1,
@@ -92,7 +92,7 @@ from utils.single_fourier_series_value import single_fourier_value
 
 data = pd.DataFrame({'julian_day': t, 'noisy_flux': y, 'deviation_used': delta})
 
-m_ = 1
+m_ = 3
 name = 'test'
 
 
@@ -116,9 +116,9 @@ pa_rotator_genetic_algorithm_fit(data,
                                  fitness,
                                  m_=m_,
                                  population_size=1000,
-                                 gene_range=((0, 1), (-0.01, 0.01), (0.9, 1.1)),
+                                 gene_range=((0, 2), (-0.01, 0.01), (0.9, 1.1)),
                                  name=name,
                                  num_generations=100,
                                  elitism=1,
-                                 mutation_rate=0.05,
-                                 mutation_range=0.05)
+                                 mutation_rate=0.2,
+                                 mutation_range=0.005)
