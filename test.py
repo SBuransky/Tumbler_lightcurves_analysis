@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 
@@ -67,22 +68,51 @@ def generate_pa_rotator(frequency,
         y += cosine_coefficients[i - 1] * np.cos(2 * np.pi * i * frequency * t_with_holes)
 
     # Add random noise to the signal
-    y += noise_amplitude * np.random.normal(size=len(t_with_holes))
+    delta = noise_amplitude * np.random.normal(size=len(t_with_holes))
+    y += delta
 
-    return t_with_holes, y
+    return t_with_holes, y, delta
 
 
 # Example usage with random long holes and random coefficients
-t, y = generate_pa_rotator(frequency=1,
-                           num_periods=5,
-                           sampling_rate=1000,
-                           noise_amplitude=5,
-                           num_holes=20,
-                           min_hole_length=50,
-                           max_hole_length=200,
-                           num_components=2,
-                           seed=0)
+t, y, delta = generate_pa_rotator(frequency=1,
+                                  num_periods=5,
+                                  sampling_rate=1000,
+                                  noise_amplitude=0.001,
+                                  num_holes=20,
+                                  min_hole_length=50,
+                                  max_hole_length=200,
+                                  num_components=2,
+                                  seed=0)
 
-from main import tumbler_periodogram
-
+from main import tumbler_periodogram, tumbler_genetic_algorithm_fit
+from utils.single_fourier_series_value import single_fourier_value
 tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
+
+data = pd.DataFrame({'julian_day': t, 'noisy_flux': y, 'deviation_used': delta})
+
+
+m_ = 1
+name = 'test'
+def fitness(solution):
+    """
+    Fitness function
+    :param solution: set of the free parameters
+    :return: fitness value
+    """
+    x, y, delta = data['julian_day'], data['noisy_flux'], data['deviation_used']
+
+    # Vectorized calculation of Fourier values
+    y_model = single_fourier_value(solution, m_, x)
+
+    # calculation of the chi^2 and returning 1/chi^2
+    chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
+    return 1 / chi2
+
+
+tumbler_genetic_algorithm_fit(data,
+                              fitness,
+                              m_=m_,
+                              population_size=100,
+                              gene_range=((-100, 100), (-100, 100), (0, 2), (0, 2)),
+                              name=name, num_generations=100, elitism=1, mutation_rate=0.05, mutation_range=0.05)

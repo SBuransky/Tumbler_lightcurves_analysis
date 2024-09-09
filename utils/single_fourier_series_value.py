@@ -14,8 +14,8 @@ def parse_solution(solution: np.ndarray, m: int) -> Tuple[float, float, float, n
     """
     P = solution[-1] + 1 / 86400  # Period
     C0 = solution[-2]  # Constant term
-    Cj = solution[-2 - m:-2]  # Cosine coefficients
-    Sj = solution[-2 - 2 * m:-2 - m]  # Sine coefficients
+    Cj = solution[m:-2]  # Cosine coefficients
+    Sj = solution[:m]  # Sine coefficients
 
     return P, C0, Cj, Sj
 
