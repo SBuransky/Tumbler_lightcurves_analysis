@@ -35,7 +35,10 @@ def single_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
     omega = 2 * np.pi / P  # Angular frequency
 
     # Calculate Fourier value using NumPy vectorization
-    F = C0 + np.sum(Cj * np.cos(np.arange(1, m + 1) * omega * t) + Sj * np.sin(np.arange(1, m + 1) * omega * t))
+    # F = C0 + np.sum(Cj * np.cos(np.arange(1, m + 1) * omega * t) + Sj * np.sin(np.arange(1, m + 1) * omega * t))
+    first_sum = Cj * np.cos(np.arange(1, m + 1) * omega * t) + Sj * np.sin(np.arange(1, m + 1) * omega * t)
+
+    F = C0 + np.sum(first_sum)
 
     return F
 

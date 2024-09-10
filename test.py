@@ -79,20 +79,20 @@ t, y, delta = generate_pa_rotator(frequency=1,
                                   num_periods=5,
                                   sampling_rate=1000,
                                   noise_amplitude=0.1,
-                                  num_holes=1,
+                                  num_holes=10,
                                   min_hole_length=50,
                                   max_hole_length=200,
                                   num_components=1,
                                   seed=0)
 
 from main import tumbler_periodogram, tumbler_genetic_algorithm_fit, pa_rotator_genetic_algorithm_fit
-from utils.single_fourier_series_value import single_fourier_value
+from utils.single_fourier_series_value import single_fourier_value, single_fourier_sequence
 
 #tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
 
 data = pd.DataFrame({'julian_day': t, 'noisy_flux': y, 'deviation_used': delta})
 
-m_ = 3
+m_ = 4
 name = 'test'
 
 
@@ -105,7 +105,7 @@ def fitness(solution):
     x, y, delta = data['julian_day'], data['noisy_flux'], data['deviation_used']
 
     # Vectorized calculation of Fourier values
-    y_model = single_fourier_value(solution, m_, x)
+    y_model = single_fourier_sequence(solution, m_, x)
 
     # calculation of the chi^2 and returning 1/chi^2
     chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
@@ -115,7 +115,7 @@ def fitness(solution):
 pa_rotator_genetic_algorithm_fit(data,
                                  fitness,
                                  m_=m_,
-                                 population_size=1000,
+                                 population_size=10,
                                  gene_range=((0, 2), (-0.01, 0.01), (0.9, 1.1)),
                                  name=name,
                                  num_generations=100,
