@@ -31,31 +31,40 @@ def run_genetic_algorithm(population_size: int,
     Returns:
     - Tuple containing the best individual in the final generation and a list of fitness values across generations.
     """
-    mutation_rate_0 = mutation_rate
-    mutation_range_0 = mutation_range
-    elitism_0 = elitism
 
     # Initialize the initial population
     population = initialize_population(population_size, num_genes, gene_range)
 
-    best_in_pop = []
+    # Lists to store best individuals and their fitness values
     fitness_in_pop = []
+    best_in_pop = []
+
+    # Initial parameters for mutation and elitism
+    mutation_rate_0 = mutation_rate
+    mutation_range_0 = mutation_range
+    elitism_0 = elitism
+
+    # Initialize the best fitness for tracking changes
+    last_best_fitness = -np.inf
 
     # Run the genetic algorithm for a specified number of generations
     for generation in range(num_generations):
-        print(f"Generation {generation + 1}:")
-
         # Perform one generation
         population = one_gen(population, fitness_function, crossover_rate, mutation_rate, mutation_range, gene_range,
                              elitism)
 
-        # Display the best individual in the current generation
-        best_individual, best_fitness = max(evaluate_population(population, fitness_function), key=lambda x: x[1])
-        print(f"Best Individual: {best_individual}, Best Fitness: {best_fitness}")
+        # Evaluate population and find the best individual
+        fitness_results = evaluate_population(population, fitness_function)
+        best_individual, best_fitness = max(fitness_results, key=lambda x: x[1])
 
-        # Add fitness of the best individual in the list
+        # Store the best individual and fitness values
         fitness_in_pop.append(best_fitness)
         best_in_pop.append(best_individual)
+
+        # Controlled Printing: Print only if the best fitness changes
+        if best_fitness != last_best_fitness:
+            print(f"Generation {generation + 1}: Best Individual: {best_individual}, Best Fitness: {best_fitness}")
+            last_best_fitness = best_fitness
 
         # Adaptive mutation
         if generation > 200 and \
@@ -69,12 +78,21 @@ def run_genetic_algorithm(population_size: int,
             mutation_range = mutation_range_0
             elitism = elitism_0
 
+    # Best individual and fitness in the final generation
+    final_best_individual = best_in_pop[-1]
+    final_best_fitness = fitness_in_pop[-1]
+
+    # Print final generation results
+    print(f"Generation {num_generations}: Best Individual: {final_best_individual}, Best Fitness: {final_best_fitness}")
+    print(f"Overall Best Individual: {best_in_pop[np.argmax(fitness_in_pop)]}, "
+          f"Overall Best Fitness: {np.max(fitness_in_pop)}")
     # Return the best individual and fitness values across generations
-    # the best individual = best in last generation
-    # population = las pop
-    # fitness_in_pop = fitness of the best in every pop
-    # best_in_pop = best in every pop
-    # best_in_pop[np...] = best over all gen
-    # best_fitness = the best fitness in last gen
-    return best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)], \
-        best_fitness, np.max(fitness_in_pop)
+    # final_best_individual ... best individual in last generation
+    # population ... last pop
+    # fitness_in_pop ... best fitness over generation
+    # best_in_pop ... best individuals over generation
+    # best_in_pop[np.argmax(fitness_in_pop)] ... overall best individual
+    # np.max(fitness_in_pop) ... overall best fitness
+    # final_best_fitness ... best fitness in last generation
+    return final_best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)], \
+        np.max(fitness_in_pop), final_best_fitness
