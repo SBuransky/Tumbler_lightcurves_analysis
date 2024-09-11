@@ -1,5 +1,5 @@
 from typing import List, Callable, Tuple
-
+from joblib import Parallel, delayed
 import numpy as np
 
 from genetic_algorithm.core.crossover import crossover
@@ -45,7 +45,12 @@ def one_gen(population: List,
     # Perform mutation on offspring
     mutated_offspring = [mutate(individual, mutation_rate, mutation_range, gene_range) for individual in offspring]
 
-    # Combine parents and mutated offspring for the next generation
-    next_generation = mutated_offspring
+    def mutate_individual(individual):
+        return mutate(individual, mutation_rate, mutation_range, gene_range)
 
-    return np.concatenate((selected_parents[:elitism], next_generation))
+    mutated_offspring = Parallel(n_jobs=-1)(delayed(mutate_individual)(ind) for ind in offspring)
+
+    # Combine parents and mutated offspring for the next generation
+    next_generation = np.vstack((np.array(selected_parents[:elitism]), mutated_offspring))
+
+    return next_generation
