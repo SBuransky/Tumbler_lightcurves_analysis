@@ -1,8 +1,9 @@
 from typing import Tuple, List
 
 import numpy as np
+from numba import jit
 
-
+@jit
 def mutate(individual: np.ndarray,
            mutation_rate: float,
            mutation_range: float,
