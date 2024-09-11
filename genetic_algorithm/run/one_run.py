@@ -15,7 +15,8 @@ def run_genetic_algorithm(population_size: int,
                           crossover_rate: float = 0.85,
                           mutation_rate: float = 0.01,
                           mutation_range: float = 0.1,
-                          elitism: int = 2) -> Tuple[np.ndarray, List[float]]:
+                          elitism: int = 2) -> \
+        Tuple[np.ndarray, np.ndarray, List[float], List[np.ndarray], np.ndarray, float, float]:
     """
     Run a genetic algorithm with real number representation for a specified number of generations.
 
