@@ -90,7 +90,7 @@ t, y, delta = generate_pa_rotator(frequency=1,
 from main import tumbler_periodogram, tumbler_genetic_algorithm_fit, pa_rotator_genetic_algorithm_fit
 from utils.single_fourier_series_value import single_fourier_value, single_fourier_sequence
 
-#tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
+tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
 
 data = pd.DataFrame({'julian_day': t, 'noisy_flux': y, 'deviation_used': delta})
 
@@ -117,10 +117,10 @@ def fitness(solution):
 pa_rotator_genetic_algorithm_fit(data,
                                  fitness,
                                  m_=m_,
-                                 population_size=10,
+                                 population_size=100,
                                  gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
                                  name=name,
-                                 num_generations=10,
+                                 num_generations=100,
                                  elitism=1,
                                  mutation_rate=0.2,
                                  mutation_range=0.005)
