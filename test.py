@@ -58,6 +58,8 @@ def generate_pa_rotator(frequency,
     # Randomly generate coefficients for the sine and cosine components
     sine_coefficients = np.sort(np.random.rand(num_components))[::-1]
     cosine_coefficients = np.sort(np.random.rand(num_components))[::-1]
+    sine_coefficients[1:] = sine_coefficients[1:] / 10
+    cosine_coefficients[1:] = cosine_coefficients[1:] / 10
     print(sine_coefficients)
     print(cosine_coefficients)
 
@@ -82,17 +84,17 @@ t, y, delta = generate_pa_rotator(frequency=1,
                                   num_holes=10,
                                   min_hole_length=50,
                                   max_hole_length=200,
-                                  num_components=2,
+                                  num_components=10,
                                   seed=0)
 
 from main import tumbler_periodogram, tumbler_genetic_algorithm_fit, pa_rotator_genetic_algorithm_fit
 from utils.single_fourier_series_value import single_fourier_value, single_fourier_sequence
 
-tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
+#tumbler_periodogram(t, y, name='test', n_iter=10000, gain=0.1, final_noise=0.0028)
 
 data = pd.DataFrame({'julian_day': t, 'noisy_flux': y, 'deviation_used': delta})
 
-m_ = 2
+m_ = 3
 name = 'test'
 
 
@@ -116,9 +118,9 @@ pa_rotator_genetic_algorithm_fit(data,
                                  fitness,
                                  m_=m_,
                                  population_size=10,
-                                 gene_range=((0, 2), (-0.01, 0.01), (0.9, 1.1)),
+                                 gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
                                  name=name,
-                                 num_generations=100,
+                                 num_generations=10,
                                  elitism=1,
                                  mutation_rate=0.2,
                                  mutation_range=0.005)

@@ -19,18 +19,15 @@ def mutate(individual: np.ndarray,
     Returns:
     - Mutated individual (NumPy array).
     """
-
     # Create a mask for genes to be mutated
     mask = np.random.rand(*individual.shape) < mutation_rate
 
-    # Generate random mutations within the specified range
+    # Generate random mutations within the specified range and apply mask
     mutations = np.random.uniform(-mutation_range, mutation_range, size=individual.shape)
+    individual[mask] += mutations[mask]
 
-    # Apply mutations to the individual based on the mask
-    mutated_individual = individual + mask * mutations
+    # Ensure mutated genes stay within the valid range using vectorized np.clip
+    gene_min_values, gene_max_values = np.array(gene_range).T
+    np.clip(individual, gene_min_values, gene_max_values, out=individual)
 
-    # Ensure mutated genes remain within the valid range
-    gene_min_values, gene_max_values = zip(*gene_range)
-    mutated_individual = np.clip(mutated_individual, gene_min_values, gene_max_values)
-
-    return mutated_individual
+    return individual

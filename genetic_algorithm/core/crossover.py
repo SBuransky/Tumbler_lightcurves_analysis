@@ -15,13 +15,9 @@ def crossover(parent1: np.ndarray,
     Returns:
     - Two offspring resulting from the crossover (NumPy arrays).
     """
-    # Ensure parents have the same length
-    assert len(parent1) == len(parent2), "Parents must have the same length."
 
     if np.random.rand() < crossover_rate:
         alpha = np.random.rand(len(parent1))
-        offspring = alpha * parent1 + (1 - alpha) * parent2
+        return alpha * parent1 + (1 - alpha) * parent2
     else:
-        offspring = [parent1, parent2][np.random.choice([0, 1])]
-
-    return offspring
+        return parent1 if np.random.rand() > 0.5 else parent2

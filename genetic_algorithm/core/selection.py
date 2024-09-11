@@ -55,36 +55,39 @@ def tournament_selection(population: List,
     return np.array(selected_parents)
 
 
-def rank_based_selection(population: np.ndarray, fitness_results: List[Tuple], elitism_count: int) -> np.ndarray:
+def rank_based_selection(population: np.ndarray,
+                         fitness_results: List[Tuple],
+                         elitism_count: int) -> np.ndarray:
     """
     Perform rank-based selection with elitism.
 
     Parameters:
-    population (np.ndarray): The population of individuals.
-    fitness_results (List[Tuple]): A list of tuples where each tuple contains an individual and its fitness value.
-    elitism_count (int): The number of top individuals to retain directly (elitism).
+    - population: The population of individuals (NumPy array).
+    - fitness_results: A list of tuples where each tuple contains an individual and its fitness value.
+    - elitism_count: The number of top individuals to retain directly (elitism).
 
     Returns:
-    np.ndarray: The new population after selection.
+    - The new population after selection (NumPy array).
     """
-    # Extract fitness values from the fitness results
+    # Extract fitness values and sort them to get the ranks
     fitness_values = np.array([item[1] for item in fitness_results])
+    sorted_indices = np.argsort(fitness_values)  # Indices that would sort the array
+    ranks = np.empty_like(sorted_indices)
+    ranks[sorted_indices] = np.arange(len(fitness_values))  # Assign ranks based on sorted indices
 
-    # Rank individuals based on fitness values
-    ranks = np.argsort(np.argsort(fitness_values))
-
-    # Calculate selection probabilities based on ranks
+    # Calculate selection probabilities from ranks
     total_ranks = np.sum(ranks)
     selection_probabilities = ranks / total_ranks
 
-    # Select individuals based on the calculated probabilities
+    # Select individuals based on rank probabilities
     selected_indices = np.random.choice(len(population), size=len(population) - elitism_count,
-                                        p=selection_probabilities)
+                                        p=selection_probabilities, replace=False)
 
-    # Identify the elite individuals
-    elite_indices = np.argsort(fitness_values)[-elitism_count:]
+    # Retain elite individuals
+    elite_indices = sorted_indices[-elitism_count:]
 
-    # Combine elite individuals with the rest of the selected population
+    # Combine elite individuals with the selected ones
     combined_indices = np.concatenate((elite_indices, selected_indices))
 
     return population[combined_indices]
+
