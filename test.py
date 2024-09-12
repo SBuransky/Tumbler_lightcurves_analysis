@@ -58,8 +58,8 @@ def generate_pa_rotator(frequency,
     # Randomly generate coefficients for the sine and cosine components
     sine_coefficients = np.sort(np.random.rand(num_components))[::-1]
     cosine_coefficients = np.sort(np.random.rand(num_components))[::-1]
-    sine_coefficients[1:] = sine_coefficients[1:] / 10
-    cosine_coefficients[1:] = cosine_coefficients[1:] / 10
+    sine_coefficients[1:] = sine_coefficients[1:] / 2
+    cosine_coefficients[1:] = cosine_coefficients[1:] / 2
     print(sine_coefficients)
     print(cosine_coefficients)
 
@@ -117,10 +117,10 @@ def fitness(solution):
 pa_rotator_genetic_algorithm_fit(data,
                                  fitness,
                                  m_=m_,
-                                 population_size=100,
+                                 population_size=200,
                                  gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
                                  name=name,
-                                 num_generations=100,
+                                 num_generations=1000,
                                  elitism=1,
                                  mutation_rate=0.2,
                                  mutation_range=0.005)

@@ -68,12 +68,11 @@ def run_genetic_algorithm(population_size: int,
             last_best_fitness = best_fitness
 
         # Adaptive mutation
-        if generation > 200 and \
-                generation % 100 == 0 and \
+        if generation > 200 and generation % 100 == 0 and \
                 fitness_in_pop[generation] == fitness_in_pop[generation - 100]:
             mutation_rate = 10 * mutation_rate_0
             mutation_range = 2 * mutation_range_0
-            elitism = 0
+            elitism = 1
         else:
             mutation_rate = mutation_rate_0
             mutation_range = mutation_range_0

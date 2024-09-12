@@ -43,7 +43,7 @@ def one_gen(population: List,
             offspring.append(crossover(parent1, parent2, crossover_rate))
 
     # Perform mutation on offspring
-    mutated_offspring = [mutate(individual, mutation_rate, mutation_range, gene_range) for individual in offspring]
+    # mutated_offspring = [mutate(individual, mutation_rate, mutation_range, gene_range) for individual in offspring]
 
     def mutate_individual(individual):
         return mutate(individual, mutation_rate, mutation_range, gene_range)
