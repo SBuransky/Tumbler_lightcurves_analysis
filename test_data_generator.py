@@ -3,15 +3,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def generate_pa_rotator(frequency,
-                        num_periods,
-                        sampling_rate=500,
-                        noise_amplitude=10,
-                        num_holes=20,
-                        min_hole_length=50,
-                        max_hole_length=500,
-                        num_components=5,
-                        seed=42):
+def generate_pa_rotator(
+    frequency,
+    num_periods,
+    sampling_rate=500,
+    noise_amplitude=10,
+    num_holes=20,
+    min_hole_length=50,
+    max_hole_length=500,
+    num_components=5,
+    seed=42,
+):
     """
     Generate a noisy sine wave with random long holes and random coefficients.
 
@@ -67,7 +69,9 @@ def generate_pa_rotator(frequency,
     y = np.zeros(len(t_with_holes))
     for i in range(1, num_components + 1):
         y += sine_coefficients[i - 1] * np.sin(2 * np.pi * i * frequency * t_with_holes)
-        y += cosine_coefficients[i - 1] * np.cos(2 * np.pi * i * frequency * t_with_holes)
+        y += cosine_coefficients[i - 1] * np.cos(
+            2 * np.pi * i * frequency * t_with_holes
+        )
 
     # Add random noise to the signal
     delta = noise_amplitude * np.random.normal(size=len(t_with_holes))
