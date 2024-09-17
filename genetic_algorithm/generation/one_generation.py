@@ -15,7 +15,7 @@ def one_gen(
     mutation_rate: float,
     mutation_range: float,
     gene_range: List[Tuple[float]],
-    elitism: int = 0,
+    elitism: int = 1,
 ) -> np.ndarray:
     """
     Perform one generation of a genetic algorithm with real number representation.
@@ -31,6 +31,7 @@ def one_gen(
     """
     # Evaluate fitness of the current population
     fitness_results = evaluate_population(population, fitness_function)
+    print(fitness_results)
 
     # Select parents for crossover
     selected_parents = rank_based_selection(population, fitness_results, elitism)
@@ -54,7 +55,7 @@ def one_gen(
     ]
 
     # Combine parents and mutated offspring for the next generation
-    next_generation = np.vstack(
+    next_generation = np.concatenate(
         (np.array(selected_parents[:elitism]), mutated_offspring)
     )
 

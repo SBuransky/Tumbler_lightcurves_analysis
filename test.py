@@ -45,16 +45,16 @@ def fitness(solution):
     return 1 / chi2
 
 
-tumbler_periodogram(t, y, name=name, n_iter=10000, gain=0.1, final_noise=0.0028)
+# tumbler_periodogram(t, y, name=name, n_iter=10000, gain=0.1, final_noise=0.0028)
 
 pa_rotator_genetic_algorithm_fit(
     data,
     fitness,
     m_=m_,
-    population_size=200,
+    population_size=3,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
-    num_generations=10,
+    num_generations=30,
     elitism=1,
     mutation_rate=0.2,
     mutation_range=0.005,
