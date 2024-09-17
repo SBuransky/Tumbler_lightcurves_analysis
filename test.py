@@ -9,6 +9,9 @@ from utils.single_fourier_series_value import (
     single_fourier_sequence,
 )
 
+import numpy as np
+import pandas as pd
+
 t, y, delta = generate_pa_rotator(
     frequency=1,
     num_periods=5,
@@ -51,7 +54,7 @@ pa_rotator_genetic_algorithm_fit(
     population_size=200,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
-    num_generations=1000,
+    num_generations=10,
     elitism=1,
     mutation_rate=0.2,
     mutation_range=0.005,
