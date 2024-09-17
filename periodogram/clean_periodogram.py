@@ -7,14 +7,14 @@ from utils.find_maxima import find_local_maxima
 
 def frequency_grid(time: np.ndarray, n_b=4) -> np.ndarray:
     """
-        Generate a frequency grid based on the given time array and number of bins.
+    Generate a frequency grid based on the given time array and number of bins.
 
-        Parameters:
-        - time: numpy array containing time values, assumed to be sorted
-        - n_b: int, optional, number of bins for frequency grid. Default is 4.
+    Parameters:
+    - time: numpy array containing time values, assumed to be sorted
+    - n_b: int, optional, number of bins for frequency grid. Default is 4.
 
-        Returns:
-        - numpy array of frequencies representing the frequency grid.
+    Returns:
+    - numpy array of frequencies representing the frequency grid.
     """
     # Calculate maximum resolvable frequency (f_max)
     f_max = 1 / (2 * np.min(np.diff(time)))
@@ -30,7 +30,9 @@ def frequency_grid(time: np.ndarray, n_b=4) -> np.ndarray:
     return freq
 
 
-def fourier_transform(time: np.ndarray, data_y: np.ndarray, n_b=4) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def fourier_transform(
+    time: np.ndarray, data_y: np.ndarray, n_b=4
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Perform Fourier Transform on the given data_y with respect to time.
 
@@ -70,13 +72,15 @@ def fourier_transform(time: np.ndarray, data_y: np.ndarray, n_b=4) -> Tuple[np.n
 def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
     wfn_full = np.concatenate((np.conjugate(wfn[::-1]), wfn))
     # print(wfn_full)
-    '''print('0',wfn)
+    """print('0',wfn)
     print('1',wfn_full)
     print('2',wfn_full[np.arange(len(dft)) + len(wfn) - l])
-    print('3',wfn_full[np.arange(len(dft)) + len(wfn) + l])'''
-    dft -= (ccomp * wfn_full[np.arange(len(dft)) + len(wfn) - l] +
-            np.conjugate(ccomp) * wfn_full[np.arange(len(dft)) + len(wfn) + l])
-    '''
+    print('3',wfn_full[np.arange(len(dft)) + len(wfn) + l])"""
+    dft -= (
+        ccomp * wfn_full[np.arange(len(dft)) + len(wfn) - l]
+        + np.conjugate(ccomp) * wfn_full[np.arange(len(dft)) + len(wfn) + l]
+    )
+    """
     # max element = nwind - 1
     nwind = len(wfn)
     # max element = ndirt - 1
@@ -114,7 +118,7 @@ def clean_subtract_ccomp(wfn, dft, ccomp, l):  # TODO #TODO
     # -------------------------------------------------------------------------
     # return realigned, rescaled window function .
     dft = dft - ccomp * cplus - np.conjugate(ccomp) * cminus
-    '''
+    """
     return dft
 
 
@@ -127,17 +131,25 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1, final_noise=0.005):
         peak = np.argmax(np.abs(residual_spectrum) ** 2)
 
         # amplitude of the peak
-        component = gain * (residual_spectrum[peak] - np.conjugate(residual_spectrum[peak]) * wfn[2 * peak]) / (
-                1 - (np.abs(wfn[2 * peak])) ** 2)
+        component = (
+            gain
+            * (
+                residual_spectrum[peak]
+                - np.conjugate(residual_spectrum[peak]) * wfn[2 * peak]
+            )
+            / (1 - (np.abs(wfn[2 * peak])) ** 2)
+        )
 
-        residual_spectrum = clean_subtract_ccomp(wfn, residual_spectrum, component, peak)
+        residual_spectrum = clean_subtract_ccomp(
+            wfn, residual_spectrum, component, peak
+        )
 
         # add component to clean spectrum
         clean_components[peak] += component
         print(i)
 
         if np.std(np.abs(residual_spectrum) ** 2) <= final_noise:
-            print('------xxxx-----', i)
+            print("------xxxx-----", i)
             break
     # ------------------------------------------------------------------------------------------------------------------
     # calculate beam #TODO
@@ -167,14 +179,14 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1, final_noise=0.005):
     b_sigma = hwidth / np.sqrt(2.0 * np.log(2.0))
 
     # Calculate the Gaussian normalization constant
-    const = 1.0 / (2 * b_sigma ** 2)
+    const = 1.0 / (2 * b_sigma**2)
 
     # Determine the size of the restoring beam (truncated at 5 * sigma)
     n_beam = int(5 * b_sigma) + 2
 
     # Generate the Gaussian function
     x = np.arange(0, n_beam, 1.0)
-    y = np.exp(-const * x ** 2)
+    y = np.exp(-const * x**2)
 
     # Construct the real part of the beam
     realpart = np.append(y[::-1], y[1:n_beam])
@@ -195,8 +207,8 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1, final_noise=0.005):
     # convolve and recenter
     cdft = np.roll(np.convolve(input_array, beam), -mb)
     # strip padding
-    cdft = cdft[mb: len(input_array) - mb] + residual_spectrum
-    #cdft = residual_spectrum
+    cdft = cdft[mb : len(input_array) - mb] + residual_spectrum
+    # cdft = residual_spectrum
     # print(cdft)
     # Return
     clean_max = find_local_maxima(freq, np.abs(cdft) ** 2)

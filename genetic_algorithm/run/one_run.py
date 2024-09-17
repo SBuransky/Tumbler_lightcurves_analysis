@@ -7,16 +7,19 @@ from genetic_algorithm.core.initial_population import initialize_population
 from genetic_algorithm.generation.one_generation import one_gen
 
 
-def run_genetic_algorithm(population_size: int,
-                          fitness_function: Callable,
-                          num_genes: int,
-                          gene_range: List[Tuple[float]],
-                          num_generations: int,
-                          crossover_rate: float = 0.85,
-                          mutation_rate: float = 0.01,
-                          mutation_range: float = 0.1,
-                          elitism: int = 2) -> \
-        Tuple[np.ndarray, np.ndarray, List[float], List[np.ndarray], np.ndarray, float, float]:
+def run_genetic_algorithm(
+    population_size: int,
+    fitness_function: Callable,
+    num_genes: int,
+    gene_range: List[Tuple[float]],
+    num_generations: int,
+    crossover_rate: float = 0.85,
+    mutation_rate: float = 0.01,
+    mutation_range: float = 0.1,
+    elitism: int = 2,
+) -> Tuple[
+    np.ndarray, np.ndarray, List[float], List[np.ndarray], np.ndarray, float, float
+]:
     """
     Run a genetic algorithm with real number representation for a specified number of generations.
 
@@ -51,8 +54,15 @@ def run_genetic_algorithm(population_size: int,
     # Run the genetic algorithm for a specified number of generations
     for generation in range(num_generations):
         # Perform one generation
-        population = one_gen(population, fitness_function, crossover_rate, mutation_rate, mutation_range, gene_range,
-                             elitism)
+        population = one_gen(
+            population,
+            fitness_function,
+            crossover_rate,
+            mutation_rate,
+            mutation_range,
+            gene_range,
+            elitism,
+        )
 
         # Evaluate population and find the best individual
         fitness_results = evaluate_population(population, fitness_function)
@@ -64,12 +74,17 @@ def run_genetic_algorithm(population_size: int,
 
         # Controlled Printing: Print only if the best fitness changes
         if best_fitness != last_best_fitness:
-            print(f"Generation {generation + 1}: Best Individual: {best_individual}, Best Fitness: {best_fitness}")
+            print(
+                f"Generation {generation + 1}: Best Individual: {best_individual}, Best Fitness: {best_fitness}"
+            )
             last_best_fitness = best_fitness
 
         # Adaptive mutation
-        if generation > 200 and generation % 100 == 0 and \
-                fitness_in_pop[generation] == fitness_in_pop[generation - 100]:
+        if (
+            generation > 200
+            and generation % 100 == 0
+            and fitness_in_pop[generation] == fitness_in_pop[generation - 100]
+        ):
             mutation_rate = 10 * mutation_rate_0
             mutation_range = 2 * mutation_range_0
             elitism = 1
@@ -83,9 +98,13 @@ def run_genetic_algorithm(population_size: int,
     final_best_fitness = fitness_in_pop[-1]
 
     # Print final generation results
-    print(f"Generation {num_generations}: Best Individual: {final_best_individual}, Best Fitness: {final_best_fitness}")
-    print(f"Overall Best Individual: {best_in_pop[np.argmax(fitness_in_pop)]}, "
-          f"Overall Best Fitness: {np.max(fitness_in_pop)}")
+    print(
+        f"Generation {num_generations}: Best Individual: {final_best_individual}, Best Fitness: {final_best_fitness}"
+    )
+    print(
+        f"Overall Best Individual: {best_in_pop[np.argmax(fitness_in_pop)]}, "
+        f"Overall Best Fitness: {np.max(fitness_in_pop)}"
+    )
     # Return the best individual and fitness values across generations
     # final_best_individual ... best individual in last generation
     # population ... last pop
@@ -94,5 +113,12 @@ def run_genetic_algorithm(population_size: int,
     # best_in_pop[np.argmax(fitness_in_pop)] ... overall best individual
     # np.max(fitness_in_pop) ... overall best fitness
     # final_best_fitness ... best fitness in last generation
-    return final_best_individual, population, fitness_in_pop, best_in_pop, best_in_pop[np.argmax(fitness_in_pop)], \
-        np.max(fitness_in_pop), final_best_fitness
+    return (
+        final_best_individual,
+        population,
+        fitness_in_pop,
+        best_in_pop,
+        best_in_pop[np.argmax(fitness_in_pop)],
+        np.max(fitness_in_pop),
+        final_best_fitness,
+    )

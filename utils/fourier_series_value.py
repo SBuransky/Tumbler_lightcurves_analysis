@@ -3,8 +3,9 @@ from typing import Tuple
 import numpy as np
 
 
-def parse_solution(solution: np.ndarray,
-                   m: int) -> Tuple[float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def parse_solution(
+    solution: np.ndarray, m: int
+) -> Tuple[float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Parse the solution array into respective components.
     Adds one second to periods to prevent division by zero.
@@ -16,17 +17,15 @@ def parse_solution(solution: np.ndarray,
     P_psi = solution[-1] + 1 / 86400
     P_phi = solution[-2] + 1 / 86400
     C0 = solution[-3]
-    Cj0 = solution[-3 - m:-3]
-    Sj0 = solution[-3 - 2 * m:-3 - m]
-    Cjk = solution[:m * (2 * m + 1)]
-    Sjk = solution[m * (2 * m + 1):2 * m * (2 * m + 1)]
+    Cj0 = solution[-3 - m : -3]
+    Sj0 = solution[-3 - 2 * m : -3 - m]
+    Cjk = solution[: m * (2 * m + 1)]
+    Sjk = solution[m * (2 * m + 1) : 2 * m * (2 * m + 1)]
 
     return P_psi, P_phi, C0, Cj0, Sj0, Cjk, Sjk
 
 
-def double_fourier_value(solution: np.ndarray,
-                         m: int,
-                         t: float) -> float:
+def double_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
     """
     Calculate Fourier value at a specific time t.
 
@@ -42,7 +41,9 @@ def double_fourier_value(solution: np.ndarray,
     phi = 2 * np.pi / P_phi
 
     # Calculate the first sum using NumPy vectorization
-    first_sum = Cj0 * np.cos(np.arange(1, m + 1) * psi * t) + Sj0 * np.sin(np.arange(1, m + 1) * psi * t)
+    first_sum = Cj0 * np.cos(np.arange(1, m + 1) * psi * t) + Sj0 * np.sin(
+        np.arange(1, m + 1) * psi * t
+    )
     F = C0 + np.sum(first_sum)
 
     # Calculate the second sum
@@ -53,9 +54,7 @@ def double_fourier_value(solution: np.ndarray,
     return F
 
 
-def double_fourier_sequence(solution: np.ndarray,
-                            m: int,
-                            t: np.ndarray) -> np.ndarray:
+def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.ndarray:
     """
     Calculate Fourier values for an array of time points.
 

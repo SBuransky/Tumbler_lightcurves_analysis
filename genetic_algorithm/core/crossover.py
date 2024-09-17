@@ -1,10 +1,11 @@
 import numpy as np
 from numba import jit
 
+
 @jit(nopython=True, parallel=True)
-def crossover(parent1: np.ndarray,
-              parent2: np.ndarray,
-              crossover_rate: float) -> np.ndarray:
+def crossover(
+    parent1: np.ndarray, parent2: np.ndarray, crossover_rate: float
+) -> np.ndarray:
     """
     Perform uniform crossover on two parents with real number representation using NumPy.
 

@@ -6,12 +6,13 @@ from astropy.timeseries import LombScargle
 from utils.find_maxima import find_local_maxima
 
 
-def lomb_scargle(t: np.ndarray,
-                 y: np.ndarray,
-                 frequency: np.ndarray,
-                 dev: Optional[np.ndarray] = None,
-                 dev_use_for_ls=None) \
-        -> Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
+def lomb_scargle(
+    t: np.ndarray,
+    y: np.ndarray,
+    frequency: np.ndarray,
+    dev: Optional[np.ndarray] = None,
+    dev_use_for_ls=None,
+) -> Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
     """
     Computes the Lomb-Scargle periodogram and finds local maxima.
 
