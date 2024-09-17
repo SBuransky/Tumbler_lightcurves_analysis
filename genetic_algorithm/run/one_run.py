@@ -68,7 +68,9 @@ def run_genetic_algorithm(
         fitness_results = evaluate_population(population, fitness_function)
         print(fitness_results)
         best_individual, best_fitness = max(fitness_results, key=lambda x: x[1])
-        print('-------------------------------------------------------------------------------------------------')
+        print(
+            "-------------------------------------------------------------------------------------------------"
+        )
 
         # Store the best individual and fitness values
         fitness_in_pop.append(best_fitness)
