@@ -347,7 +347,7 @@ def pa_rotator_genetic_algorithm_fit(
     plt.errorbar(
         days,
         data["noisy_flux"].values,
-        yerr=data["deviation_used"].values,
+        yerr=np.abs(data["deviation_used"].values),
         fmt="none",
         color="black",
         elinewidth=1.5,
