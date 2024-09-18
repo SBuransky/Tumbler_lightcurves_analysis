@@ -51,7 +51,7 @@ pa_rotator_genetic_algorithm_fit(
     data,
     fitness,
     m_=m_,
-    population_size=3,
+    population_size=20,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
     num_generations=30,

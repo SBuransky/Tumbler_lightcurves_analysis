@@ -38,7 +38,7 @@ def run_genetic_algorithm(
 
     # Initialize the initial population
     population = initialize_population(population_size, num_genes, gene_range)
-
+    fitness_results = evaluate_population(population, fitness_function)
     # Lists to store best individuals and their fitness values
     fitness_in_pop = []
     best_in_pop = []
@@ -62,15 +62,12 @@ def run_genetic_algorithm(
             mutation_range,
             gene_range,
             elitism,
+            fitness_results=fitness_results
         )
 
         # Evaluate population and find the best individual
         fitness_results = evaluate_population(population, fitness_function)
-        print(fitness_results)
         best_individual, best_fitness = max(fitness_results, key=lambda x: x[1])
-        print(
-            "-------------------------------------------------------------------------------------------------"
-        )
 
         # Store the best individual and fitness values
         fitness_in_pop.append(best_fitness)

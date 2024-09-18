@@ -9,13 +9,14 @@ from genetic_algorithm.core.selection import rank_based_selection
 
 
 def one_gen(
-    population: List,
-    fitness_function: Callable,
-    crossover_rate: float,
-    mutation_rate: float,
-    mutation_range: float,
-    gene_range: List[Tuple[float]],
-    elitism: int = 1,
+        population: List,
+        fitness_function: Callable,
+        crossover_rate: float,
+        mutation_rate: float,
+        mutation_range: float,
+        gene_range: List[Tuple[float]],
+        elitism: int = 1,
+        fitness_results: np.ndarray = None
 ) -> np.ndarray:
     """
     Perform one generation of a genetic algorithm with real number representation.
@@ -30,8 +31,8 @@ def one_gen(
     - List of individuals in the next generation.
     """
     # Evaluate fitness of the current population
-    fitness_results = evaluate_population(population, fitness_function)
-    print(fitness_results)
+    if fitness_results is not None:
+        fitness_results = evaluate_population(population, fitness_function)
 
     # Select parents for crossover
     selected_parents = rank_based_selection(population, fitness_results, elitism)
