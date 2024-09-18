@@ -6,11 +6,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from utils.fourier_series_value import double_fourier_value, double_fourier_sequence
-from utils.single_fourier_series_value import (
-    single_fourier_sequence,
-    single_fourier_value,
-)
+from utils.fourier_series_value import double_fourier_sequence
+from utils.single_fourier_series_value import single_fourier_sequence
 from utils.load_dataset import load_data
 from genetic_algorithm.run.one_run import run_genetic_algorithm
 from periodogram.clean_periodogram import frequency_grid, fourier_transform, clean

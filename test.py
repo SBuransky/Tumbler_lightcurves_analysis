@@ -4,10 +4,7 @@ from service import (
     tumbler_genetic_algorithm_fit,
     pa_rotator_genetic_algorithm_fit,
 )
-from utils.single_fourier_series_value import (
-    single_fourier_value,
-    single_fourier_sequence,
-)
+from utils.single_fourier_series_value import single_fourier_sequence
 
 import numpy as np
 import pandas as pd
@@ -26,7 +23,7 @@ t, y, delta = generate_pa_rotator(
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
 name = "test"
-m_ = 3
+m_ = 2
 
 
 def fitness(solution):
@@ -51,7 +48,7 @@ pa_rotator_genetic_algorithm_fit(
     data,
     fitness,
     m_=m_,
-    population_size=20,
+    population_size=200,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
     num_generations=30,

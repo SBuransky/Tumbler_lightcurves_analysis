@@ -31,17 +31,19 @@ def one_gen(
     - List of individuals in the next generation.
     """
     # Evaluate fitness of the current population
-    if fitness_results is not None:
+    if fitness_results is None:
         fitness_results = evaluate_population(population, fitness_function)
 
     # Select parents for crossover
     selected_parents = rank_based_selection(population, fitness_results, elitism)
+    elites = selected_parents[:elitism]
+    print(f"Elites before crossover and mutation: {elites}")
 
     # Perform crossover to create offspring
     offspring = []
 
     while len(offspring) < len(selected_parents) - elitism:
-        parent_indices = np.random.choice(len(selected_parents), size=2, replace=False)
+        parent_indices = np.random.choice(len(selected_parents), size=2, replace=True)
         parent1, parent2 = (
             selected_parents[parent_indices[0]],
             selected_parents[parent_indices[1]],
@@ -56,8 +58,11 @@ def one_gen(
     ]
 
     # Combine parents and mutated offspring for the next generation
-    next_generation = np.concatenate(
-        (np.array(selected_parents[:elitism]), mutated_offspring)
+    next_generation = np.concatenate((np.array(elites), np.array(mutated_offspring)))
+    print(f"Next generation includes elites___: {np.array(elites)}")
+    print(f"Next generation includes elites: {next_generation[:elitism]}")
+    print(
+        "--------------------------------------------------------------------------------------------------------"
     )
 
     return next_generation

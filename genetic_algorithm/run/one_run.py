@@ -50,12 +50,12 @@ def run_genetic_algorithm(
 
     # Initialize the best fitness for tracking changes
     last_best_fitness = -np.inf
-
+    prev_pop = population
     # Run the genetic algorithm for a specified number of generations
     for generation in range(num_generations):
         # Perform one generation
         population = one_gen(
-            population,
+            prev_pop,
             fitness_function,
             crossover_rate,
             mutation_rate,
@@ -93,6 +93,8 @@ def run_genetic_algorithm(
             mutation_rate = mutation_rate_0
             mutation_range = mutation_range_0
             elitism = elitism_0
+
+        prev_pop = population
 
     # Best individual and fitness in the final generation
     final_best_individual = best_in_pop[-1]

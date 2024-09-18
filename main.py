@@ -3,7 +3,7 @@
 # mail: 506073@mail.muni.cz
 from service import tumbler_periodogram, tumbler_genetic_algorithm_fit
 from utils.load_dataset import load_data
-from utils.fourier_series_value import double_fourier_sequence, double_fourier_value
+from utils.fourier_series_value import double_fourier_sequence
 import argparse
 
 # ---------------------------------------------------------------------------------------------------------------------

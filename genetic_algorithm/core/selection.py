@@ -99,6 +99,10 @@ def rank_based_selection(
     total_ranks = np.sum(ranks)
     selection_probabilities = ranks / total_ranks
 
+    # Retain elite individuals
+    elite_indices = sorted_indices[-elitism_count:]
+    elites = population[elite_indices]
+
     # Select individuals based on rank probabilities
     selected_indices = np.random.choice(
         len(population),
@@ -106,11 +110,9 @@ def rank_based_selection(
         p=selection_probabilities,
         replace=False,
     )
-
-    # Retain elite individuals
-    elite_indices = sorted_indices[-elitism_count:]
+    selected_individuals = population[selected_indices]
 
     # Combine elite individuals with the selected ones
-    combined_indices = np.concatenate((elite_indices, selected_indices))
+    select_pool = np.concatenate((elites, selected_individuals))
 
-    return population[combined_indices]
+    return select_pool
