@@ -4,7 +4,7 @@ import numpy as np
 
 
 def parse_solution(
-        solution: np.ndarray, m: int
+    solution: np.ndarray, m: int
 ) -> Tuple[float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Parse the solution array into respective components.
@@ -17,12 +17,13 @@ def parse_solution(
     P_psi = solution[-1] + 1 / 86400
     P_phi = solution[-2] + 1 / 86400
     C0 = solution[-3]
-    Cj0 = solution[-3 - m: -3]
-    Sj0 = solution[-3 - 2 * m: -3 - m]
+    Cj0 = solution[-3 - m : -3]
+    Sj0 = solution[-3 - 2 * m : -3 - m]
     Cjk = solution[: m * (2 * m + 1)]
-    Sjk = solution[m * (2 * m + 1): 2 * m * (2 * m + 1)]
+    Sjk = solution[m * (2 * m + 1) : 2 * m * (2 * m + 1)]
 
     return P_psi, P_phi, C0, Cj0, Sj0, Cjk, Sjk
+
 
 '''
 def double_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
@@ -78,7 +79,9 @@ def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     phi_t = phi * t
 
     # Vectorized computation of the first sum (for Cj0 and Sj0 terms)
-    first_sum = np.dot(Cj0, np.cos(harmonics * psi_t)) + np.dot(Sj0, np.sin(harmonics * psi_t))
+    first_sum = np.dot(Cj0, np.cos(harmonics * psi_t)) + np.dot(
+        Sj0, np.sin(harmonics * psi_t)
+    )
 
     # Initialize result with C0 and the first sum
     F = C0 + first_sum
