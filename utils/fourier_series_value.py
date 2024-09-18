@@ -4,7 +4,7 @@ import numpy as np
 
 
 def parse_solution(
-    solution: np.ndarray, m: int
+        solution: np.ndarray, m: int
 ) -> Tuple[float, float, float, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Parse the solution array into respective components.
@@ -17,14 +17,14 @@ def parse_solution(
     P_psi = solution[-1] + 1 / 86400
     P_phi = solution[-2] + 1 / 86400
     C0 = solution[-3]
-    Cj0 = solution[-3 - m : -3]
-    Sj0 = solution[-3 - 2 * m : -3 - m]
+    Cj0 = solution[-3 - m: -3]
+    Sj0 = solution[-3 - 2 * m: -3 - m]
     Cjk = solution[: m * (2 * m + 1)]
-    Sjk = solution[m * (2 * m + 1) : 2 * m * (2 * m + 1)]
+    Sjk = solution[m * (2 * m + 1): 2 * m * (2 * m + 1)]
 
     return P_psi, P_phi, C0, Cj0, Sj0, Cjk, Sjk
 
-
+'''
 def double_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
     """
     Calculate Fourier value at a specific time t.
@@ -52,6 +52,7 @@ def double_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
             F += Cjk[m * (j + m) + k - 1] * np.cos(((psi * j) + (phi * k)) * t)
             F += Sjk[m * (j + m) + k - 1] * np.sin(((psi * j) + (phi * k)) * t)
     return F
+    '''
 
 
 def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.ndarray:
@@ -63,10 +64,34 @@ def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     :param t: array of time points
     :return: array of Fourier values
     """
+    solution = np.asarray(solution)
     t = np.asarray(t)
-    y = np.zeros(len(t))
 
-    for i in range(len(t)):
-        y[i] = double_fourier_value(solution, m, t[i])
+    P_psi, P_phi, C0, Cj0, Sj0, Cjk, Sjk = parse_solution(solution, m)
 
-    return y
+    psi = 2 * np.pi / P_psi
+    phi = 2 * np.pi / P_phi
+
+    # Create an array of harmonics and time points
+    harmonics = np.arange(1, m + 1).reshape(-1, 1)
+    psi_t = psi * t
+    phi_t = phi * t
+
+    # Vectorized computation of the first sum (for Cj0 and Sj0 terms)
+    first_sum = np.dot(Cj0, np.cos(harmonics * psi_t)) + np.dot(Sj0, np.sin(harmonics * psi_t))
+
+    # Initialize result with C0 and the first sum
+    F = C0 + first_sum
+
+    # Vectorized computation of the second sum (for Cjk and Sjk terms)
+    j_values = np.arange(-m, m + 1).reshape(-1, 1)  # Shape (2m+1, 1)
+    k_values = np.arange(1, m + 1).reshape(1, -1)  # Shape (1, m)
+
+    # Compute indices to slice Cjk and Sjk in vectorized form
+    cos_terms = np.dot(Cjk, np.cos(j_values * psi_t + k_values * phi_t))
+    sin_terms = np.dot(Sjk, np.sin(j_values * psi_t + k_values * phi_t))
+
+    # Add the second sum to F
+    F += np.sum(cos_terms + sin_terms, axis=0)
+
+    return F
