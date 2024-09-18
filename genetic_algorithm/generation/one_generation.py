@@ -9,14 +9,14 @@ from genetic_algorithm.core.selection import rank_based_selection
 
 
 def one_gen(
-        population: List,
-        fitness_function: Callable,
-        crossover_rate: float,
-        mutation_rate: float,
-        mutation_range: float,
-        gene_range: List[Tuple[float]],
-        elitism: int = 1,
-        fitness_results: np.ndarray = None
+    population: List,
+    fitness_function: Callable,
+    crossover_rate: float,
+    mutation_rate: float,
+    mutation_range: float,
+    gene_range: List[Tuple[float]],
+    elitism: int = 1,
+    fitness_results: np.ndarray = None,
 ) -> np.ndarray:
     """
     Perform one generation of a genetic algorithm with real number representation.

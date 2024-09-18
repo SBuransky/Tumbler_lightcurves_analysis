@@ -62,7 +62,7 @@ def run_genetic_algorithm(
             mutation_range,
             gene_range,
             elitism,
-            fitness_results=fitness_results
+            fitness_results=fitness_results,
         )
 
         # Evaluate population and find the best individual
