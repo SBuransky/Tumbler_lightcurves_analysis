@@ -22,6 +22,7 @@ def parse_solution(
     return P, C0, Cj, Sj
 
 
+'''
 def single_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
     """
     Calculate the Fourier value at a specific time t.
@@ -44,7 +45,7 @@ def single_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
 
     F = C0 + np.sum(first_sum)
 
-    return F
+    return F'''
 
 
 def single_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.ndarray:
@@ -56,10 +57,19 @@ def single_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     :param t: array of time points
     :return: array of Fourier values
     """
+
+    solution = np.asarray(solution)
     t = np.asarray(t)
-    y = np.zeros(len(t))
 
-    for i in range(len(t)):
-        y[i] = single_fourier_value(solution, m, t[i])
+    P, C0, Cj, Sj = parse_solution(solution, m)
+    omega = 2 * np.pi / P  # Angular frequency
 
-    return y
+    # Create an outer product of time points and harmonics
+    harmonics = np.arange(1, m + 1).reshape(-1, 1)
+    omega_t = omega * t
+
+    # Compute Fourier values using vectorized operations
+    cos_terms = np.dot(Cj, np.cos(harmonics * omega_t))
+    sin_terms = np.dot(Sj, np.sin(harmonics * omega_t))
+
+    return C0 + cos_terms + sin_terms
