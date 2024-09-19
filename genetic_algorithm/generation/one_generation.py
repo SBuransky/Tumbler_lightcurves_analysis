@@ -37,7 +37,6 @@ def one_gen(
     # Select parents for crossover
     selected_parents = rank_based_selection(population, fitness_results, elitism)
     elites = selected_parents[:elitism].copy()
-    print(f"Elites before crossover and mutation: {np.array(elites)}")
 
     # Perform crossover to create offspring
     offspring = []
@@ -59,10 +58,5 @@ def one_gen(
 
     # Combine parents and mutated offspring for the next generation
     next_generation = np.concatenate((np.array(elites), np.array(mutated_offspring)))
-    print(f"Next generation includes elites___: {np.array(elites)}")
-    print(f"Next generation includes elites: {next_generation[:elitism]}")
-    print(
-        "--------------------------------------------------------------------------------------------------------"
-    )
 
     return next_generation
