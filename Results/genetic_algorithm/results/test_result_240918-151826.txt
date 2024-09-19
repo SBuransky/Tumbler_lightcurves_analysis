@@ -1,9 +1,0 @@
-Best in last gen:
-[0.86181207 0.74166793 0.01       1.02689874]
-Best fitness in last gen:
-6.653296843651404e-10
-
-Best in all:
-[0.86181207 0.74166793 0.01       1.02689874]
-Best fitness in all:
-6.653296843651404e-10

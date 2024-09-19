@@ -36,14 +36,14 @@ def one_gen(
 
     # Select parents for crossover
     selected_parents = rank_based_selection(population, fitness_results, elitism)
-    elites = selected_parents[:elitism]
-    print(f"Elites before crossover and mutation: {elites}")
+    elites = selected_parents[:elitism].copy()
+    print(f"Elites before crossover and mutation: {np.array(elites)}")
 
     # Perform crossover to create offspring
     offspring = []
 
     while len(offspring) < len(selected_parents) - elitism:
-        parent_indices = np.random.choice(len(selected_parents), size=2, replace=True)
+        parent_indices = np.random.choice(len(selected_parents), size=2, replace=False)
         parent1, parent2 = (
             selected_parents[parent_indices[0]],
             selected_parents[parent_indices[1]],
