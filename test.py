@@ -23,7 +23,7 @@ t, y, delta = generate_pa_rotator(
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
 name = "test"
-m_ = 2
+m_ = 4
 
 
 def fitness(solution):
@@ -51,8 +51,8 @@ pa_rotator_genetic_algorithm_fit(
     population_size=500,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
-    num_generations=10000,
+    num_generations=1000,
     elitism=1,
-    mutation_rate=0.2,
-    mutation_range=0.005,
+    mutation_rate=0.01,
+    mutation_range=0.05,
 )
