@@ -51,7 +51,7 @@ pa_rotator_genetic_algorithm_fit(
     population_size=500,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
-    num_generations=1000,
+    num_generations=10000,
     elitism=1,
     mutation_rate=0.01,
     mutation_range=0.05,
