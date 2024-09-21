@@ -14,12 +14,13 @@ t, y, delta = generate_pa_rotator(
     num_periods=5,
     sampling_rate=1000,
     noise_amplitude=0.1,
-    num_holes=10,
+    num_holes=5,
     min_hole_length=50,
     max_hole_length=200,
     num_components=10,
     seed=0,
 )
+print(len(t))
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
 name = "test"
@@ -51,8 +52,8 @@ pa_rotator_genetic_algorithm_fit(
     population_size=500,
     gene_range=((-2, 2), (-0.01, 0.01), (0.9, 1.1)),
     name=name,
-    num_generations=1000,
-    elitism=1,
-    mutation_rate=0.01,
+    num_generations=10000,
+    elitism=2,
+    mutation_rate=0.05,
     mutation_range=0.05,
 )

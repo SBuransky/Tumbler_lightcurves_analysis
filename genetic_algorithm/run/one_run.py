@@ -84,11 +84,11 @@ def run_genetic_algorithm(
         if (
             generation > 200
             and generation % 100 == 0
-            and fitness_in_pop[generation] == fitness_in_pop[generation - 100]
+            and fitness_in_pop[generation] == fitness_in_pop[generation - 50]
         ):
-            mutation_rate = 10 * mutation_rate_0
-            mutation_range = 2 * mutation_range_0
-            elitism = 1
+            mutation_rate = 1  # 20 * mutation_rate_0
+            mutation_range = 10 * mutation_range_0
+            elitism = len(population) // 10
         else:
             mutation_rate = mutation_rate_0
             mutation_range = mutation_range_0
