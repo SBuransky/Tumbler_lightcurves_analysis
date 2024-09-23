@@ -20,7 +20,6 @@ t, y, delta = generate_pa_rotator(
     num_components=10,
     seed=0,
 )
-print(len(t))
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
 name = "test"

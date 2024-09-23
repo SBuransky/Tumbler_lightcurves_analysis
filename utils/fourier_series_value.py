@@ -73,28 +73,23 @@ def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     psi = 2 * np.pi / P_psi
     phi = 2 * np.pi / P_phi
 
-    # Create an array of harmonics and time points
-    harmonics = np.arange(1, m + 1).reshape(-1, 1)
-    psi_t = psi * t
-    phi_t = phi * t
+    # Time array reshaped for broadcasting
+    t = t[:, np.newaxis]
 
-    # Vectorized computation of the first sum (for Cj0 and Sj0 terms)
-    first_sum = np.dot(Cj0, np.cos(harmonics * psi_t)) + np.dot(
-        Sj0, np.sin(harmonics * psi_t)
-    )
+    # First sum vectorized across all-time points
+    cos_term = np.cos(np.arange(1, m + 1) * psi * t)
+    sin_term = np.sin(np.arange(1, m + 1) * psi * t)
+    first_sum = np.dot(cos_term, Cj0) + np.dot(sin_term, Sj0)
 
-    # Initialize result with C0 and the first sum
-    F = C0 + first_sum
+    j_range = np.arange(-m, m + 1)
+    k_range = np.arange(1, m + 1)
 
-    # Vectorized computation of the second sum (for Cjk and Sjk terms)
-    j_values = np.arange(-m, m + 1).reshape(-1, 1)  # Shape (2m+1, 1)
-    k_values = np.arange(1, m + 1).reshape(1, -1)  # Shape (1, m)
+    jk_combinations = np.array(np.meshgrid(j_range, k_range)).T.reshape(-1, 2)
+    psi_phi_t = jk_combinations[:, 0] * psi + jk_combinations[:, 1] * phi
 
-    # Compute indices to slice Cjk and Sjk in vectorized form
-    cos_terms = np.dot(Cjk, np.cos(j_values * psi_t + k_values * phi_t))
-    sin_terms = np.dot(Sjk, np.sin(j_values * psi_t + k_values * phi_t))
+    cos_values = np.cos(psi_phi_t * t)
+    sin_values = np.sin(psi_phi_t * t)
 
-    # Add the second sum to F
-    F += np.sum(cos_terms + sin_terms, axis=0)
+    second_sum = np.dot(cos_values, Cjk) + np.dot(sin_values, Sjk)
 
-    return F
+    return C0 + first_sum + second_sum

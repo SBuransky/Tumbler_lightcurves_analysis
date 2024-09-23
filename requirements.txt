@@ -1,6 +1,7 @@
 numpy==1.26
-pandas
-matplotlib
-joblib
-numba
-astropy
+pandas~=2.0.1
+matplotlib~=3.4.2
+joblib~=1.2.0
+numba~=0.58.1
+astropy~=5.1.1
+scipy~=1.11.4

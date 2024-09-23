@@ -5,6 +5,7 @@ from service import tumbler_periodogram, tumbler_genetic_algorithm_fit
 from utils.load_dataset import load_data
 from utils.fourier_series_value import double_fourier_sequence
 import argparse
+import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------
 '''
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1919_007"
+    name = "ID1918_001"
     data = load_data(
         name,
         column_names=(
@@ -88,7 +89,7 @@ if __name__ == "__main__":
             n_iter=100000,
             n_b=20,
             gain=0.5,
-            final_noise=0.000009,
+            final_noise=0.000025,
             dev=data["deviation_used"],
         )
 
@@ -116,10 +117,10 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=100,
-            gene_range=((-0.2, 0.2), (0.90, 1.10), (0, 4), (0, 4)),
+            population_size=500,
+            gene_range=((-0.2, 0.2), (0.90, 1.10), (1.45, 1.55), (0.45, 0.55)),
             name=name,
-            num_generations=200,
+            num_generations=10000,
             elitism=1,
             mutation_rate=0.05,
             mutation_range=0.05,
