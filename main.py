@@ -96,7 +96,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 2
+        m_ = 1
 
         def fitness(solution):
             """
@@ -117,11 +117,11 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=500,
-            gene_range=((-0.2, 0.2), (0.90, 1.10), (1.45, 1.55), (0.45, 0.55)),
+            population_size=100,
+            gene_range=((-0.2, 0.2), (0.95, 1.05), (1.45, 1.55), (0.45, 0.55)),
             name=name,
             num_generations=10000,
-            elitism=1,
+            elitism=2,
             mutation_rate=0.05,
             mutation_range=0.05,
         )
