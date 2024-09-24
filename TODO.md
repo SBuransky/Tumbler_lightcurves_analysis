@@ -1,7 +1,9 @@
 # Tumbler lightcurves analysis
 
 ### Tasks
-- [x] Delete one unnecessary calculation of fitness
+- [ ] Make GA faster
+- [ ] Make more tests on NPA rotators
+- [ ] Find out how to use first estimate from FT to GA
 
 ### Completed Column ✓
-- [x] Completed task title
+- [x] Delete one unnecessary calculation of fitness
