@@ -124,4 +124,5 @@ def run_genetic_algorithm(
         best_in_pop[np.argmax(fitness_in_pop)],
         np.max(fitness_in_pop),
         final_best_fitness,
+        generation,
     )

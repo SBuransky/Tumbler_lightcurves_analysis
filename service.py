@@ -383,3 +383,12 @@ def pa_rotator_genetic_algorithm_fit(
         file.write(str(final_generation[4]))
         file.write("\nBest fitness in all:\n")
         file.write(str(final_generation[6]))
+
+        file.write('Initial parameters')
+        file.write('population size = ' + str(population_size))
+        file.write('number of generations = ' + str(num_generations))
+        file.write('Real number of generations = ' + str(final_generation[-1]))
+        file.write('elitism = ' + str(elitism))
+        file.write('crossover_rate = ' + str(crossover_rate))
+        file.write('mutation rate = ' + str(mutation_rate))
+        file.write('mutation range = ' + str(mutation_range))
