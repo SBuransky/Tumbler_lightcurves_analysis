@@ -120,7 +120,7 @@ if __name__ == "__main__":
             population_size=20,
             gene_range=((-0.2, 0.2), (0.95, 1.05), (0.65, 0.95), (1.65, 1.85)),
             name=name,
-            num_generations=10000,
+            num_generations=10,
             elitism=2,
             mutation_rate=0.05,
             mutation_range=0.05,
