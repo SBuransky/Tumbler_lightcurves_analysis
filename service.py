@@ -261,6 +261,8 @@ def tumbler_genetic_algorithm_fit(
         file.write("\ncrossover_rate = " + str(crossover_rate))
         file.write("\nmutation rate = " + str(mutation_rate))
         file.write("\nmutation range = " + str(mutation_range))
+        file.write("\norder = " + str(m_))
+        file.write("\ngene ranges = " + str(gene_range))
 
 
 def pa_rotator_genetic_algorithm_fit(
@@ -401,3 +403,5 @@ def pa_rotator_genetic_algorithm_fit(
         file.write("\ncrossover_rate = " + str(crossover_rate))
         file.write("\nmutation rate = " + str(mutation_rate))
         file.write("\nmutation range = " + str(mutation_range))
+        file.write("\norder = " + str(m_))
+        file.write("\ngene ranges = " + str(gene_range))
