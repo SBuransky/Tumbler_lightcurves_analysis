@@ -94,6 +94,8 @@ def run_genetic_algorithm(
             mutation_range = mutation_range_0
             elitism = elitism_0
 
+        # Stopping criteria
+
         prev_pop = population
 
     # Best individual and fitness in the final generation

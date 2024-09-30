@@ -84,7 +84,7 @@ if __name__ == "__main__":
         print("Running periodogram analysis...")
         tumbler_periodogram(
             data["julian_day"].values,
-            data["noiseless_flux"].values,
+            data["noisy_flux"].values,
             name=name,
             n_iter=100000,
             n_b=20,
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 1
+        m_ = 2
 
         def fitness(solution):
             """
@@ -105,6 +105,7 @@ if __name__ == "__main__":
             :return: fitness value
             """
             x, y, delta = data["julian_day"], data["noisy_flux"], data["deviation_used"]
+            delta = 1
 
             # Vectorized calculation of Fourier values
             y_model = double_fourier_sequence(solution, m_, x)
@@ -117,11 +118,11 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=500,
-            gene_range=((-0.2, 0.2), (0.95, 1.05), (0.62, 0.82), (1.78, 1.98)),
+            population_size=100,
+            gene_range=((-0.2, 0.2), (0.95, 1.05), (0.703, 0.745), (1.865, 1.907)),
             name=name,
-            num_generations=10,
-            elitism=2,
+            num_generations=10000,
+            elitism=1,
             mutation_rate=0.01,
             mutation_range=0.05,
         )
