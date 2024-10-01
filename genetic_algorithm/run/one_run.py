@@ -86,15 +86,28 @@ def run_genetic_algorithm(
             and generation % 100 == 0
             and fitness_in_pop[generation] == fitness_in_pop[generation - 50]
         ):
-            mutation_rate = 1  # 20 * mutation_rate_0
+            mutation_rate = 0.2  # 20 * mutation_rate_0
             mutation_range = 10 * mutation_range_0
-            elitism = len(population) // 10
+            elitism = 5 * elitism
+        elif (
+            generation > 2000 and fitness_in_pop[-1] == fitness_in_pop[-1000]
+        ):  # reset stacked pop
+            mutation_rate = 1
+            mutation_range = 10 * mutation_range_0
+            elitism = len(generation) // 2
         else:
             mutation_rate = mutation_rate_0
             mutation_range = mutation_range_0
             elitism = elitism_0
 
         # Stopping criteria
+        if (
+            generation > 1000
+            and (fitness_in_pop[-1] - fitness_in_pop[generation // 2])
+            / (fitness_in_pop[generation // 2] - generation[0])
+            < 0.001
+        ):
+            break
 
         prev_pop = population
 

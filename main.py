@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1916_001"
+    name = "ID1918_007"
     data = load_data(
         name,
         column_names=(
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".txt",
+        appendix=".flux",
     )
 
     # Run periodogram LS and CLEAN Fourier
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             n_iter=100000,
             n_b=20,
             gain=0.5,
-            final_noise=0.0000038,
+            final_noise=0.00005,
             dev=data["deviation_used"],
         )
 
@@ -119,7 +119,7 @@ if __name__ == "__main__":
             fitness,
             m_=m_,
             population_size=100,
-            gene_range=((-0.2, 0.2), (0.95, 1.05), (0, 2), (0, 2)),
+            gene_range=((-0.2, 0.2), (0.95, 1.05), (0.5, 1.1), (1.3, 1.9)),
             name=name,
             num_generations=10000,
             elitism=1,
