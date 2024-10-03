@@ -84,17 +84,21 @@ def run_genetic_algorithm(
         if (
             generation > 200
             and generation % 100 == 0
-            and fitness_in_pop[generation] == fitness_in_pop[generation - 50]
+            and fitness_in_pop[generation] == fitness_in_pop[generation - 100]
         ):
             mutation_rate = 0.2  # 20 * mutation_rate_0
             mutation_range = 10 * mutation_range_0
             elitism = 5 * elitism
+            print("adapt")
         elif (
-            generation > 2000 and fitness_in_pop[-1] == fitness_in_pop[-1000]
+            generation > 2000
+            and generation % 500 == 0
+            and fitness_in_pop[-1] == fitness_in_pop[-1000]
         ):  # reset stacked pop
             mutation_rate = 1
             mutation_range = 10 * mutation_range_0
-            elitism = len(generation) // 2
+            elitism = population_size // 2
+            print("reset")
         else:
             mutation_rate = mutation_rate_0
             mutation_range = mutation_range_0
@@ -103,9 +107,10 @@ def run_genetic_algorithm(
         # Stopping criteria
         if (
             generation > 1000
+            and generation % 500 == 0
             and (fitness_in_pop[-1] - fitness_in_pop[generation // 2])
             / (fitness_in_pop[generation // 2] - fitness_in_pop[0])
-            < 0.001
+            < 10 ** (-30)
         ):
             break
 
@@ -117,7 +122,7 @@ def run_genetic_algorithm(
 
     # Print final generation results
     print(
-        f"Generation {num_generations}: Best Individual: {final_best_individual}, Best Fitness: {final_best_fitness}"
+        f"Generation {generation + 1}: Best Individual: {final_best_individual}, Best Fitness: {final_best_fitness}"
     )
     print(
         f"Overall Best Individual: {best_in_pop[np.argmax(fitness_in_pop)]}, "

@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_007"
+    name = "ID1918_001"
     data = load_data(
         name,
         column_names=(
@@ -87,16 +87,16 @@ if __name__ == "__main__":
             data["noisy_flux"].values,
             name=name,
             n_iter=100000,
-            n_b=20,
+            n_b=5,
             gain=0.5,
-            final_noise=0.00005,
+            final_noise=0.00007,
             dev=data["deviation_used"],
         )
 
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 2
+        m_ = 1
 
         def fitness(solution):
             """
@@ -105,7 +105,6 @@ if __name__ == "__main__":
             :return: fitness value
             """
             x, y, delta = data["julian_day"], data["noisy_flux"], data["deviation_used"]
-            delta = 1
 
             # Vectorized calculation of Fourier values
             y_model = double_fourier_sequence(solution, m_, x)
@@ -118,11 +117,11 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=100,
-            gene_range=((-0.2, 0.2), (0.95, 1.05), (0.6, 1), (1.6, 2)),
+            population_size=200,
+            gene_range=((-0.2, 0.2), (0.95, 1.05), (1.7, 2), (0.6, 0.9)),
             name=name,
-            num_generations=10,
+            num_generations=10000,
             elitism=1,
             mutation_rate=0.01,
-            mutation_range=0.05,
+            mutation_range=0.1,
         )

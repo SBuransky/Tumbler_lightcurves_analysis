@@ -1,0 +1,22 @@
+Best in last gen:
+[-0.11488581 -0.13378212 -0.01126685  0.09777127 -0.13584705  0.01744954
+  0.13528906  0.09444832  0.99398891  0.72398588  1.88599032]
+Best fitness in last gen:
+0.9088625522898304
+
+Best in all:
+[-0.11488581 -0.13378212 -0.01126685  0.09777127 -0.13584705  0.01744954
+  0.13528906  0.09444832  0.99398891  0.72398588  1.88599032]
+Best fitness in all:
+0.9088625522898304
+
+Initial parameters
+population size = 100
+number of generations = 10000
+Real number of generations = 10000
+elitism = 2
+crossover_rate = 0.95
+mutation rate = 0.01
+mutation range = 0.05
+order = 1
+gene ranges = ((-0.2, 0.2), (0.95, 1.05), (0.723, 0.725), (1.885, 1.887))
