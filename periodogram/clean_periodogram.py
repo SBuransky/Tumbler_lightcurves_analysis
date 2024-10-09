@@ -65,7 +65,6 @@ def fourier_transform(
             dft[i] = np.sum(dvec * np.exp(phase)) / len(tvec)
         else:
             wfn[i] = np.sum(np.exp(phase)) / len(tvec)
-
     return freq, wfn, dft
 
 
