@@ -48,7 +48,6 @@ if __name__ == '__main__':
                                   mutation_rate=0.05,
                                   mutation_range=0.05)'''
 
-
 if __name__ == "__main__":
     # Run by these commands:
     # python main.py --periodogram to run the periodogram.
@@ -66,7 +65,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1916_001"
+    name = "ID1918_001"
     data = load_data(
         name,
         column_names=(
@@ -76,7 +75,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".txt",
+        appendix=".flux",
     )
 
     # Run periodogram LS and CLEAN Fourier
@@ -86,10 +85,10 @@ if __name__ == "__main__":
             data["julian_day"].values,
             data["noisy_flux"].values,
             name=name,
-            n_iter=100000,
+            n_iter=100,
             n_b=4,
-            gain=0.5,
-            final_noise=0.000025,
+            gain=0.1,
+            final_noise=0.00009,
             dev=data["deviation_used"],
         )
 
@@ -105,7 +104,6 @@ if __name__ == "__main__":
             :return: fitness value
             """
             x, y, delta = data["julian_day"], data["noisy_flux"], data["deviation_used"]
-            delta = 1
 
             # Vectorized calculation of Fourier values
             y_model = double_fourier_sequence(solution, m_, x)
@@ -119,7 +117,12 @@ if __name__ == "__main__":
             fitness,
             m_=m_,
             population_size=200,
-            gene_range=((-0.2, 0.2), (0.95, 1.05), (1.1, 1.7), (0.5, 1.1)),
+            gene_range=(
+                (-0.2, 0.2),
+                (0.95, 1.05),
+                (1 / (0.58 + 0.1), 1 / (0.58 - 0.1)),
+                (1 / (1.24 + 0.1), 1 / (1.24 - 0.1)),
+            ),
             name=name,
             num_generations=10000,
             elitism=1,

@@ -107,10 +107,10 @@ def run_genetic_algorithm(
         # Stopping criteria
         if (
             generation > 1000
-            and generation % 500 == 0
+            and generation % 1000 == 0
             and (fitness_in_pop[-1] - fitness_in_pop[generation // 2])
             / (fitness_in_pop[generation // 2] - fitness_in_pop[0])
-            < 10 ** (-30)
+            < 10 ** (-100)
         ):
             break
 
