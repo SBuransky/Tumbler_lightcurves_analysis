@@ -31,7 +31,7 @@ def mutate(
     individual[mask] += mutations[mask]
 
     # Ensure mutated genes stay within the valid range using vectorized np.clip
-    gene_min_values, gene_max_values = np.array(gene_range).T
-    np.clip(individual, gene_min_values, gene_max_values, out=individual)
+    # gene_min_values, gene_max_values = np.array(gene_range).T
+    # np.clip(individual, gene_min_values, gene_max_values, out=individual)
 
     return individual
