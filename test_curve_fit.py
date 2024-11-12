@@ -9,7 +9,7 @@ t, y, delta = generate_pa_rotator(
     num_periods=5,
     sampling_rate=1000,
     noise_amplitude=0.1,
-    num_holes=5,
+    num_holes=50,
     min_hole_length=50,
     max_hole_length=200,
     num_components=3,
@@ -35,5 +35,5 @@ plt.scatter(t, y, s=5)
 popt, pcov = curve_fit(func, t, y)
 print(popt)
 
-plt.plot(t, func(t, *popt))
+plt.plot(t, func(t, *popt), c="red")
 plt.show()

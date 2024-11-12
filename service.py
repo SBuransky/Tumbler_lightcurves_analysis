@@ -168,6 +168,7 @@ def tumbler_genetic_algorithm_fit(
     os.makedirs("Results/genetic_algorithm/graphs/", exist_ok=True)
     os.makedirs("Results/genetic_algorithm/fitness/", exist_ok=True)
     os.makedirs("Results/genetic_algorithm/results/", exist_ok=True)
+    os.makedirs("Results/genetic_algorithm/oc_diag/", exist_ok=True)
 
     # Run genetic algorithm
     final_generation = run_genetic_algorithm(
@@ -263,6 +264,19 @@ def tumbler_genetic_algorithm_fit(
         file.write("\nmutation range = " + str(mutation_range))
         file.write("\norder = " + str(m_))
         file.write("\ngene ranges = " + str(gene_range))
+
+    # O - C diagram
+    plt.scatter(
+        days,
+        data["noisy_flux"] - double_fourier_sequence(final_generation[0], m_, days),
+        c="gray",
+        marker="+",
+        s=5,
+    )
+    plt.xlabel("Time[JD]")
+    plt.ylabel("O - C (normalized light flux)")
+    plt.savefig(f"Results/genetic_algorithm/oc_diag/{name}_o-c_{ending}.pdf")
+    plt.close()
 
 
 def pa_rotator_genetic_algorithm_fit(
@@ -405,3 +419,16 @@ def pa_rotator_genetic_algorithm_fit(
         file.write("\nmutation range = " + str(mutation_range))
         file.write("\norder = " + str(m_))
         file.write("\ngene ranges = " + str(gene_range))
+
+        # O - C diagram
+        plt.scatter(
+            days,
+            data["noisy_flux"] - single_fourier_sequence(final_generation[0], m_, days),
+            c="gray",
+            marker="+",
+            s=5,
+        )
+        plt.xlabel("Time[JD]")
+        plt.ylabel("O - C (normalized light flux)")
+        plt.savefig(f"Results/genetic_algorithm/oc_diag/{name}_o-c_{ending}.pdf")
+        plt.close()

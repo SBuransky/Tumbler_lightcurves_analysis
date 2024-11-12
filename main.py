@@ -65,7 +65,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_001"
+    name = "ID1916_001"
     data = load_data(
         name,
         column_names=(
@@ -75,7 +75,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".flux",
+        appendix=".txt",
     )
 
     # Run periodogram LS and CLEAN Fourier
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 1
+        m_ = 2
 
         def fitness(solution):
             """
@@ -116,16 +116,16 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=50,
+            population_size=400,
             gene_range=(
-                (-0.1, 0.1),
-                (0.97, 1.03),
-                (1 / (0.58 + 0.05), 1 / (0.58 - 0.05)),
-                (1 / (1.24 + 0.05), 1 / (1.24 - 0.05)),
+                (-0.2, 0.2),
+                (0.95, 1.05),
+                (0.70, 0.90),  # 1.243845684808613461e+00
+                (1.33, 1.53),  # 6.996631977048450857e-01
             ),
             name=name,
-            num_generations=10000,
+            num_generations=10,
             elitism=2,
-            mutation_rate=0.05,
-            mutation_range=0.15,
+            mutation_rate=0.007,
+            mutation_range=0.1,
         )
