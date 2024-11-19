@@ -98,6 +98,7 @@ def tumbler_periodogram(
     # ax3.scatter(clean_maximas[0], clean_maximas[1], color='red', label='CLEAN Maxima')
     plt.legend()
     plt.xlim(-0.5, 10)
+    plt.xlabel("Frequency ($day^{-1}$)")
 
     plt.savefig(f"Results/periodograms/Periodograms/{name}_PERIODOGRAM.pdf")
     plt.show()
@@ -202,11 +203,6 @@ def tumbler_genetic_algorithm_fit(
         double_fourier_sequence(final_generation[0], m_, days),
         label="Last Generation Best",
     )
-    plt.plot(
-        days,
-        double_fourier_sequence(final_generation[4], m_, days),
-        label="Overall Best",
-    )
 
     # Plot noisy data
     plt.scatter(days, data["noisy_flux"].values, c="gray", marker="+", s=5)
@@ -221,7 +217,7 @@ def tumbler_genetic_algorithm_fit(
     )
 
     # Plot settings
-    plt.xlabel("Time [days]")
+    plt.xlabel("Time [JD]")
     plt.ylabel("Normalized light flux")
     plt.title("Genetic Algorithm Fit")
     plt.legend()
@@ -357,11 +353,6 @@ def pa_rotator_genetic_algorithm_fit(
         single_fourier_sequence(final_generation[0], m_, days),
         label="Last Generation Best",
     )
-    plt.plot(
-        days,
-        single_fourier_sequence(final_generation[4], m_, days),
-        label="Overall Best",
-    )
 
     # Plot noisy data
     plt.scatter(days, data["noisy_flux"].values, c="gray", marker="+", s=5)
@@ -376,7 +367,7 @@ def pa_rotator_genetic_algorithm_fit(
     )
 
     # Plot settings
-    plt.xlabel("Time [days]")
+    plt.xlabel("Time [JD]")
     plt.ylabel("Normalized light flux")
     plt.title("Genetic Algorithm Fit")
     plt.legend()

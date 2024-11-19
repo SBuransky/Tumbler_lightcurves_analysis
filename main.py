@@ -85,17 +85,17 @@ if __name__ == "__main__":
             data["julian_day"].values,
             data["noisy_flux"].values,
             name=name,
-            n_iter=100,
+            n_iter=1000,
             n_b=4,
             gain=0.1,
-            final_noise=0.00009,
+            final_noise=0.00005,
             dev=data["deviation_used"],
         )
 
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 2
+        m_ = 1
 
         def fitness(solution):
             """
@@ -120,11 +120,11 @@ if __name__ == "__main__":
             gene_range=(
                 (-0.2, 0.2),
                 (0.95, 1.05),
-                (0.70, 0.90),  # 1.243845684808613461e+00
-                (1.33, 1.53),  # 6.996631977048450857e-01
+                (0.7, 0.9),  # 1.243845684808613461e+00 3.081760541196470245e-03
+                (1.33, 1.53),  # 6.996631977048450857e-01 5.011230695494433944e-03
             ),
             name=name,
-            num_generations=10,
+            num_generations=10000,
             elitism=2,
             mutation_rate=0.007,
             mutation_range=0.1,
