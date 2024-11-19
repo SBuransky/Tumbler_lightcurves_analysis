@@ -11,12 +11,12 @@ import pandas as pd
 
 t, y, delta = generate_pa_rotator(
     frequency=1,
-    num_periods=7,
-    sampling_rate=150,
+    num_periods=10,
+    sampling_rate=80,
     noise_amplitude=5,
     num_holes=5,
     min_hole_length=50,
-    max_hole_length=200,
+    max_hole_length=100,
     num_components=20,
     seed=0,
 )
@@ -42,7 +42,7 @@ def fitness(solution):
     return 1 / chi2
 
 
-tumbler_periodogram(t, y, name=name, n_iter=10000, gain=0.5, final_noise=0.007)
+tumbler_periodogram(t, y, name=name, n_iter=10000, gain=0.5, final_noise=0.0053)
 """
 pa_rotator_genetic_algorithm_fit(
     data,
