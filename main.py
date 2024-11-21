@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 1
+        m_ = 2
 
         def fitness(solution):
             """
