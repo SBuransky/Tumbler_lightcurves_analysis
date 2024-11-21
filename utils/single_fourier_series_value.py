@@ -15,11 +15,12 @@ def parse_solution(
     :return: parsed values P, C0, Cj, Sj
     """
     P = solution[-1] + 1 / 86400  # Period
-    C0 = solution[-2]  # Constant term
-    Cj = solution[m:-2]  # Cosine coefficients
+    t_0 = solution[-2]
+    C0 = solution[-3]  # Constant term
+    Cj = solution[m:-3]  # Cosine coefficients
     Sj = solution[:m]  # Sine coefficients
 
-    return P, C0, Cj, Sj
+    return P, t_0, C0, Cj, Sj
 
 
 '''
@@ -59,9 +60,9 @@ def single_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     """
 
     solution = np.asarray(solution)
+    P, t_0, C0, Cj, Sj = parse_solution(solution, m)
     t = np.asarray(t)
 
-    P, C0, Cj, Sj = parse_solution(solution, m)
     omega = 2 * np.pi / P  # Angular frequency
 
     # Create an outer product of time points and harmonics

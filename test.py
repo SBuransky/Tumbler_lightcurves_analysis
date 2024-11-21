@@ -11,13 +11,13 @@ import pandas as pd
 
 t, y, delta = generate_pa_rotator(
     frequency=1,
-    num_periods=10,
-    sampling_rate=80,
-    noise_amplitude=5,
-    num_holes=5,
-    min_hole_length=50,
-    max_hole_length=100,
-    num_components=20,
+    num_periods=2,
+    sampling_rate=100,
+    noise_amplitude=0.0001,
+    num_holes=1,
+    min_hole_length=0,
+    max_hole_length=1,
+    num_components=1,
     seed=0,
 )
 
@@ -43,16 +43,16 @@ def fitness(solution):
 
 
 tumbler_periodogram(t, y, name=name, n_iter=10000, gain=0.5, final_noise=0.0053)
-"""
+
 pa_rotator_genetic_algorithm_fit(
     data,
     fitness,
     m_=m_,
-    population_size=500,
-    gene_range=((-2, 2), (-0.1, 0.1), (0.9, 1.1)),
+    population_size=50,
+    gene_range=((-1, 1), (-0.1, 0.1), (-1, 1), (0.9, 1.1)),
     name=name,
-    num_generations=10,
+    num_generations=1000,
     elitism=2,
     mutation_rate=0.05,
     mutation_range=0.05,
-)"""
+)

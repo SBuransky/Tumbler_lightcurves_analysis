@@ -175,7 +175,7 @@ def tumbler_genetic_algorithm_fit(
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
-        num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 3,
+        num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
         gene_range=(2 * m_ + 2 * m_ * (2 * m_ + 1)) * (gene_range[0],) + gene_range[1:],
         num_generations=num_generations,
         elitism=elitism,
@@ -325,7 +325,7 @@ def pa_rotator_genetic_algorithm_fit(
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
-        num_genes=2 * m_ + 2,
+        num_genes=2 * m_ + 3,
         gene_range=(2 * m_) * (gene_range[0],) + gene_range[1:],
         num_generations=num_generations,
         elitism=elitism,
