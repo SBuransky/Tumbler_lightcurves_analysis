@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime as dt
 from typing import Callable, Optional, Tuple
 
@@ -172,6 +173,7 @@ def tumbler_genetic_algorithm_fit(
     os.makedirs("Results/genetic_algorithm/oc_diag/", exist_ok=True)
 
     # Run genetic algorithm
+    start = time.time()
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
@@ -183,6 +185,8 @@ def tumbler_genetic_algorithm_fit(
         mutation_rate=mutation_rate,
         mutation_range=mutation_range,
     )
+    end = time.time()
+    ga_time = end - start
 
     # Generate timestamp for file names
     ts = dt.now()
@@ -217,9 +221,10 @@ def tumbler_genetic_algorithm_fit(
     )
 
     # Plot settings
-    plt.xlabel("Time [JD]")
+    plt.xlabel("Time [day]")
     plt.ylabel("Normalized light flux")
-    plt.title("Genetic Algorithm Fit")
+    # plt.title("Genetic Algorithm Fit")
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
 
     # Save and display plot
@@ -231,7 +236,8 @@ def tumbler_genetic_algorithm_fit(
     plt.plot(np.arange(len(final_generation[2])), final_generation[2])
     plt.xlabel("Generation")
     plt.ylabel("Best Fitness")
-    plt.title("Fitness Over Generations")
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
+    # plt.title("Fitness Over Generations")
 
     # Save fitness plot
     plt.savefig(f"Results/genetic_algorithm/fitness/{name}_fitness_{ending}.pdf")
@@ -249,6 +255,8 @@ def tumbler_genetic_algorithm_fit(
         file.write(str(final_generation[4]))
         file.write("\nBest fitness in all:\n")
         file.write(str(final_generation[6]))
+        file.write("\nGA calculation time:\n")
+        file.write(str(ga_time))
 
         file.write("\n\nInitial parameters")
         file.write("\npopulation size = " + str(population_size))
@@ -269,8 +277,9 @@ def tumbler_genetic_algorithm_fit(
         marker="+",
         s=5,
     )
-    plt.xlabel("Time[JD]")
+    plt.xlabel("Time [day]")
     plt.ylabel("O - C (normalized light flux)")
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.savefig(f"Results/genetic_algorithm/oc_diag/{name}_o-c_{ending}.pdf")
     plt.close()
 
@@ -320,7 +329,7 @@ def pa_rotator_genetic_algorithm_fit(
     os.makedirs("Results/genetic_algorithm/graphs/", exist_ok=True)
     os.makedirs("Results/genetic_algorithm/fitness/", exist_ok=True)
     os.makedirs("Results/genetic_algorithm/results/", exist_ok=True)
-
+    start = time.time()
     # Run genetic algorithm
     final_generation = run_genetic_algorithm(
         population_size=population_size,
@@ -333,6 +342,8 @@ def pa_rotator_genetic_algorithm_fit(
         mutation_rate=mutation_rate,
         mutation_range=mutation_range,
     )
+    end = time.time()
+    ga_time = end - start
 
     # Generate timestamp for file names
     ts = dt.now()
@@ -367,9 +378,10 @@ def pa_rotator_genetic_algorithm_fit(
     )
 
     # Plot settings
-    plt.xlabel("Time [JD]")
+    plt.xlabel("Time [day]")
     plt.ylabel("Normalized light flux")
-    plt.title("Genetic Algorithm Fit")
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
+    # plt.title("Genetic Algorithm Fit")
     plt.legend()
 
     # Save and display plot
@@ -381,7 +393,8 @@ def pa_rotator_genetic_algorithm_fit(
     plt.plot(np.arange(len(final_generation[2])), final_generation[2])
     plt.xlabel("Generation")
     plt.ylabel("Best Fitness")
-    plt.title("Fitness Over Generations")
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
+    # plt.title("Fitness Over Generations")
 
     # Save fitness plot
     plt.savefig(f"Results/genetic_algorithm/fitness/{name}_fitness_{ending}.pdf")
@@ -399,6 +412,8 @@ def pa_rotator_genetic_algorithm_fit(
         file.write(str(final_generation[4]))
         file.write("\nBest fitness in all:\n")
         file.write(str(final_generation[6]))
+        file.write("\nGA calculation time:\n")
+        file.write(str(ga_time))
 
         file.write("\n\nInitial parameters")
         file.write("\npopulation size = " + str(population_size))
@@ -419,7 +434,8 @@ def pa_rotator_genetic_algorithm_fit(
             marker="+",
             s=5,
         )
-        plt.xlabel("Time[JD]")
+        plt.xlabel("Time [day]")
         plt.ylabel("O - C (normalized light flux)")
+        plt.tick_params(bottom=True, top=True, left=True, right=True)
         plt.savefig(f"Results/genetic_algorithm/oc_diag/{name}_o-c_{ending}.pdf")
         plt.close()

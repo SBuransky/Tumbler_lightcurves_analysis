@@ -6,6 +6,7 @@ from utils.load_dataset import load_data
 from utils.fourier_series_value import double_fourier_sequence
 import argparse
 import numpy as np
+import time
 
 # ---------------------------------------------------------------------------------------------------------------------
 '''
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1916_001"
+    name = "ID1916_007"
     data = load_data(
         name,
         column_names=(
@@ -77,6 +78,8 @@ if __name__ == "__main__":
         ),
         appendix=".txt",
     )
+    data["julian_day"] -= min(data["julian_day"])
+    print(len(data["julian_day"]))
 
     # Run periodogram LS and CLEAN Fourier
     if args.periodogram:
@@ -87,15 +90,15 @@ if __name__ == "__main__":
             name=name,
             n_iter=1000,
             n_b=4,
-            gain=0.1,
-            final_noise=0.00005,
+            gain=0.2,
+            final_noise=0.00002,
             dev=data["deviation_used"],
         )
 
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 2
+        m_ = 5
 
         def fitness(solution):
             """
@@ -118,15 +121,36 @@ if __name__ == "__main__":
             m_=m_,
             population_size=500,
             gene_range=(
-                (-0.2, 0.2),
-                (0.95, 1.05),
-                (-1.7, 1.7),
-                (0.6, 1.0),  # 1.243845684808613461e+00 3.081760541196470245e-03
-                (1.23, 1.63),  # 6.996631977048450857e-01 5.011230695494433944e-03
+                (-0.1, 0.1),
+                (0.98, 1.02),
+                (-2, 2),
+                (0.75, 0.95),
+                (1.30, 1.50),
             ),
+            # ID1916_001
+            # 6.996631977048450857e-01 7.956271751566013420e-03
+            # 1.166105329508075217e+00 4.712898849962869272e-03
+            # ID1917_001 --------------------------------------
+            # 7.762803903918541470e-01 1.025301180847258339e-02
+            # 1.164420585587781165e+00 4.728515400644272941e-03
+            # ID1918_001 --------------------------------------
+            # 5.812703081591484855e-01 7.293740081353852420e-03
+            # 1.259419001011488515e+00 8.964707699941268718e-03
+            # ID1919_001 --------------------------------------
+            # 1.346956520690677950e+00 3.704314186094919206e-03
+            # 2.020434781036017036e+00 2.677347356997863189e-03
+            # 2.745719061407920325e+00 3.487168691736520620e-03
             name=name,
             num_generations=10000,
             elitism=2,
             mutation_rate=0.007,
             mutation_range=0.1,
         )
+
+        # Ahoj Pája,
+        # udrž si prosím večný úsmev
+        # ktorým nám rozjasníš všetkým deň
+        # vidíme sa pod jasnou oblohou
+        # s vesmírnym pozdravom
+        # Sam
+        # najlepšej kolegyni, čertici a kamoške

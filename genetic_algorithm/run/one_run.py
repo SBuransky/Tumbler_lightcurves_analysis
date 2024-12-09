@@ -82,11 +82,11 @@ def run_genetic_algorithm(
 
         # Adaptive mutation
         if (
-            generation > 200
-            and generation % 100 == 0
-            and fitness_in_pop[generation] == fitness_in_pop[generation - 100]
+            generation > 400
+            and generation % 400 == 0
+            and fitness_in_pop[generation] == fitness_in_pop[generation - 400]
         ):
-            mutation_rate = 0.2  # 20 * mutation_rate_0
+            mutation_rate = 0.1  # 20 * mutation_rate_0
             mutation_range = 10 * mutation_range_0
             elitism = 5 * elitism
             print("adapt")
