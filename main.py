@@ -145,4 +145,5 @@ if __name__ == "__main__":
             elitism=2,
             mutation_rate=0.007,
             mutation_range=0.1,
+            limit_fitness=0.001
         )

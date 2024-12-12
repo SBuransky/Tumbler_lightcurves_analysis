@@ -8,15 +8,16 @@ from genetic_algorithm.generation.one_generation import one_gen
 
 
 def run_genetic_algorithm(
-    population_size: int,
-    fitness_function: Callable,
-    num_genes: int,
-    gene_range: List[Tuple[float]],
-    num_generations: int,
-    crossover_rate: float = 0.85,
-    mutation_rate: float = 0.01,
-    mutation_range: float = 0.1,
-    elitism: int = 2,
+        population_size: int,
+        fitness_function: Callable,
+        num_genes: int,
+        gene_range: List[Tuple[float]],
+        num_generations: int,
+        crossover_rate: float = 0.85,
+        mutation_rate: float = 0.01,
+        mutation_range: float = 0.1,
+        elitism: int = 2,
+        limit_fitness: float = 1000000,
 ) -> Tuple[
     np.ndarray, np.ndarray, List[float], List[np.ndarray], np.ndarray, float, float
 ]:
@@ -82,18 +83,18 @@ def run_genetic_algorithm(
 
         # Adaptive mutation
         if (
-            generation > 400
-            and generation % 400 == 0
-            and fitness_in_pop[generation] == fitness_in_pop[generation - 400]
+                generation > 400
+                and generation % 400 == 0
+                and fitness_in_pop[generation] == fitness_in_pop[generation - 400]
         ):
             mutation_rate = 0.1  # 20 * mutation_rate_0
             mutation_range = 10 * mutation_range_0
             elitism = 5 * elitism
             print("adapt")
         elif (
-            generation > 2000
-            and generation % 500 == 0
-            and fitness_in_pop[-1] == fitness_in_pop[-1000]
+                generation > 2000
+                and generation % 500 == 0
+                and fitness_in_pop[-1] == fitness_in_pop[-1000]
         ):  # reset stacked pop
             mutation_rate = 1
             mutation_range = 10 * mutation_range_0
@@ -106,11 +107,16 @@ def run_genetic_algorithm(
 
         # Stopping criteria
         if (
-            generation > 1000
-            and generation % 1000 == 0
-            and (fitness_in_pop[-1] - fitness_in_pop[generation // 2])
-            / (fitness_in_pop[generation // 2] - fitness_in_pop[0])
-            < 10 ** (-100)
+                generation > 1000
+                and generation % 1000 == 0
+                and (fitness_in_pop[-1] - fitness_in_pop[generation // 2])
+                / (fitness_in_pop[generation // 2] - fitness_in_pop[0])
+                < 10 ** (-100)
+        ):
+            break
+
+        if (
+                best_fitness >= limit_fitness
         ):
             break
 
