@@ -100,7 +100,6 @@ if __name__ == "__main__":
         print("Running genetic algorithm fit...")
         m_ = 3
 
-
         def fitness(solution):
             """
             Fitness function
@@ -113,9 +112,8 @@ if __name__ == "__main__":
             y_model = double_fourier_sequence(solution, m_, x)
 
             # Calculation of the chi^2 and returning 1/chi^2
-            chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
+            chi2 = np.sum((y - y_model) ** 2 / delta**2)
             return 1 / chi2
-
 
         tumbler_genetic_algorithm_fit(
             data,
