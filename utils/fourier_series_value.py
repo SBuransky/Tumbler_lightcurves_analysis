@@ -14,8 +14,8 @@ def parse_solution(
     :param m: order of the Fourier series
     :return: parsed values P_psi, P_phi, C0, Cj0, Sj0, Cjk, Sjk
     """
-    P_psi = solution[-1] + 1 / 86400
-    P_phi = solution[-2] + 1 / 86400
+    f_psi = solution[-1] + 1 / 86400
+    f_phi = solution[-2] + 1 / 86400
     t_0 = solution[-3]
     C0 = solution[-4]
     Cj0 = solution[-4 - m : -4]
@@ -23,7 +23,7 @@ def parse_solution(
     Cjk = solution[: m * (2 * m + 1)]
     Sjk = solution[m * (2 * m + 1) : 2 * m * (2 * m + 1)]
 
-    return P_psi, P_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk
+    return f_psi, f_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk
 
 
 '''
@@ -69,10 +69,10 @@ def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     solution = np.asarray(solution)
     t = np.asarray(t)
 
-    P_psi, P_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk = parse_solution(solution, m)
+    f_psi, f_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk = parse_solution(solution, m)
 
-    psi = 2 * np.pi / P_psi
-    phi = 2 * np.pi / P_phi
+    psi = 2 * np.pi * f_psi
+    phi = 2 * np.pi * f_phi
 
     # Time array reshaped for broadcasting
     t = t[:, np.newaxis] - t_0

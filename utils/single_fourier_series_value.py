@@ -60,10 +60,10 @@ def single_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     """
 
     solution = np.asarray(solution)
-    P, t_0, C0, Cj, Sj = parse_solution(solution, m)
+    f, t_0, C0, Cj, Sj = parse_solution(solution, m)
     t = np.asarray(t)
 
-    omega = 2 * np.pi / P  # Angular frequency
+    omega = 2 * np.pi * f  # Angular frequency
 
     # Create an outer product of time points and harmonics
     harmonics = np.arange(1, m + 1).reshape(-1, 1)
