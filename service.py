@@ -64,7 +64,7 @@ def tumbler_periodogram(
     )
 
     # Plot the observed data with error bars
-    plt.errorbar(t, y, yerr=dev, fmt=".", label="Data")
+    plt.errorbar(t, y, yerr=np.abs(dev), fmt=".", label="Data")
     plt.xlabel("Julian Date (JD)")
     plt.ylabel("Normalized Flux")
     plt.title("Observed Data")
@@ -215,7 +215,7 @@ def tumbler_genetic_algorithm_fit(
     plt.errorbar(
         days,
         data["noisy_flux"].values,
-        yerr=data["deviation_used"].values,
+        yerr=np.abs(data["deviation_used"].values),
         fmt="none",
         color="black",
         elinewidth=1.5,
