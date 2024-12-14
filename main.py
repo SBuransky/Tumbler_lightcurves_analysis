@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1917_001"
+    name = "ID1916_001"
     data = load_data(
         name,
         column_names=(
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".flux",
+        appendix=".txt",
     )
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
@@ -119,13 +119,13 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=200,
+            population_size=500,
             gene_range=(
                 (-0.1, 0.1),
                 (0.98, 1.02),
                 (-2, 2),
                 (0.65, 1.05),
-                (1.10, 1.50),
+                (1.20, 1.60),
             ),
             # ID1916_001
             # 6.996631977048450857e-01  7.956271751566013420e-03    1.429259111
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             # 2.020434781036017036e+00  2.677347356997863189e-03    0.494942974
             # 2.745719061407920325e+00  3.487168691736520620e-03    0.364203321
             name=name,
-            num_generations=10000,
+            num_generations=1000000,
             elitism=2,
             mutation_rate=0.007,
             mutation_range=0.1,

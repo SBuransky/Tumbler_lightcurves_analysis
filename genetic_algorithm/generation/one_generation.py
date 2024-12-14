@@ -1,5 +1,4 @@
 from typing import List, Callable, Tuple
-from joblib import Parallel, delayed
 import numpy as np
 
 from genetic_algorithm.core.crossover import crossover
