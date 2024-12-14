@@ -141,7 +141,7 @@ if __name__ == "__main__":
             # 2.020434781036017036e+00  2.677347356997863189e-03    0.494942974
             # 2.745719061407920325e+00  3.487168691736520620e-03    0.364203321
             name=name,
-            num_generations=1000000,
+            num_generations=5,
             elitism=2,
             mutation_rate=0.007,
             mutation_range=0.1,
