@@ -119,7 +119,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=15,
+            population_size=500,
             gene_range=(
                 (-0.1, 0.1),
                 (0.98, 1.02),
