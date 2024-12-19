@@ -302,6 +302,7 @@ def pa_rotator_genetic_algorithm_fit(
     crossover_rate: float = 0.95,
     mutation_rate: float = 0.01,
     mutation_range: float = 0.1,
+    limit_fitness: float = 1000000,
 ) -> None:
     """
     Run a genetic algorithm to fit a model to data and visualize results.
@@ -343,6 +344,7 @@ def pa_rotator_genetic_algorithm_fit(
         crossover_rate=crossover_rate,
         mutation_rate=mutation_rate,
         mutation_range=mutation_range,
+        limit_fitness=limit_fitness,
     )
     end = time.time()
     ga_time = end - start

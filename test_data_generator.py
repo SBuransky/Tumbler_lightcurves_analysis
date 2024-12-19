@@ -60,8 +60,8 @@ def generate_pa_rotator(
     # Randomly generate coefficients for the sine and cosine components
     sine_coefficients = np.sort(np.random.rand(num_components))[::-1]
     cosine_coefficients = np.sort(np.random.rand(num_components))[::-1]
-    sine_coefficients[1:] = sine_coefficients[1:] / 2
-    cosine_coefficients[1:] = cosine_coefficients[1:] / 2
+    sine_coefficients[1:] = sine_coefficients[1:] / 5
+    cosine_coefficients[1:] = cosine_coefficients[1:] / 5
     print(sine_coefficients)
     print(cosine_coefficients)
 
@@ -76,5 +76,8 @@ def generate_pa_rotator(
     # Add random noise to the signal
     delta = noise_amplitude * np.random.normal(size=len(t_with_holes))
     y += delta
+
+    y /= np.max(y) - np.min(y)
+    y += 1
 
     return t_with_holes, y, delta
