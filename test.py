@@ -11,10 +11,10 @@ import pandas as pd
 
 t, y, delta = generate_pa_rotator(
     frequency=1,
-    num_periods=2,
+    num_periods=5,
     sampling_rate=500,
     noise_amplitude=0.01,
-    num_holes=100,
+    num_holes=10,
     min_hole_length=0,
     max_hole_length=50,
     num_components=10,
