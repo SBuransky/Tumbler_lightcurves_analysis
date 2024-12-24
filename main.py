@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 3
+        m_ = 5
 
         def fitness(solution):
             """
@@ -106,7 +106,11 @@ if __name__ == "__main__":
             :param solution: set of the free parameters
             :return: fitness value
             """
-            x, y, delta = data["julian_day"], data["noisy_flux"], data["deviation_used"]
+            x, y, delta = (
+                data["julian_day"],
+                data["noisy_flux"],
+                7 * data["deviation_used"],
+            )
 
             # Vectorized calculation of Fourier values
             y_model = double_fourier_sequence(solution, m_, x)
@@ -121,7 +125,7 @@ if __name__ == "__main__":
             m_=m_,
             population_size=500,
             gene_range=(
-                (-0.1, 0.1),
+                (-0.05, 0.05),
                 (0.98, 1.02),
                 (-2, 2),
                 (0.55, 0.65),
@@ -141,7 +145,7 @@ if __name__ == "__main__":
             # 2.020434781036017036e+00  2.677347356997863189e-03    0.494942974
             # 2.745719061407920325e+00  3.487168691736520620e-03    0.364203321
             name=name,
-            num_generations=100000,
+            num_generations=10000,
             elitism=2,
             mutation_rate=0.007,
             mutation_range=0.1,

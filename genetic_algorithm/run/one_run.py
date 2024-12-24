@@ -97,8 +97,8 @@ def run_genetic_algorithm(
             and fitness_in_pop[-1] == fitness_in_pop[-1000]
         ):  # reset stacked pop
             mutation_rate = 1
-            mutation_range = 10 * mutation_range_0
-            elitism = population_size // 2
+            mutation_range = 0.5 * mutation_range_0
+            elitism = 0
             print("reset")
         else:
             mutation_rate = mutation_rate_0

@@ -91,22 +91,25 @@ def rank_based_selection(
     fitness_values = np.array([item[1] for item in fitness_results])
     sorted_indices = np.argsort(fitness_values)  # Indices that would sort the array
     ranks = np.empty_like(sorted_indices)
-    ranks[sorted_indices] = np.arange(
-        len(fitness_values)
+    ranks[sorted_indices] = (
+        np.arange(len(fitness_values)) + 1
     )  # Assign ranks based on sorted indices
-
     # Calculate selection probabilities from ranks
     total_ranks = np.sum(ranks)
     selection_probabilities = ranks / total_ranks
 
     # Retain elite individuals
-    elite_indices = sorted_indices[-elitism_count:]
+    if elitism_count == 0:
+        elite_indices = []
+    else:
+        elite_indices = sorted_indices[-elitism_count:]
+
     elites = population[elite_indices]
 
     # Select individuals based on rank probabilities
     selected_indices = np.random.choice(
         len(population),
-        size=len(population) - elitism_count,
+        size=(len(population) - elitism_count),
         p=selection_probabilities,
         replace=False,
     )
