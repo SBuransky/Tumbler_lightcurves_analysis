@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_001"
+    name = "ID1918_007"
     data = load_data(
         name,
         column_names=(
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 5
+        m_ = 2
 
         def fitness(solution):
             """
@@ -109,7 +109,7 @@ if __name__ == "__main__":
             x, y, delta = (
                 data["julian_day"],
                 data["noisy_flux"],
-                7 * data["deviation_used"],
+                data["deviation_used"],
             )
 
             # Vectorized calculation of Fourier values
