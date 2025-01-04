@@ -147,7 +147,7 @@ if __name__ == "__main__":
             name=name,
             num_generations=10000,
             elitism=2,
-            mutation_rate=0.007,
+            mutation_rate=0.02,
             mutation_range=np.append(
                 np.full(2 * m_ + 2 * m_ * (2 * m_ + 1), 0.05), [0.02, 1, 0.05, 0.05]
             ),
