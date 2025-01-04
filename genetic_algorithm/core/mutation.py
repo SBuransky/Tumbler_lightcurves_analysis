@@ -6,7 +6,7 @@ import numpy as np
 def mutate(
     individual: np.ndarray,
     mutation_rate: float,
-    mutation_range: float,
+    mutation_range: np.ndarray,
     gene_range: List[Tuple[float]],
 ) -> np.ndarray:
     """
@@ -25,9 +25,8 @@ def mutate(
     mask = np.random.rand(*individual.shape) < mutation_rate
 
     # Generate random mutations within the specified range and apply mask
-    mutations = np.random.uniform(
-        -mutation_range, mutation_range, size=individual.shape
-    )
+    # mutations = np.random.uniform(-mutation_range, mutation_range, size=individual.shape)
+    mutations = np.random.uniform(-mutation_range, mutation_range)
     individual[mask] += mutations[mask]
 
     # Ensure mutated genes stay within the valid range using vectorized np.clip

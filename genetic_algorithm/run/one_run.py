@@ -15,7 +15,7 @@ def run_genetic_algorithm(
     num_generations: int,
     crossover_rate: float = 0.85,
     mutation_rate: float = 0.01,
-    mutation_range: float = 0.1,
+    mutation_range: np.ndarray = np.ones(200),
     elitism: int = 2,
     limit_fitness: float = 1000000,
 ) -> Tuple[

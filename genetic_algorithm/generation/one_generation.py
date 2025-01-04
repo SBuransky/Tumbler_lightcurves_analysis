@@ -12,7 +12,7 @@ def one_gen(
     fitness_function: Callable,
     crossover_rate: float,
     mutation_rate: float,
-    mutation_range: float,
+    mutation_range: np.ndarray,
     gene_range: List[Tuple[float]],
     elitism: int = 1,
     fitness_results: np.ndarray = None,
