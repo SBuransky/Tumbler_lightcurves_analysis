@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_007"
+    name = "ID1918_003"
     data = load_data(
         name,
         column_names=(
@@ -128,7 +128,7 @@ if __name__ == "__main__":
                 (-0.05, 0.05),
                 (0.98, 1.02),
                 (-0.80, 0.80),
-                (1.20, 1.30),
+		(1.20, 1.30),
                 (0.55, 0.65),
             ),
             # ID1916_001
@@ -145,7 +145,7 @@ if __name__ == "__main__":
             # 2.020434781036017036e+00  2.677347356997863189e-03    0.494942974
             # 2.745719061407920325e+00  3.487168691736520620e-03    0.364203321
             name=name,
-            num_generations=20000,
+            num_generations=30000,
             elitism=2,
             mutation_rate=0.02,
             mutation_range=np.append(
