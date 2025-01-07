@@ -209,6 +209,11 @@ def tumbler_genetic_algorithm_fit(
         double_fourier_sequence(final_generation[0], m_, days),
         label="Last Generation Best",
     )
+    plt.plot(
+        days,
+        double_fourier_sequence(final_generation[4], m_, days),
+        label="Last Generation Best",
+    )
 
     # Plot noisy data
     plt.scatter(days, data["noisy_flux"].values, c="gray", marker="+", s=5)
@@ -252,11 +257,12 @@ def tumbler_genetic_algorithm_fit(
         file.write("Best in last gen:\n")
         file.write(str(final_generation[0]))
         file.write("\nBest fitness in last gen:\n")
-        file.write(str(final_generation[5]))
+        file.write(str(final_generation[6]))
+
         file.write("\n\nBest in all:\n")
         file.write(str(final_generation[4]))
         file.write("\nBest fitness in all:\n")
-        file.write(str(final_generation[6]))
+        file.write(str(final_generation[5]))
         file.write("\nGA calculation time:\n")
         file.write(str(ga_time))
 
@@ -278,6 +284,15 @@ def tumbler_genetic_algorithm_fit(
         c="gray",
         marker="+",
         s=5,
+        label="Best in last gen",
+    )
+    plt.scatter(
+        days,
+        data["noisy_flux"] - double_fourier_sequence(final_generation[4], m_, days),
+        c="gray",
+        marker="+",
+        s=5,
+        label="Overall best",
     )
     plt.xlabel("Time [day]")
     plt.ylabel("O - C (normalized light flux)")
