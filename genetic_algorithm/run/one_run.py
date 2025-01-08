@@ -88,7 +88,7 @@ def run_genetic_algorithm(
             and fitness_in_pop[generation] == fitness_in_pop[generation - 400]
         ):
             mutation_rate = 0.1  # 20 * mutation_rate_0
-            mutation_range = 10 * mutation_range_0
+            mutation_range = mutation_range_0
             elitism = 2 * elitism
             print("adapt")
         elif (
@@ -96,9 +96,9 @@ def run_genetic_algorithm(
             and generation % 500 == 0
             and fitness_in_pop[-1] == fitness_in_pop[-1000]
         ):  # reset stacked pop
-            mutation_rate = 0.5
+            mutation_rate = 1
             mutation_range = 0.2 * mutation_range_0
-            elitism = 0
+            elitism = 1
             print("reset")
         else:
             mutation_rate = mutation_rate_0
