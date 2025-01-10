@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_003"
+    name = "ID1917_007"
     data = load_data(
         name,
         column_names=(
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 3
+        m_ = 1
 
         def fitness(solution):
             """
@@ -127,9 +127,9 @@ if __name__ == "__main__":
             gene_range=(
                 (-0.05, 0.05),
                 (0.98, 1.02),
-                (-0.80, 0.80),
-                (1.20, 1.30),
-                (0.55, 0.65),
+                (-1.30, 1.30),
+                (1.11, 1.21),
+                (0.72, 0.82),
             ),
             # ID1916_001
             # 6.996631977048450857e-01  7.956271751566013420e-03    1.429259111
