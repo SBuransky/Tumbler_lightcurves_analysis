@@ -171,7 +171,7 @@ def tournament_selection(
     return select_pool'''
 
 
-def rank_based_selection(
+'''def rank_based_selection(
     population: np.ndarray, fitness_results: List[Tuple], elitism_count: int
 ) -> np.ndarray:
     """
@@ -217,5 +217,104 @@ def rank_based_selection(
 
     # Combine elite individuals with the selected ones
     new_population = np.concatenate((elites, selected_individuals))
+
+    return new_population'''
+
+
+'''def rank_based_selection(
+        population: np.ndarray, fitness_results: List[Tuple], elitism_count: int
+) -> np.ndarray:
+    """
+    Perform rank-based selection with elitism.
+
+    Parameters:
+    - population: The population of individuals (NumPy array).
+    - fitness_results: A list of tuples where each tuple contains an individual and its fitness value.
+    - elitism_count: The number of top individuals to retain directly (elitism).
+
+    Returns:
+    - The new population after selection (NumPy array).
+    """
+    fitness_values = np.array([item[1] for item in fitness_results])
+    population_size = len(population)
+
+    # Sort fitness and identify elites
+    sorted_indices = np.argsort(fitness_values)
+    elite_indices = sorted_indices[-elitism_count:] if elitism_count > 0 else []
+    elites = population[elite_indices]
+
+    # Compute ranks for rank-based selection
+    ranks = np.empty(population_size, dtype=int)
+    ranks[sorted_indices] = np.arange(1, population_size + 1)
+
+    # Mask for non-elites and compute their selection probabilities
+    non_elite_mask = np.ones(population_size, dtype=bool)
+    non_elite_mask[elite_indices] = False
+    non_elite_ranks = ranks[non_elite_mask]
+    non_elite_population = population[non_elite_mask]
+
+    selection_probabilities = non_elite_ranks / non_elite_ranks.sum()
+
+    # Select individuals based on probabilities
+    selected_indices = np.random.choice(
+        len(non_elite_population),
+        size=len(non_elite_population),
+        p=selection_probabilities,
+        replace=False,
+    )
+    selected_individuals = non_elite_population[selected_indices]
+
+    # Combine elite individuals with the selected ones
+    return np.concatenate((elites, selected_individuals))'''
+
+
+def rank_based_selection(
+    population: np.ndarray, fitness_results: List[Tuple], elitism_count: int
+) -> np.ndarray:
+    """
+    Perform rank-based selection with elitism.
+
+    Parameters:
+    - population: The population of individuals (NumPy array).
+    - fitness_results: A list of tuples where each tuple contains an individual and its fitness value.
+    - elitism_count: The number of top individuals to retain directly (elitism).
+
+    Returns:
+    - The new population after selection (NumPy array).
+    """
+    fitness_values = np.array([item[1] for item in fitness_results])
+    population_size = len(population)
+
+    # Fast elite selection using argpartition
+    if elitism_count > 0:
+        elite_indices = np.argpartition(fitness_values, -elitism_count)[-elitism_count:]
+        elites = population[elite_indices]
+    else:
+        elite_indices = np.array([], dtype=int)
+        elites = np.empty((0,) + population.shape[1:], dtype=population.dtype)
+
+    # Rank-based selection for non-elites
+    all_indices = np.arange(population_size)
+    non_elite_indices = np.setdiff1d(all_indices, elite_indices, assume_unique=True)
+
+    # Compute ranks for non-elites
+    ranks = np.empty(population_size, dtype=int)
+    ranks[all_indices] = np.argsort(np.argsort(-fitness_values)) + 1
+    non_elite_ranks = ranks[non_elite_indices]
+
+    # Calculate selection probabilities
+    total_ranks = np.sum(non_elite_ranks)
+    selection_probabilities = non_elite_ranks / total_ranks
+
+    # Select individuals from non-elites
+    selected_indices = np.random.choice(
+        non_elite_indices,
+        size=len(non_elite_indices),
+        p=selection_probabilities,
+        replace=False,
+    )
+
+    # Combine elites and selected individuals
+    new_population = np.concatenate((elites, population[selected_indices]))
 
     return new_population
