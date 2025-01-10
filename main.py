@@ -149,7 +149,7 @@ if __name__ == "__main__":
             elitism=2,
             mutation_rate=0.02,
             mutation_range=np.append(
-                np.full(2 * m_ + 2 * m_ * (2 * m_ + 1), 0.1), [0.04, 3.60, 0.1, 0.1]
+                np.full(2 * m_ + 2 * m_ * (2 * m_ + 1), 0.1), [0.04, 2.60, 0.1, 0.1]
             ),
             limit_fitness=0.001,
         )
