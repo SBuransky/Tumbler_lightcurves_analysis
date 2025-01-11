@@ -100,7 +100,6 @@ if __name__ == "__main__":
         print("Running genetic algorithm fit...")
         m_ = 2
 
-
         def fitness(solution):
             """
             Fitness function
@@ -117,9 +116,8 @@ if __name__ == "__main__":
             y_model = double_fourier_sequence(solution, m_, x)
 
             # Calculation of the chi^2 and returning 1/chi^2
-            chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
+            chi2 = np.sum((y - y_model) ** 2 / delta**2)
             return 1 / chi2
-
 
         tumbler_genetic_algorithm_fit(
             data,
@@ -127,12 +125,13 @@ if __name__ == "__main__":
             m_=m_,
             population_size=500,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
-            gene_range=([(-0.1, 0.1)] * (m_ * (2 * m_ + 1)) +
-                        [(-0.1, 0.1)] * (m_ * (2 * m_ + 1)) +
-                        [(-0.1, 0.1)] * m_ +
-                        [(-0.1, 0.1)] * m_ +
-                        [(-0.2, 0.2), (0.98, 1.02), (0.69, 0.71), (1.16, 1.18)]),
-
+            gene_range=(
+                [(-0.1, 0.1)] * (m_ * (2 * m_ + 1))
+                + [(-0.1, 0.1)] * (m_ * (2 * m_ + 1))
+                + [(-0.1, 0.1)] * m_
+                + [(-0.1, 0.1)] * m_
+                + [(-0.2, 0.2), (0.98, 1.02), (0.69, 0.71), (1.16, 1.18)]
+            ),
             # ID1916_001
             # 6.996631977048450857e-01  7.956271751566013420e-03    1.429259111
             # 1.166105329508075217e+00  4.712898849962869272e-03    0.857555466
@@ -146,15 +145,18 @@ if __name__ == "__main__":
             # 1.346956520690677950e+00  3.704314186094919206e-03    0.742414462
             # 2.020434781036017036e+00  2.677347356997863189e-03    0.494942974
             # 2.745719061407920325e+00  3.487168691736520620e-03    0.364203321
-
             name=name,
             num_generations=1000,
             elitism=2,
             mutation_rate=0.01,
-            mutation_range=np.concatenate((np.full(m_ * (2 * m_ + 1), 0.1),
-                                           np.full(m_ * (2 * m_ + 1), 0.1),
-                                           np.full(m_, 0.1),
-                                           np.full(m_, 0.1),
-                                           np.array([0.2, 0.02, 0.01, 0.01]))),
+            mutation_range=np.concatenate(
+                (
+                    np.full(m_ * (2 * m_ + 1), 0.1),
+                    np.full(m_ * (2 * m_ + 1), 0.1),
+                    np.full(m_, 0.1),
+                    np.full(m_, 0.1),
+                    np.array([0.2, 0.02, 0.01, 0.01]),
+                )
+            ),
             limit_fitness=0.001,
         )

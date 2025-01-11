@@ -128,7 +128,7 @@ def tumbler_genetic_algorithm_fit(
     data: pd.DataFrame,
     fitness_function: Callable[[np.ndarray], float],
     name: str,
-    num_genes:int,
+    num_genes: int,
     m_: int = 1,
     population_size: int = 500,
     gene_range: Tuple[

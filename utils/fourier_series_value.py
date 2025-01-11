@@ -49,24 +49,22 @@ def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     cos_term = np.cos(psi_t).T  # Shape (len(t), m)
     sin_term = np.sin(psi_t).T  # Shape (len(t), m)
 
-    first_sum = (
-        np.dot(cos_term, Cj0) +  # (len(t), m) @ (m,) -> (len(t),)
-        np.dot(sin_term, Sj0)    # (len(t), m) @ (m,) -> (len(t),)
-    )
+    first_sum = np.dot(cos_term, Cj0) + np.dot(  # (len(t), m) @ (m,) -> (len(t),)
+        sin_term, Sj0
+    )  # (len(t), m) @ (m,) -> (len(t),)
 
     # Precompute values for second sum
     j_range = np.arange(-m, m + 1)
     k_range = np.arange(1, m + 1)
     jk_combinations = np.array(np.meshgrid(j_range, k_range)).T.reshape(-1, 2)
 
-    psi_phi = jk_combinations[:, 0] * psi + jk_combinations[:, 1] * phi  # Shape (2m(m+1),)
+    psi_phi = (
+        jk_combinations[:, 0] * psi + jk_combinations[:, 1] * phi
+    )  # Shape (2m(m+1),)
     psi_phi_t = psi_phi[:, None] * t[None, :]  # Shape (2m(m+1), len(t))
     cos_values = np.cos(psi_phi_t)  # Shape (2m(m+1), len(t))
     sin_values = np.sin(psi_phi_t)  # Shape (2m(m+1), len(t))
 
-    second_sum = (
-        np.dot(Cjk, cos_values) +
-        np.dot(Sjk, sin_values)
-    )
+    second_sum = np.dot(Cjk, cos_values) + np.dot(Sjk, sin_values)
 
     return C0 + first_sum + second_sum
