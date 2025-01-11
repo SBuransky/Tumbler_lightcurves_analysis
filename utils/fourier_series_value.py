@@ -22,39 +22,8 @@ def parse_solution(
     Sj0 = solution[-4 - 2 * m : -4 - m]
     Cjk = solution[: m * (2 * m + 1)]
     Sjk = solution[m * (2 * m + 1) : 2 * m * (2 * m + 1)]
-
+    # print('p',f_psi, f_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk)
     return f_psi, f_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk
-
-
-'''
-def double_fourier_value(solution: np.ndarray, m: int, t: float) -> float:
-    """
-    Calculate Fourier value at a specific time t.
-
-    :param solution: set of the Fourier coefficients, C_0, and periods
-    :param m: order of the Fourier series
-    :param t: time
-    :return: Fourier value
-    """
-    solution = np.asarray(solution)
-    P_psi, P_phi, C0, Cj0, Sj0, Cjk, Sjk = parse_solution(solution, m)
-
-    psi = 2 * np.pi / P_psi
-    phi = 2 * np.pi / P_phi
-
-    # Calculate the first sum using NumPy vectorization
-    first_sum = Cj0 * np.cos(np.arange(1, m + 1) * psi * t) + Sj0 * np.sin(
-        np.arange(1, m + 1) * psi * t
-    )
-    F = C0 + np.sum(first_sum)
-
-    # Calculate the second sum
-    for k in range(1, m + 1):
-        for j in range(-m, m + 1):
-            F += Cjk[m * (j + m) + k - 1] * np.cos(((psi * j) + (phi * k)) * t)
-            F += Sjk[m * (j + m) + k - 1] * np.sin(((psi * j) + (phi * k)) * t)
-    return F
-    '''
 
 
 def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.ndarray:
@@ -66,31 +35,38 @@ def double_fourier_sequence(solution: np.ndarray, m: int, t: np.ndarray) -> np.n
     :param t: array of time points
     :return: array of Fourier values
     """
-    solution = np.asarray(solution)
-    t = np.asarray(t)
+    solution = np.asarray(solution, dtype=np.float64)
+    t = np.asarray(t, dtype=np.float64)
 
     f_psi, f_phi, t_0, C0, Cj0, Sj0, Cjk, Sjk = parse_solution(solution, m)
 
-    psi = 2 * np.pi * f_psi
-    phi = 2 * np.pi * f_phi
+    psi, phi = 2 * np.pi * f_psi, 2 * np.pi * f_phi
+    t = t - t_0  # Center time array
 
-    # Time array reshaped for broadcasting
-    t = t[:, np.newaxis] - t_0
+    # Precompute values for first sum
+    indices = np.arange(1, m + 1)
+    psi_t = psi * indices[:, None] * t[None, :]  # Shape (m, len(t))
+    cos_term = np.cos(psi_t).T  # Shape (len(t), m)
+    sin_term = np.sin(psi_t).T  # Shape (len(t), m)
 
-    # First sum vectorized across all-time points
-    cos_term = np.cos(np.arange(1, m + 1) * psi * t)
-    sin_term = np.sin(np.arange(1, m + 1) * psi * t)
-    first_sum = np.dot(cos_term, Cj0) + np.dot(sin_term, Sj0)
+    first_sum = (
+        np.dot(cos_term, Cj0) +  # (len(t), m) @ (m,) -> (len(t),)
+        np.dot(sin_term, Sj0)    # (len(t), m) @ (m,) -> (len(t),)
+    )
 
+    # Precompute values for second sum
     j_range = np.arange(-m, m + 1)
     k_range = np.arange(1, m + 1)
-
     jk_combinations = np.array(np.meshgrid(j_range, k_range)).T.reshape(-1, 2)
-    psi_phi_t = jk_combinations[:, 0] * psi + jk_combinations[:, 1] * phi
 
-    cos_values = np.cos(psi_phi_t * t)
-    sin_values = np.sin(psi_phi_t * t)
+    psi_phi = jk_combinations[:, 0] * psi + jk_combinations[:, 1] * phi  # Shape (2m(m+1),)
+    psi_phi_t = psi_phi[:, None] * t[None, :]  # Shape (2m(m+1), len(t))
+    cos_values = np.cos(psi_phi_t)  # Shape (2m(m+1), len(t))
+    sin_values = np.sin(psi_phi_t)  # Shape (2m(m+1), len(t))
 
-    second_sum = np.dot(cos_values, Cjk) + np.dot(sin_values, Sjk)
+    second_sum = (
+        np.dot(Cjk, cos_values) +
+        np.dot(Sjk, sin_values)
+    )
 
     return C0 + first_sum + second_sum

@@ -128,6 +128,7 @@ def tumbler_genetic_algorithm_fit(
     data: pd.DataFrame,
     fitness_function: Callable[[np.ndarray], float],
     name: str,
+    num_genes:int,
     m_: int = 1,
     population_size: int = 500,
     gene_range: Tuple[
@@ -178,8 +179,8 @@ def tumbler_genetic_algorithm_fit(
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
-        num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
-        gene_range=(2 * m_ + 2 * m_ * (2 * m_ + 1)) * (gene_range[0],) + gene_range[1:],
+        num_genes=num_genes,
+        gene_range=gene_range,
         num_generations=num_generations,
         elitism=elitism,
         crossover_rate=crossover_rate,
