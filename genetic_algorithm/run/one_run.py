@@ -83,9 +83,9 @@ def run_genetic_algorithm(
 
         # Adaptive mutation
         if (
-            generation > 400
-            and generation % 400 == 0
-            and fitness_in_pop[generation] == fitness_in_pop[generation - 400]
+            generation > 500
+            and generation % 500 == 0
+            and fitness_in_pop[-1] == fitness_in_pop[-500]
         ):
             mutation_rate = 0.1  # 20 * mutation_rate_0
             mutation_range = mutation_range_0
@@ -93,7 +93,7 @@ def run_genetic_algorithm(
             print("adapt")
         elif (
             generation > 2000
-            and generation % 500 == 0
+            and generation % 1000 == 0
             and fitness_in_pop[-1] == fitness_in_pop[-1000]
         ):  # reset stacked pop
             mutation_rate = 1
