@@ -66,7 +66,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1916_007"
+    name = "ID1916_001"
     data = load_data(
         name,
         column_names=(
