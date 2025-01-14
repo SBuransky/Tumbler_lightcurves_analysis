@@ -123,7 +123,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=500,
+            population_size=1000,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.1, 0.1)] * (m_ * (2 * m_ + 1))
