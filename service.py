@@ -74,15 +74,20 @@ def tumbler_periodogram(
     plt.close()
 
     # Plot the periodograms
-    ax1 = plt.subplot(311)
+
     plt.title(f"Periodogram_{name}")
-    ax1.plot(periodogram_lomb[0], periodogram_lomb[1], label="Lomb-Scargle Periodogram")
+    plt.plot(periodogram_lomb[0], periodogram_lomb[1], label="Lomb-Scargle Periodogram")
     # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
     plt.legend()
     plt.xlim(-0.5, 10)
+    plt.xlabel("Frequency ($day^{-1}$)")
 
-    ax2 = plt.subplot(312)
-    ax2.plot(
+    plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
+    plt.show()
+    plt.close()
+
+    ax1 = plt.subplot(211)
+    ax1.plot(
         periodogram_fourier[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
         np.abs(periodogram_fourier[1]) ** 2,
         label="Fourier Periodogram",
@@ -90,8 +95,8 @@ def tumbler_periodogram(
     plt.legend()
     plt.xlim(-0.5, 10)
 
-    ax3 = plt.subplot(313)
-    ax3.plot(
+    ax2 = plt.subplot(212)
+    ax2.plot(
         clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
         np.abs(clean_periodogram[1]) ** 2,
         label="CLEAN Periodogram",
@@ -306,6 +311,7 @@ def pa_rotator_genetic_algorithm_fit(
     data: pd.DataFrame,
     fitness_function: Callable[[np.ndarray], float],
     name: str,
+    num_genes: int,
     m_: int = 1,
     population_size: int = 500,
     gene_range: Tuple[
@@ -353,8 +359,8 @@ def pa_rotator_genetic_algorithm_fit(
     final_generation = run_genetic_algorithm(
         population_size=population_size,
         fitness_function=fitness_function,
-        num_genes=2 * m_ + 3,
-        gene_range=(2 * m_) * (gene_range[0],) + gene_range[1:],
+        num_genes=num_genes,
+        gene_range=gene_range,
         num_generations=num_generations,
         elitism=elitism,
         crossover_rate=crossover_rate,
@@ -427,11 +433,8 @@ def pa_rotator_genetic_algorithm_fit(
         file.write("Best in last gen:\n")
         file.write(str(final_generation[0]))
         file.write("\nBest fitness in last gen:\n")
-        file.write(str(final_generation[5]))
-        file.write("\n\nBest in all:\n")
-        file.write(str(final_generation[4]))
-        file.write("\nBest fitness in all:\n")
         file.write(str(final_generation[6]))
+
         file.write("\nGA calculation time:\n")
         file.write(str(ga_time))
 
