@@ -15,11 +15,13 @@ def crossover(
     - crossover_rate: Probability of crossover.
 
     Returns:
-    - Two offspring resulting from the crossover (NumPy arrays).
+    - A single offspring resulting from the crossover (NumPy array).
     """
-
-    if np.random.rand() < crossover_rate:
-        alpha = np.random.rand(len(parent1))
-        return alpha * parent1 + (1 - alpha) * parent2
+    n_genes = parent1.shape[0]
+    rand_values = np.random.random(2)  # Generate two random values
+    if rand_values[0] < crossover_rate:
+        alpha = np.random.random(n_genes)  # Alpha for weighted crossover
+        offspring = alpha * parent1 + (1 - alpha) * parent2
     else:
-        return parent1 if np.random.rand() > 0.5 else parent2
+        offspring = parent1 if rand_values[1] > 0.5 else parent2
+    return offspring
