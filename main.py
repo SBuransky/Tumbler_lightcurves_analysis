@@ -106,16 +106,16 @@ if __name__ == "__main__":
             # 2.020434781036017036e+00  2.677347356997863189e-03    0.494942974
             # 2.745719061407920325e+00  3.487168691736520620e-03    0.364203321
             name=name,
-            num_generations=10000,
+            num_generations=30000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
                 (
-                    np.full(m_ * (2 * m_ + 1), 0.01),
-                    np.full(m_ * (2 * m_ + 1), 0.01),
-                    np.full(m_, 0.01),
-                    np.full(m_, 0.01),
-                    np.array([0.2, 0.02, 0.01, 0.01]),
+                    np.full(m_ * (2 * m_ + 1), 0.005),
+                    np.full(m_ * (2 * m_ + 1), 0.005),
+                    np.full(m_, 0.005),
+                    np.full(m_, 0.005),
+                    np.array([0.1, 0.01, 0.005, 0.005]),
                 )
             ),
             limit_fitness=0.001,
