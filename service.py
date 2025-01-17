@@ -73,15 +73,17 @@ def tumbler_periodogram(
     plt.close()
 
     # Plot the periodograms
-    plt.plot(periodogram_lomb[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
-             periodogram_lomb[1][: len(fourier_transform(t, y, n_b)[0]) // 2], label="Lomb-Scargle Periodogram")
+    plt.plot(
+        periodogram_lomb[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
+        periodogram_lomb[1][: len(fourier_transform(t, y, n_b)[0]) // 2],
+        label="Lomb-Scargle Periodogram",
+    )
     # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
     plt.show()
     plt.close()
-
 
     plt.plot(
         periodogram_fourier[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
