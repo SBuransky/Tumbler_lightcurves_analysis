@@ -23,7 +23,7 @@ def tumbler_periodogram(
     name: str,
     n_iter=100,
     gain=0.5,
-    n_b=4,
+    n_b=10,
     dev_use_for_ls=None,
     dev: Optional[np.ndarray] = None,
     final_noise: float = 0.005,
@@ -54,7 +54,7 @@ def tumbler_periodogram(
         fourier_transform(t, y, n_b)[0],
         fourier_transform(t, y, n_b)[2],
     )
-    clean_periodogram, clean_maximas = clean(
+    clean_periodogram, clean_maximas, components, residuals = clean(
         fourier_transform(t, y, n_b)[0],
         fourier_transform(t, y, n_b)[1],
         fourier_transform(t, y, n_b)[2],
@@ -67,43 +67,55 @@ def tumbler_periodogram(
     plt.errorbar(t, y, yerr=np.abs(dev), fmt=".", label="Data")
     plt.xlabel("Julian Date (JD)")
     plt.ylabel("Normalized Flux")
-    plt.title("Observed Data")
     plt.legend()
     plt.savefig(f"Results/periodograms/Graphs/{name}_graph.pdf")
     plt.show()
     plt.close()
 
     # Plot the periodograms
-
-    plt.title(f"Periodogram_{name}")
-    plt.plot(periodogram_lomb[0], periodogram_lomb[1], label="Lomb-Scargle Periodogram")
+    plt.plot(periodogram_lomb[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
+             periodogram_lomb[1][: len(fourier_transform(t, y, n_b)[0]) // 2], label="Lomb-Scargle Periodogram")
     # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
     plt.legend()
-    plt.xlim(-0.5, 10)
     plt.xlabel("Frequency ($day^{-1}$)")
-
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
     plt.show()
     plt.close()
 
-    ax1 = plt.subplot(211)
-    ax1.plot(
+
+    plt.plot(
         periodogram_fourier[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
         np.abs(periodogram_fourier[1]) ** 2,
         label="Fourier Periodogram",
     )
     plt.legend()
-    plt.xlim(-0.5, 10)
+    plt.xlabel("Frequency ($day^{-1}$)")
+    plt.savefig(f"Results/periodograms/Periodograms/{name}_FOURIER.pdf")
+    plt.show()
+    plt.close()
 
-    ax2 = plt.subplot(212)
-    ax2.plot(
+    ax1 = plt.subplot(311)
+    ax1.plot(
         clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
         np.abs(clean_periodogram[1]) ** 2,
         label="CLEAN Periodogram",
     )
-    # ax3.scatter(clean_maximas[0], clean_maximas[1], color='red', label='CLEAN Maxima')
+
+    ax2 = plt.subplot(312)
+    ax2.plot(
+        clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
+        np.abs(components) ** 2,
+        label="CLEAN Components",
+    )
+
+    ax3 = plt.subplot(313)
+    ax3.plot(
+        clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
+        np.abs(residuals) ** 2,
+        label="Residual spectrum",
+    )
+
     plt.legend()
-    plt.xlim(-0.5, 10)
     plt.xlabel("Frequency ($day^{-1}$)")
 
     plt.savefig(f"Results/periodograms/Periodograms/{name}_PERIODOGRAM.pdf")

@@ -207,8 +207,7 @@ def clean(freq, wfn, dft, n_iter=100, gain=0.1, final_noise=0.005):
     cdft = np.roll(np.convolve(input_array, beam), -mb)
     # strip padding
     cdft = cdft[mb : len(input_array) - mb] + residual_spectrum
-    # cdft = residual_spectrum
-    # print(cdft)
+    components = cdft - residual_spectrum
     # Return
     clean_max = find_local_maxima(freq, np.abs(cdft) ** 2)
-    return (freq, cdft), clean_max
+    return (freq, cdft), clean_max, components, residual_spectrum
