@@ -12,11 +12,11 @@ import pandas as pd
 t, y, delta = generate_pa_rotator(
     frequency=1,
     num_periods=2,
-    sampling_rate=1440/5,
+    sampling_rate=1440 / 5,
     noise_amplitude=0.1,
     num_holes=2,
     min_hole_length=20,
-    max_hole_length=700/5,
+    max_hole_length=700 / 5,
     num_components=100,
 )
 
@@ -38,7 +38,7 @@ def fitness(solution):
     y_model = single_fourier_sequence(solution, m_, x)
 
     # calculation of the chi^2 and returning 1/chi^2
-    chi2 = np.sum((y - y_model) ** 2 / delta ** 2)
+    chi2 = np.sum((y - y_model) ** 2 / delta**2)
     return 1 / chi2
 
 
@@ -47,7 +47,7 @@ tumbler_periodogram(
     t, y, dev=delta, name=name, n_iter=10000, gain=0.1, final_noise=0.00004
 )
 
-'''pa_rotator_genetic_algorithm_fit(
+"""pa_rotator_genetic_algorithm_fit(
     data,
     fitness,
     m_=m_,
@@ -65,4 +65,4 @@ tumbler_periodogram(
                                    np.array([0.02, 0.2, 0.01]),
                                    )),
     limit_fitness=0.001,
-)'''
+)"""
