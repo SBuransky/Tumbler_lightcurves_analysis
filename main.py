@@ -105,7 +105,7 @@ if __name__ == "__main__":
                     np.array([0.2, 0.02, 0.01, 0.01]),
                 )
             ),
-            limit_fitness=0.001,
+            limit_fitness=0.0001,
         )
 
         # ID1916_001
