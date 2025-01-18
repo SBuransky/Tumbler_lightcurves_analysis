@@ -21,7 +21,7 @@ def initialize_population(
     gene_range = np.array(gene_range)
     gene_min_values = gene_range[:, 0]
     gene_max_values = gene_range[:, 1]
-
+    print(gene_range)
     # Efficient vectorized random initialization for population
     initial_population = np.random.uniform(
         gene_min_values, gene_max_values, size=(population_size, num_genes)

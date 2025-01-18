@@ -14,13 +14,13 @@ def parse_solution(
     :param m: order of the Fourier series
     :return: parsed values P, C0, Cj, Sj
     """
-    P = solution[-1] + 1 / 86400  # Period
+    f = solution[-1]
     t_0 = solution[-2]
     C0 = solution[-3]  # Constant term
     Cj = solution[m:-3]  # Cosine coefficients
     Sj = solution[:m]  # Sine coefficients
 
-    return P, t_0, C0, Cj, Sj
+    return f, t_0, C0, Cj, Sj
 
 
 '''
