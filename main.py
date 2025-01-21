@@ -26,7 +26,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1919_001"
+    name = "ID1916_003"
+
     data = load_data(
         name,
         column_names=(
@@ -83,6 +84,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
+            population_size=500,
             population_size=20,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
@@ -93,6 +95,7 @@ if __name__ == "__main__":
                 + [(0.98, 1.02), (-0.00001, 0.00001), (1.98, 2.02), (2.73, 2.77)]
             ),
             name=name,
+            num_generations=40000,
             num_generations=10000,
             elitism=2,
             mutation_rate=0.01,
