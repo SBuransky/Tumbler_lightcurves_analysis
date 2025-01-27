@@ -26,7 +26,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_003"
+    name = "ID1918_001"
 
     data = load_data(
         name,
