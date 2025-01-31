@@ -79,6 +79,7 @@ def tumbler_periodogram(
         label="Lomb-Scargle Periodogram",
     )
     # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
+    plt.xlim(-0.1, 10)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
@@ -90,6 +91,7 @@ def tumbler_periodogram(
         np.abs(periodogram_fourier[1]) ** 2,
         label="Fourier Periodogram",
     )
+    plt.xlim(-0.1, 10)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_FOURIER.pdf")
@@ -102,6 +104,8 @@ def tumbler_periodogram(
         np.abs(clean_periodogram[1]) ** 2,
         label="CLEAN Periodogram",
     )
+    plt.xlim(-0.1, 10)
+    plt.legend()
 
     ax2 = plt.subplot(312)
     ax2.plot(
@@ -109,6 +113,8 @@ def tumbler_periodogram(
         np.abs(components) ** 2,
         label="CLEAN Components",
     )
+    plt.xlim(-0.1, 10)
+    plt.legend()
 
     ax3 = plt.subplot(313)
     ax3.plot(
@@ -116,7 +122,7 @@ def tumbler_periodogram(
         np.abs(residuals) ** 2,
         label="Residual spectrum",
     )
-
+    plt.xlim(-0.1, 10)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
 
