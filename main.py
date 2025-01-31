@@ -26,7 +26,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1919_007"
+    name = "ID1918_003"
 
     data = load_data(
         name,
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                 + [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * m_
                 + [(-0.03, 0.03)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (1.24, 1.28), (0.56, 0.60)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.56, 0.60), (1.24, 1.28)]
             ),
             name=name,
             num_generations=100000,
@@ -99,10 +99,10 @@ if __name__ == "__main__":
             mutation_rate=0.01,
             mutation_range=np.concatenate(
                 (
-                    np.full(m_ * (2 * m_ + 1), 0.01),
-                    np.full(m_ * (2 * m_ + 1), 0.01),
-                    np.full(m_, 0.01),
-                    np.full(m_, 0.01),
+                    np.full(m_ * (2 * m_ + 1), 0.03),
+                    np.full(m_ * (2 * m_ + 1), 0.03),
+                    np.full(m_, 0.03),
+                    np.full(m_, 0.03),
                     np.array([0.02, 0.000001, 0.02, 0.02]),
                 )
             ),
