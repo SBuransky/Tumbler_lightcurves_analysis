@@ -26,7 +26,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_007"
+    name = "ID1916_001"
 
     data = load_data(
         name,
@@ -84,14 +84,14 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=10,
+            population_size=500,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * m_
                 + [(-0.03, 0.03)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.56, 0.60), (1.24, 1.28)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (1.19, 1.23), (0.66, 0.70)]
             ),
             name=name,
             num_generations=100000,
