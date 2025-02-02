@@ -11,17 +11,19 @@ import pandas as pd
 
 t, y, delta = generate_pa_rotator(
     frequency=1,
-    num_periods=1.5,
+    num_periods=2,
     sampling_rate=1440 / 5,
     noise_amplitude=0.03,
-    num_holes=1,
+    num_holes=2,
     min_hole_length=20,
-    max_hole_length=700 / 5,
+    max_hole_length=700 / 10,
     num_components=5,
+    seed=17,
 )
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
-name = "test_001"
+name = "ID0001"
+data.to_csv("data/" + name + ".txt", sep="\t", index=False)
 print(data)
 m_ = 5
 
@@ -43,9 +45,9 @@ def fitness(solution):
 
 
 print(len(data))
-tumbler_periodogram(
-    t, y, dev=delta, name=name, n_iter=10000, gain=0.5, final_noise=0.00005
-)
+"""tumbler_periodogram(
+    t, y, dev=delta, name=name, n_iter=10000, gain=0.5, final_noise=0.0002
+)"""
 
 
 pa_rotator_genetic_algorithm_fit(
@@ -58,7 +60,7 @@ pa_rotator_genetic_algorithm_fit(
         [(-1, 1)] * m_ + [(-1, 1)] * m_ + [(0.98, 1.02), (-0.2, 0.2), (0.98, 1.02)]
     ),
     name=name,
-    num_generations=1000,
+    num_generations=5000,
     elitism=2,
     mutation_rate=0.01,
     mutation_range=np.concatenate(
