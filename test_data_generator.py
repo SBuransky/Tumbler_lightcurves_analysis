@@ -58,8 +58,12 @@ def generate_pa_rotator(
     t_with_holes = np.delete(t, hole_indices)
 
     # Randomly generate coefficients for the sine and cosine components
-    sine_coefficients = np.sort(np.random.rand(num_components))[::-1]
-    cosine_coefficients = np.sort(np.random.rand(num_components))[::-1]
+    sine_coefficients = np.random.uniform(-1, 1, size=num_components)
+    cosine_coefficients = np.random.uniform(-1, 1, size=num_components)
+
+    sine_coefficients = sine_coefficients[np.argsort(-np.abs(sine_coefficients))]
+    cosine_coefficients = cosine_coefficients[np.argsort(-np.abs(cosine_coefficients))]
+
     sine_coefficients[1:] = sine_coefficients[1:] / 5
     cosine_coefficients[1:] = cosine_coefficients[1:] / 5
     print(sine_coefficients)

@@ -51,8 +51,8 @@ if __name__ == "__main__":
             name=name,
             n_iter=1000,
             n_b=4,
-            gain=0.1,
-            final_noise=0.00002,
+            gain=0.5,
+            final_noise=0.00005,
             dev=data["deviation_used"],
         )
 
@@ -84,7 +84,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=500,
+            population_size=10,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                     np.array([0.02, 0.000001, 0.02, 0.02]),
                 )
             ),
-            limit_fitness=0.0005,
+            limit_fitness=0.001,
         )
 
         # ID1916
