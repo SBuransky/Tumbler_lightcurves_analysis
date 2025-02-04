@@ -37,7 +37,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".flux",
+        appendix=".txt",
     )
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                     np.array([0.02, 0.000001, 0.02, 0.02]),
                 )
             ),
-            limit_fitness=0.001,
+            limit_fitness=0.0001,
         )
 
         # ID1916
