@@ -26,7 +26,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1916_001"
+    name = "ID1918_001"
 
     data = load_data(
         name,
@@ -49,10 +49,10 @@ if __name__ == "__main__":
             data["julian_day"].values,
             data["noisy_flux"].values,
             name=name,
-            n_iter=1000,
+            n_iter=100,
             n_b=4,
             gain=0.5,
-            final_noise=0.00005,
+            final_noise=0.00002,
             dev=data["deviation_used"],
         )
 
@@ -84,17 +84,17 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=500,
+            population_size=50,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * m_
                 + [(-0.03, 0.03)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.66, 0.70), (1.19, 1.23)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.27, 0.31), (0.32, 0.36)]
             ),
             name=name,
-            num_generations=100000,
+            num_generations=10000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(

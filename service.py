@@ -67,6 +67,7 @@ def tumbler_periodogram(
     plt.errorbar(t, y, yerr=np.abs(dev), fmt=".", label="Data")
     plt.xlabel("Julian Date (JD)")
     plt.ylabel("Normalized Flux")
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.savefig(f"Results/periodograms/Graphs/{name}_graph.pdf")
     plt.show()
@@ -80,6 +81,7 @@ def tumbler_periodogram(
     )
     # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
     plt.xlim(-0.1, 10)
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
@@ -92,6 +94,7 @@ def tumbler_periodogram(
         label="Fourier Periodogram",
     )
     plt.xlim(-0.1, 10)
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_FOURIER.pdf")
@@ -105,6 +108,7 @@ def tumbler_periodogram(
         label="CLEAN Periodogram",
     )
     plt.xlim(-0.1, 10)
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
 
     ax2 = plt.subplot(312)
@@ -114,6 +118,7 @@ def tumbler_periodogram(
         label="CLEAN Components",
     )
     plt.xlim(-0.1, 10)
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
 
     ax3 = plt.subplot(313)
@@ -123,6 +128,7 @@ def tumbler_periodogram(
         label="Residual spectrum",
     )
     plt.xlim(-0.1, 10)
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
 

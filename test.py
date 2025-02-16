@@ -10,20 +10,22 @@ import numpy as np
 import pandas as pd
 
 t, y, delta = generate_pa_rotator(
-    frequency=1,
+    frequency=2,
     num_periods=2,
-    sampling_rate=1440 / 5,
+    sampling_rate=1440 / 10,
     noise_amplitude=0.03,
     num_holes=2,
     min_hole_length=20,
-    max_hole_length=700 / 10,
-    num_components=5,
-    seed=17,
+    max_hole_length=1440 / 20,
+    num_components=8,
+    seed=0,
 )
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
-name = "ID0001"
+name = "ID0003"
 data.to_csv("data/" + name + ".txt", sep="\t", index=False)
+
+
 print(data)
 m_ = 5
 
@@ -45,30 +47,30 @@ def fitness(solution):
 
 
 print(len(data))
-"""tumbler_periodogram(
-    t, y, dev=delta, name=name, n_iter=10000, gain=0.5, final_noise=0.0002
-)"""
+tumbler_periodogram(
+    t, y, dev=delta, name=name, n_iter=10000, gain=0.5, final_noise=0.0005
+)
 
 
-pa_rotator_genetic_algorithm_fit(
+"""pa_rotator_genetic_algorithm_fit(
     data,
     fitness,
     m_=m_,
-    population_size=1000,
+    population_size=500,
     num_genes=2 * m_ + 3,
     gene_range=np.array(
-        [(-1, 1)] * m_ + [(-1, 1)] * m_ + [(0.98, 1.02), (-0.2, 0.2), (0.98, 1.02)]
+        [(-0.5, 0.5)] * m_ + [(-0.5, 0.5)] * m_ + [(0.98, 1.02), (-0.00001, 0.00001), (1.98, 2.02)]
     ),
     name=name,
-    num_generations=5000,
+    num_generations=10000,
     elitism=2,
     mutation_rate=0.01,
     mutation_range=np.concatenate(
         (
-            np.full(m_, 1),
-            np.full(m_, 1),
-            np.array([0.02, 0.2, 0.02]),
+            np.full(m_, 0.5),
+            np.full(m_, 0.5),
+            np.array([0.02, 0.00001, 0.02]),
         )
     ),
-    limit_fitness=0.001,
-)
+    limit_fitness=0.002,
+)"""
