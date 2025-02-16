@@ -26,7 +26,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1916_003"
+    name = "ID1916_001"
 
     data = load_data(
         name,
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                     np.array([0.02, 0.000001, 0.02, 0.02]),
                 )
             ),
-            limit_fitness=0.0005,
+            limit_fitness=0.00005,
         )
 
         # ID1916
