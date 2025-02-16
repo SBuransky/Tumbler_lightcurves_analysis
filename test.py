@@ -51,8 +51,8 @@ tumbler_periodogram(
     t, y, dev=delta, name=name, n_iter=10000, gain=0.5, final_noise=0.0005
 )
 
-
 """pa_rotator_genetic_algorithm_fit(
+>>>>>>> Stashed changes
     data,
     fitness,
     m_=m_,
