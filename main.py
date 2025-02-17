@@ -26,7 +26,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load data (common to both parts)
-    name = "ID1918_001"
+    # For use follow these instructions:
+    name = "ID1916_001" # Set the name of your data file
 
     data = load_data(
         name,
@@ -37,7 +38,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".txt",
+        appendix=".txt", # Set the appendix of your data file
     )
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
@@ -84,17 +85,17 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=50,
+            population_size=500,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * m_
                 + [(-0.03, 0.03)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.27, 0.31), (0.32, 0.36)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.24, 0.30), (0.32, 0.38)]
             ),
             name=name,
-            num_generations=10000,
+            num_generations=100000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
@@ -103,10 +104,10 @@ if __name__ == "__main__":
                     np.full(m_ * (2 * m_ + 1), 0.03),
                     np.full(m_, 0.03),
                     np.full(m_, 0.03),
-                    np.array([0.02, 0.000001, 0.02, 0.02]),
+                    np.array([0.02, 0.000001, 0.03, 0.03]),
                 )
             ),
-            limit_fitness=0.00005,
+            limit_fitness=0.001,
         )
 
         # ID1916
