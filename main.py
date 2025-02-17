@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # Load data (common to both parts)
     # For use follow these instructions:
-    name = "ID1916_001" # Set the name of your data file
+    name = "ID1916_001"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -38,7 +38,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".txt", # Set the appendix of your data file
+        appendix=".txt",  # Set the appendix of your data file
     )
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
