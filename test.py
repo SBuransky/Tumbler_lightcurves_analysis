@@ -52,7 +52,6 @@ tumbler_periodogram(
 )
 
 """pa_rotator_genetic_algorithm_fit(
->>>>>>> Stashed changes
     data,
     fitness,
     m_=m_,
