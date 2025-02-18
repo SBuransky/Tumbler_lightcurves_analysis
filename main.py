@@ -100,7 +100,7 @@ if __name__ == "__main__":
             mutation_rate=0.01,
             mutation_range=np.concatenate(
                 (
-                    np.full(m_ * (2 * m_ + 1),  0.03),
+                    np.full(m_ * (2 * m_ + 1), 0.03),
                     np.full(m_ * (2 * m_ + 1), 0.03),
                     np.full(m_, 0.03),
                     np.full(m_, 0.03),
