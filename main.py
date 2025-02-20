@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # Load data (common to both parts)
     # For use follow these instructions:
-    name = "ID1916_001"  # Set the name of your data file
+    name = "ID1916_003"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -95,7 +95,7 @@ if __name__ == "__main__":
                 + [(0.98, 1.02), (-0.00001, 0.00001), (0.32, 0.38), (0.24, 0.30)]
             ),
             name=name,
-            num_generations=100000,
+            num_generations=10000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
