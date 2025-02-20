@@ -106,7 +106,6 @@ def run_genetic_algorithm(
             elitism = elitism_0
 
         # Stopping criteria
-        """
         if (
             generation > 1000
             and generation % 1000 == 0
@@ -115,7 +114,6 @@ def run_genetic_algorithm(
             < 10 ** (-100)
         ):
             break
-        """
 
         if best_fitness >= limit_fitness:
             break

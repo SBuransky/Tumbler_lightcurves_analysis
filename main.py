@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # Load data (common to both parts)
     # For use follow these instructions:
-    name = "ID1916_003"  # Set the name of your data file
+    name = "ID1916_001"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=500,
+            population_size=200,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
