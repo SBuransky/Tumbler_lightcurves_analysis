@@ -85,7 +85,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=200,
+            population_size=500,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
