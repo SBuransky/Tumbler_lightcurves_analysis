@@ -95,7 +95,7 @@ if __name__ == "__main__":
                 + [(0.98, 1.02), (-0.00001, 0.00001), (0.36, 0.42), (0.16, 0.22)]
             ),
             name=name,
-            num_generations=10000,
+            num_generations=20000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
