@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # Load data (common to both parts)
     # For use follow these instructions:
-    name = "ID1919_003"  # Set the name of your data file
+    name = "ID1919_001"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 5
+        m_ = 4
 
         def fitness(solution):
             """
@@ -92,7 +92,7 @@ if __name__ == "__main__":
                 + [(-0.03, 0.03)] * (m_ * (2 * m_ + 1))
                 + [(-0.03, 0.03)] * m_
                 + [(-0.03, 0.03)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.90, 0.96), (0.18, 0.24)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.91, 0.95), (0.19, 0.23)]
             ),
             name=name,
             num_generations=20000,
