@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import utils.find_maxima
 from utils.fourier_series_value import double_fourier_sequence
 from utils.single_fourier_series_value import single_fourier_sequence
 from utils.load_dataset import load_data
@@ -139,6 +140,11 @@ def tumbler_periodogram(
     # Save the maxima to a text file as two columns
     ls_maximas_file = np.column_stack((maximas_lomb[0], maximas_lomb[1]))
     clean_maximas_file = np.column_stack((clean_maximas[0], clean_maximas[1]))
+
+    fourier_maximas = utils.find_maxima.find_local_maxima(
+        periodogram_fourier[0], np.abs(periodogram_fourier[1]) ** 2
+    )
+    fourier_maxima_file = np.column_stack((fourier_maximas[0], fourier_maximas[1]))
     np.savetxt(
         f"Results/periodograms/Results/{name}_LS.txt",
         ls_maximas_file,
@@ -149,6 +155,13 @@ def tumbler_periodogram(
     np.savetxt(
         f"Results/periodograms/Results/{name}_CLEAN.txt",
         clean_maximas_file,
+        delimiter=" ",
+        header="Frequency Power",
+        comments="",
+    )
+    np.savetxt(
+        f"Results/periodograms/Results/{name}_FT.txt",
+        fourier_maxima_file,
         delimiter=" ",
         header="Frequency Power",
         comments="",

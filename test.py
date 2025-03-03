@@ -25,7 +25,6 @@ data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
 name = "ID0003"
 data.to_csv("data/" + name + ".txt", sep="\t", index=False)
 
-
 print(data)
 m_ = 5
 
