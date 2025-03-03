@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # Load data (common to both parts)
     # For use follow these instructions:
-    name = "ID1919_001"  # Set the name of your data file
+    name = "ID1917_001"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -92,7 +92,7 @@ if __name__ == "__main__":
                 + [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
                 + [(-0.04, 0.04)] * m_
                 + [(-0.04, 0.04)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.91, 0.95), (0.19, 0.23)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.76, 0.80), (0.37, 0.41)]
             ),
             name=name,
             num_generations=20000,
