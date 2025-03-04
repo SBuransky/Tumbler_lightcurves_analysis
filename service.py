@@ -387,7 +387,6 @@ def pa_rotator_genetic_algorithm_fit(
     This function sets up directories for saving results, runs the genetic algorithm,
     and then plots the best fit and fitness progression over generations. It saves
     these plots and the best results to specified directories.
-
     """
     # Ensure directories exist
     os.makedirs("Results/genetic_algorithm/graphs/", exist_ok=True)

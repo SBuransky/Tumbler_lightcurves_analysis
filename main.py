@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "ID1917_001"  # Set the name of your data file
+    name = "ID1916_001"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -39,7 +39,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".flux",  # Set the appendix of your data file
+        appendix=".txt",  # Set the appendix of your data file
     )
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
@@ -86,17 +86,17 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=50,
+            population_size=250,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
                 + [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
                 + [(-0.04, 0.04)] * m_
                 + [(-0.04, 0.04)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.53, 0.57), (0.17, 0.21)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.56, 0.60), (0.21, 0.25)]
             ),
             name=name,
-            num_generations=1000,
+            num_generations=20000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
