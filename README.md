@@ -1,3 +1,3 @@
 Tumbler light curve analysis
 
-Project contains of three parts: Periodogram (CLEAN Fourier and Lomb Scargle), Genetic algorithm and Brut force.
+Project contains of two parts: Periodogram (CLEAN Fourier and Lomb Scargle) and Genetic algorithm.
