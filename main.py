@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "ID1916_001"  # Set the name of your data file
+    name = "ID1923"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -54,7 +54,7 @@ if __name__ == "__main__":
             n_iter=100,
             n_b=4,
             gain=0.8,
-            final_noise=0.00006,
+            final_noise=0.000000000015,
             dev=data["deviation_used"],
         )
 
@@ -86,17 +86,17 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=250,
+            population_size=100,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
                 + [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
                 + [(-0.04, 0.04)] * m_
                 + [(-0.04, 0.04)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (0.33, 0.37), (0.21, 0.25)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (0.55, 0.59), (0.42, 0.46)]
             ),
             name=name,
-            num_generations=20000,
+            num_generations=2000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
