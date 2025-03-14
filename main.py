@@ -39,7 +39,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".txt",  # Set the appendix of your data file
+        appendix=".flux",  # Set the appendix of your data file
     )
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
