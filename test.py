@@ -1,4 +1,3 @@
-from test_data_generator import generate_pa_rotator
 from service import (
     tumbler_periodogram,
     tumbler_genetic_algorithm_fit,
@@ -9,17 +8,7 @@ from utils.single_fourier_series_value import single_fourier_sequence
 import numpy as np
 import pandas as pd
 
-t, y, delta = generate_pa_rotator(
-    frequency=2,
-    num_periods=2,
-    sampling_rate=1440 / 10,
-    noise_amplitude=0.03,
-    num_holes=2,
-    min_hole_length=20,
-    max_hole_length=1440 / 20,
-    num_components=8,
-    seed=0,
-)
+
 
 data = pd.DataFrame({"julian_day": t, "noisy_flux": y, "deviation_used": delta})
 name = "ID0003"
