@@ -46,4 +46,4 @@ def lomb_scargle(
     periodogram = (frequency, power)
     # local_maxima = (maxima_x, maxima_y)
 
-    return periodogram # , local_maxima
+    return periodogram  # , local_maxima
