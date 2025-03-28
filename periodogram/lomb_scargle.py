@@ -40,10 +40,10 @@ def lomb_scargle(
     frequency, power = ls.autopower()
 
     # Find local maxima in the periodogram
-    maxima_x, maxima_y = find_local_maxima(frequency, power)
+    # maxima_x, maxima_y = find_local_maxima(frequency, power)
 
     # Prepare periodogram and local maxima data for return
     periodogram = (frequency, power)
-    local_maxima = (maxima_x, maxima_y)
+    # local_maxima = (maxima_x, maxima_y)
 
-    return periodogram, local_maxima
+    return periodogram # , local_maxima
