@@ -28,6 +28,7 @@ def tumbler_periodogram(
     dev_use_for_ls=None,
     dev: Optional[np.ndarray] = None,
     final_noise: float = 0.005,
+    x_border: tuple = (-0.1, 10),
 ) -> None:
     """
     Compute Lomb-Scargle periodogram and plot results.
@@ -49,7 +50,7 @@ def tumbler_periodogram(
     frequency = frequency_grid(t, n_b)
     # Compute the periodogram and maxima
     periodogram_lomb, maximas_lomb = lomb_scargle(
-        t, y, frequency, dev, dev_use_for_ls=dev_use_for_ls
+        t, y, frequency, np.abs(dev), dev_use_for_ls=dev_use_for_ls
     )
     periodogram_fourier = (
         fourier_transform(t, y, n_b)[0],
@@ -81,7 +82,7 @@ def tumbler_periodogram(
         label="Lomb-Scargle Periodogram",
     )
     # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
-    plt.xlim(-0.1, 20)
+    plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
@@ -94,7 +95,7 @@ def tumbler_periodogram(
         np.abs(periodogram_fourier[1]) ** 2,
         label="Fourier Periodogram",
     )
-    plt.xlim(-0.1, 20)
+    plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
@@ -108,7 +109,7 @@ def tumbler_periodogram(
         np.abs(clean_periodogram[1]) ** 2,
         label="CLEAN Periodogram",
     )
-    plt.xlim(-0.1, 20)
+    plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
 
@@ -118,7 +119,7 @@ def tumbler_periodogram(
         np.abs(components) ** 2,
         label="CLEAN Components",
     )
-    plt.xlim(-0.1, 20)
+    plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
 
@@ -128,7 +129,7 @@ def tumbler_periodogram(
         np.abs(residuals) ** 2,
         label="Residual spectrum",
     )
-    plt.xlim(-0.1, 20)
+    plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")

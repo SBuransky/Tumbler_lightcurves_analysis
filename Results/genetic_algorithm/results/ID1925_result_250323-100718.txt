@@ -1,0 +1,27 @@
+Best in last gen:
+[-3.40748328e-02 -2.68841442e-03 -2.61305720e-03 -1.05543732e-01
+ -3.61137107e-03 -6.51622067e-03  9.87455776e-01 -2.26305779e-06
+  2.44448121e+00]
+Best fitness in last gen:
+1.985896377680886e-07
+GA calculation time:
+464.1701683998108
+
+Initial parameters
+population size = 250
+number of generations = 2000
+Real number of generations = 2000
+elitism = 2
+crossover_rate = 0.95
+mutation rate = 0.01
+mutation range = [2.e-01 2.e-01 2.e-01 2.e-01 2.e-01 2.e-01 2.e-02 1.e-05 2.e-02]
+order = 3
+gene ranges = [[-3.00e-01  3.00e-01]
+ [-3.00e-01  3.00e-01]
+ [-3.00e-01  3.00e-01]
+ [-3.00e-01  3.00e-01]
+ [-3.00e-01  3.00e-01]
+ [-3.00e-01  3.00e-01]
+ [ 9.80e-01  1.02e+00]
+ [-1.00e-05  1.00e-05]
+ [ 2.41e+00  2.45e+00]]

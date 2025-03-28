@@ -36,7 +36,8 @@ def lomb_scargle(
     else:
         ls = LombScargle(t=t, y=y, dy=dev)
 
-    power = ls.power(frequency)
+    # power = ls.power(frequency)
+    frequency, power = ls.autopower()
 
     # Find local maxima in the periodogram
     maxima_x, maxima_y = find_local_maxima(frequency, power)
