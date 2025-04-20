@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "ID1919_001"  # Set the name of your data file
+    name = "ID1925"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -52,7 +52,7 @@ if __name__ == "__main__":
             "sigma",
             "deviation_used",
         ),
-        appendix=".flux",  # Set the appendix of your data file
+        appendix=".txt",  # Set the appendix of your data file
     )
 
     data["julian_day"] -= min(data["julian_day"])
@@ -66,9 +66,9 @@ if __name__ == "__main__":
             data["noisy_flux"].values,
             name=name,
             n_iter=100,
-            n_b=20,
-            gain=0.8,
-            final_noise=0.000005,
+            n_b=100,
+            gain=0.5,
+            final_noise=0.000009,
             dev=data["deviation_used"],
             x_border=(-0.1, 10),
         )
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 4
+        m_ = 3
 
         def fitness(solution):
             """
@@ -111,12 +111,12 @@ if __name__ == "__main__":
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (0.71, 0.75),
-                    (0.55, 0.59),
+                    (0.40, 0.50),
+                    (0.28, 0.38),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=20000,
+            num_generations=4000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
@@ -211,7 +211,7 @@ if __name__ == "__main__":
             gene_range=np.array(
                 [(-0.3, 0.3)] * m_
                 + [(-0.3, 0.3)] * m_
-                + [(0.98, 1.02), (-0.00001, 0.00001), (12.23, 12.27)]
+                + [(0.98, 1.02), (-0.00001, 0.00001), (2.45, 2.55)]
             ),
             name=name,
             num_generations=10000,
