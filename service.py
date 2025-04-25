@@ -52,6 +52,9 @@ def tumbler_periodogram(
     periodogram_lomb, maximas_lomb = lomb_scargle(
         t, y, frequency, np.abs(dev), dev_use_for_ls=dev_use_for_ls
     )
+    periodogram_lomb_window, maximas_lomb_window = lomb_scargle(
+        t, np.ones(len(t)), frequency, center=False, mean=False
+    )
     periodogram_fourier = (
         fourier_transform(t, y, n_b)[0],
         fourier_transform(t, y, n_b)[2],
@@ -86,7 +89,23 @@ def tumbler_periodogram(
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
+    plt.ylabel("Spectral power")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
+    plt.show()
+    plt.close()
+
+    plt.plot(
+        periodogram_lomb_window[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
+        periodogram_lomb_window[1][: len(fourier_transform(t, y, n_b)[0]) // 2],
+        label="Lomb-Scargle Periodogram of Window",
+    )
+    # ax1.scatter(maximas_lomb[0], maximas_lomb[1], color='red', label='Lomb-Scargle Maxima')
+    plt.xlim(x_border[0], x_border[1])
+    plt.tick_params(bottom=True, top=True, left=True, right=True)
+    plt.legend()
+    plt.xlabel("Frequency ($day^{-1}$)")
+    plt.ylabel("Spectral power")
+    plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE_WINDOW.pdf")
     plt.show()
     plt.close()
 
@@ -99,40 +118,35 @@ def tumbler_periodogram(
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
     plt.xlabel("Frequency ($day^{-1}$)")
+    plt.ylabel("Spectral power")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_FOURIER.pdf")
     plt.show()
     plt.close()
 
-    ax1 = plt.subplot(311)
-    ax1.plot(
-        clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
-        np.abs(clean_periodogram[1]) ** 2,
-        label="CLEAN Periodogram",
+    fig, (ax1, ax2, ax3) = plt.subplots(
+        3, 1, figsize=(8, 10), sharex=True, constrained_layout=True
     )
-    plt.xlim(x_border[0], x_border[1])
-    plt.tick_params(bottom=True, top=True, left=True, right=True)
-    plt.legend()
 
-    ax2 = plt.subplot(312)
-    ax2.plot(
-        clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
-        np.abs(components) ** 2,
-        label="CLEAN Components",
-    )
-    plt.xlim(x_border[0], x_border[1])
-    plt.tick_params(bottom=True, top=True, left=True, right=True)
-    plt.legend()
+    freq = clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2]
 
-    ax3 = plt.subplot(313)
-    ax3.plot(
-        clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2],
-        np.abs(residuals) ** 2,
-        label="Residual spectrum",
-    )
-    plt.xlim(x_border[0], x_border[1])
-    plt.tick_params(bottom=True, top=True, left=True, right=True)
-    plt.legend()
-    plt.xlabel("Frequency ($day^{-1}$)")
+    ax1.plot(freq, np.abs(clean_periodogram[1]) ** 2, label="CLEAN Periodogram")
+    ax1.legend()
+    ax1.tick_params(bottom=True, top=True, left=True, right=True)
+    ax1.set_xlim(x_border[0], x_border[1])
+
+    ax2.plot(freq, np.abs(components) ** 2, label="CLEAN Components")
+    ax2.legend()
+    ax2.tick_params(bottom=True, top=True, left=True, right=True)
+    ax2.set_xlim(x_border[0], x_border[1])
+
+    ax3.plot(freq, np.abs(residuals) ** 2, label="Residual spectrum")
+    ax3.set_xlabel("Frequency ($day^{-1}$)")
+    ax3.legend()
+    ax3.tick_params(bottom=True, top=True, left=True, right=True)
+    ax3.set_xlim(x_border[0], x_border[1])
+
+    # Shared y-axis label
+    fig.supylabel("Spectral power")
 
     plt.savefig(f"Results/periodograms/Periodograms/{name}_PERIODOGRAM.pdf")
     plt.show()
@@ -140,6 +154,9 @@ def tumbler_periodogram(
 
     # Save the maxima to a text file as two columns
     ls_maximas_file = np.column_stack((maximas_lomb[0], maximas_lomb[1]))
+    ls_window_maximas_file = np.column_stack(
+        (maximas_lomb_window[0], maximas_lomb_window[1])
+    )
     clean_maximas_file = np.column_stack((clean_maximas[0], clean_maximas[1]))
 
     fourier_maximas = utils.find_maxima.find_local_maxima(
@@ -149,6 +166,13 @@ def tumbler_periodogram(
     np.savetxt(
         f"Results/periodograms/Results/{name}_LS.txt",
         ls_maximas_file,
+        delimiter=" ",
+        header="Frequency Power",
+        comments="",
+    )
+    np.savetxt(
+        f"Results/periodograms/Results/{name}_LS_window.txt",
+        ls_window_maximas_file,
         delimiter=" ",
         header="Frequency Power",
         comments="",
@@ -250,9 +274,10 @@ def tumbler_genetic_algorithm_fit(
 
     # Plotting best fit and overall best
     days = data["julian_day"].values
+    days_to_plot = np.linspace(min(days), max(days), num=len(days) * 500)
     plt.plot(
-        days,
-        double_fourier_sequence(final_generation[0], m_, days),
+        days_to_plot,
+        double_fourier_sequence(final_generation[0], m_, days_to_plot),
         label="Last Generation Best",
     )
     """plt.plot(

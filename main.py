@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "ID1925"  # Set the name of your data file
+    name = "ID1916_001"  # Set the name of your data file
 
     data = load_data(
         name,
@@ -66,9 +66,9 @@ if __name__ == "__main__":
             data["noisy_flux"].values,
             name=name,
             n_iter=100,
-            n_b=100,
+            n_b=200,
             gain=0.5,
-            final_noise=0.000009,
+            final_noise=0.00002,
             dev=data["deviation_used"],
             x_border=(-0.1, 10),
         )
@@ -101,22 +101,22 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=300,
+            population_size=50,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
-                [(-0.1, 0.1)] * (m_ * (2 * m_ + 1))
-                + [(-0.1, 0.1)] * (m_ * (2 * m_ + 1))
-                + [(-0.1, 0.1)] * m_
-                + [(-0.1, 0.1)] * m_
+                [(-0.05, 0.05)] * (m_ * (2 * m_ + 1))
+                + [(-0.05, 0.05)] * (m_ * (2 * m_ + 1))
+                + [(-0.05, 0.05)] * m_
+                + [(-0.05, 0.05)] * m_
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (0.40, 0.50),
-                    (0.28, 0.38),
+                    (1.05, 1.15),
+                    (0.72, 0.82),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=4000,
+            num_generations=20000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
