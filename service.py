@@ -50,7 +50,7 @@ def tumbler_periodogram(
     frequency = frequency_grid(t, n_b)
     # Compute the periodogram and maxima
     periodogram_lomb, maximas_lomb = lomb_scargle(
-        t, y, frequency, np.abs(dev), dev_use_for_ls=dev_use_for_ls
+        t, y, frequency, np.abs(dev), dev_use_for_ls=dev_use_for_ls, center=False
     )
     periodogram_lomb_window, maximas_lomb_window = lomb_scargle(
         t, np.ones(len(t)), frequency, center=False, mean=False
@@ -123,9 +123,7 @@ def tumbler_periodogram(
     plt.show()
     plt.close()
 
-    fig, (ax1, ax2, ax3) = plt.subplots(
-        3, 1, figsize=(8, 10), sharex=True, constrained_layout=True
-    )
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, constrained_layout=True)
 
     freq = clean_periodogram[0][: len(fourier_transform(t, y, n_b)[0]) // 2]
 
@@ -134,16 +132,11 @@ def tumbler_periodogram(
     ax1.tick_params(bottom=True, top=True, left=True, right=True)
     ax1.set_xlim(x_border[0], x_border[1])
 
-    ax2.plot(freq, np.abs(components) ** 2, label="CLEAN Components")
+    ax2.plot(freq, np.abs(residuals) ** 2, label="Residual spectrum")
+    ax2.set_xlabel("Frequency ($day^{-1}$)")
     ax2.legend()
     ax2.tick_params(bottom=True, top=True, left=True, right=True)
     ax2.set_xlim(x_border[0], x_border[1])
-
-    ax3.plot(freq, np.abs(residuals) ** 2, label="Residual spectrum")
-    ax3.set_xlabel("Frequency ($day^{-1}$)")
-    ax3.legend()
-    ax3.tick_params(bottom=True, top=True, left=True, right=True)
-    ax3.set_xlim(x_border[0], x_border[1])
 
     # Shared y-axis label
     fig.supylabel("Spectral power")
@@ -275,16 +268,6 @@ def tumbler_genetic_algorithm_fit(
     # Plotting best fit and overall best
     days = data["julian_day"].values
     days_to_plot = np.linspace(min(days), max(days), num=len(days) * 500)
-    plt.plot(
-        days_to_plot,
-        double_fourier_sequence(final_generation[0], m_, days_to_plot),
-        label="Last Generation Best",
-    )
-    """plt.plot(
-        days,
-        double_fourier_sequence(final_generation[4], m_, days),
-        label="Best in all",
-    )"""
 
     # Plot noisy data
     plt.scatter(days, data["noisy_flux"].values, c="gray", marker="+", s=5)
@@ -297,6 +280,17 @@ def tumbler_genetic_algorithm_fit(
         elinewidth=1.5,
         capsize=0,
     )
+
+    plt.plot(
+        days_to_plot,
+        double_fourier_sequence(final_generation[0], m_, days_to_plot),
+        label="Last Generation Best",
+    )
+    """plt.plot(
+        days,
+        double_fourier_sequence(final_generation[4], m_, days),
+        label="Best in all",
+    )"""
 
     # Plot settings
     plt.xlabel("Time [day]")
