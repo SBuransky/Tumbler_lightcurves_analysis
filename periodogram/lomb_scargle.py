@@ -12,6 +12,8 @@ def lomb_scargle(
     frequency: np.ndarray,
     dev: Optional[np.ndarray] = None,
     dev_use_for_ls=None,
+    center=True,
+    mean=True,
 ) -> Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
     """
     Computes the Lomb-Scargle periodogram and finds local maxima.
@@ -32,18 +34,18 @@ def lomb_scargle(
 
     # Compute Lomb-Scargle periodogram
     if dev_use_for_ls is None:
-        ls = LombScargle(t=t, y=y)
+        ls = LombScargle(t=t, y=y, center_data=center, fit_mean=mean)
     else:
-        ls = LombScargle(t=t, y=y, dy=dev)
+        ls = LombScargle(t=t, y=y, dy=dev, center_data=center, fit_mean=mean)
 
-    # power = ls.power(frequency)
-    frequency, power = ls.autopower()
+    power = ls.power(frequency)
+    # frequency, power = ls.autopower()
 
     # Find local maxima in the periodogram
-    # maxima_x, maxima_y = find_local_maxima(frequency, power)
+    maxima_x, maxima_y = find_local_maxima(frequency, power)
 
     # Prepare periodogram and local maxima data for return
     periodogram = (frequency, power)
-    # local_maxima = (maxima_x, maxima_y)
+    local_maxima = (maxima_x, maxima_y)
 
-    return periodogram  # , local_maxima
+    return periodogram, local_maxima
