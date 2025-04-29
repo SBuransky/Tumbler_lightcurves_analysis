@@ -41,14 +41,14 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "A2509"  # Set the name of your data file
+    name = "ID1913"  # Set the name of your data file
 
     data = load_data(
         name,
         column_names=("julian_day", "noisy_flux", "x", "y", "z", "a", "b", "c"),
         # column_names=("julian_day", "noisy_flux", "deviation_used"),
         # column_names=("julian_day","noiseless_flux","noisy_flux","sigma","deviation_used",),
-        appendix=".lc.txt",  # Set the appendix of your data file
+        appendix=".txt",  # Set the appendix of your data file
     )
     data["deviation_used"] = 0.01
     data["julian_day"] -= min(data["julian_day"])
@@ -101,19 +101,19 @@ if __name__ == "__main__":
             population_size=400,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
-                [(-1, 1)] * (m_ * (2 * m_ + 1))
-                + [(-1, 1)] * (m_ * (2 * m_ + 1))
-                + [(-1, 1)] * m_
-                + [(-1, 1)] * m_
+                [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
+                + [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
+                + [(-0.04, 0.04)] * m_
+                + [(-0.04, 0.04)] * m_
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (0.07, 0.08),
-                    (0.01, 0.03),
+                    (0.27, 0.33),
+                    (0.67, 0.73),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=200,
+            num_generations=20000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
@@ -122,7 +122,7 @@ if __name__ == "__main__":
                     np.full(m_ * (2 * m_ + 1), 0.05),
                     np.full(m_, 0.05),
                     np.full(m_, 0.05),
-                    np.array([0.02, 0.000001, 0.01, 0.01]),
+                    np.array([0.02, 0.000001, 0.04, 0.04]),
                 )
             ),
             limit_fitness=0.001,
