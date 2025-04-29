@@ -96,7 +96,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=200,
+            population_size=400,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
@@ -106,12 +106,12 @@ if __name__ == "__main__":
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (0.95, 1.05),
-                    (0.65, 0.75),
+                    (0.27, 0.33),
+                    (0.67, 0.73),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=10000,
+            num_generations=20000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
