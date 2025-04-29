@@ -41,17 +41,19 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "ID1913"  # Set the name of your data file
+    name = "A2509"  # Set the name of your data file
 
     data = load_data(
         name,
-        column_names=("julian_day", "noisy_flux", "deviation_used"),
+        column_names=("julian_day", "noisy_flux", "x", "y", "z", "a", "b", "c"),
+        # column_names=("julian_day", "noisy_flux", "deviation_used"),
         # column_names=("julian_day","noiseless_flux","noisy_flux","sigma","deviation_used",),
-        appendix=".txt",  # Set the appendix of your data file
+        appendix=".lc.txt",  # Set the appendix of your data file
     )
-
+    data["deviation_used"] = 0.01
     data["julian_day"] -= min(data["julian_day"])
     print(len(data["julian_day"]))
+    print(data)
 
     # Run periodogram LS and CLEAN Fourier
     if args.periodogram:
@@ -60,18 +62,18 @@ if __name__ == "__main__":
             data["julian_day"].values,
             data["noisy_flux"].values,
             name=name,
-            n_iter=500,
-            n_b=10,
+            n_iter=10,
+            n_b=4,
             gain=0.5,
             final_noise=0.000008,
             dev=data["deviation_used"],
-            x_border=(-0.1, 10),
+            x_border=(-0.1, 3000),
         )
 
     # Run genetic algorithm fit
     if args.genetic_algorithm:
         print("Running genetic algorithm fit...")
-        m_ = 2
+        m_ = 3
 
         def fitness(solution):
             """
@@ -96,22 +98,22 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=200,
+            population_size=400,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
-                [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
-                + [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
-                + [(-0.04, 0.04)] * m_
-                + [(-0.04, 0.04)] * m_
+                [(-1, 1)] * (m_ * (2 * m_ + 1))
+                + [(-1, 1)] * (m_ * (2 * m_ + 1))
+                + [(-1, 1)] * m_
+                + [(-1, 1)] * m_
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (0.95, 1.05),
-                    (0.65, 0.75),
+                    (0.07, 0.08),
+                    (0.01, 0.03),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=10000,
+            num_generations=200,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
@@ -120,7 +122,7 @@ if __name__ == "__main__":
                     np.full(m_ * (2 * m_ + 1), 0.05),
                     np.full(m_, 0.05),
                     np.full(m_, 0.05),
-                    np.array([0.02, 0.000001, 0.04, 0.04]),
+                    np.array([0.02, 0.000001, 0.01, 0.01]),
                 )
             ),
             limit_fitness=0.001,
