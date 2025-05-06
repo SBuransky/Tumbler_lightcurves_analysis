@@ -41,17 +41,20 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "ID1913"  # Set the name of your data file
+    name = "TC4_01"  # Set the name of your data file
 
     data = load_data(
         name,
         column_names=("julian_day", "noisy_flux", "x", "y", "z", "a", "b", "c"),
         # column_names=("julian_day", "noisy_flux", "deviation_used"),
-        # column_names=("julian_day","noiseless_flux","noisy_flux","sigma","deviation_used",),
+        # column_names=("julian_day", "noiseless_flux", "noisy_flux", "sigma", "deviation_used",),
         appendix=".txt",  # Set the appendix of your data file
     )
-    data["deviation_used"] = 0.01
+    if "deviation_used" not in data.columns:
+        data["deviation_used"] = 0.01
+
     data["julian_day"] -= min(data["julian_day"])
+    data["julian_day"] *= 24
     print(len(data["julian_day"]))
     print(data)
 
@@ -62,12 +65,13 @@ if __name__ == "__main__":
             data["julian_day"].values,
             data["noisy_flux"].values,
             name=name,
-            n_iter=10,
-            n_b=4,
+            n_iter=100,
+            n_b=10,
             gain=0.5,
-            final_noise=0.000008,
+            final_noise=0.00002,
             dev=data["deviation_used"],
-            x_border=(-0.1, 3000),
+            x_border=(-0.1, 20),
+            x_unit="hour",
         )
 
     # Run genetic algorithm fit
@@ -98,22 +102,22 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=400,
+            population_size=250,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
-                [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
-                + [(-0.04, 0.04)] * (m_ * (2 * m_ + 1))
-                + [(-0.04, 0.04)] * m_
-                + [(-0.04, 0.04)] * m_
+                [(-1, 1)] * (m_ * (2 * m_ + 1))
+                + [(-1, 1)] * (m_ * (2 * m_ + 1))
+                + [(-1, 1)] * m_
+                + [(-1, 1)] * m_
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (0.27, 0.33),
-                    (0.67, 0.73),
+                    (6.95, 7.15),
+                    (2.05, 2.25),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=20000,
+            num_generations=15000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
@@ -122,10 +126,11 @@ if __name__ == "__main__":
                     np.full(m_ * (2 * m_ + 1), 0.05),
                     np.full(m_, 0.05),
                     np.full(m_, 0.05),
-                    np.array([0.02, 0.000001, 0.04, 0.04]),
+                    np.array([0.02, 0.000001, 0.10, 0.10]),
                 )
             ),
             limit_fitness=0.001,
+            x_unit="hour",
         )
 
     # Run genetic algorithm fit for PA

@@ -29,6 +29,7 @@ def tumbler_periodogram(
     dev: Optional[np.ndarray] = None,
     final_noise: float = 0.005,
     x_border: tuple = (-0.1, 10),
+    x_unit="day",
 ) -> None:
     """
     Compute Lomb-Scargle periodogram and plot results.
@@ -70,7 +71,7 @@ def tumbler_periodogram(
 
     # Plot the observed data with error bars
     plt.errorbar(t, y, yerr=np.abs(dev), fmt=".", label="Data")
-    plt.xlabel("Julian Date (JD)")
+    plt.xlabel(f"Time [{x_unit}]")
     plt.ylabel("Normalized Flux")
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
@@ -88,7 +89,7 @@ def tumbler_periodogram(
     plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
-    plt.xlabel("Frequency ($day^{-1}$)")
+    plt.xlabel(f"Frequency (${x_unit}^{{-1}}$)")
     plt.ylabel("Spectral power")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE.pdf")
     plt.show()
@@ -103,7 +104,7 @@ def tumbler_periodogram(
     plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
-    plt.xlabel("Frequency ($day^{-1}$)")
+    plt.xlabel(f"Frequency (${x_unit}^{{-1}}$)")
     plt.ylabel("Spectral power")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_LOMB-SCARGLE_WINDOW.pdf")
     plt.show()
@@ -117,7 +118,7 @@ def tumbler_periodogram(
     plt.xlim(x_border[0], x_border[1])
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.legend()
-    plt.xlabel("Frequency ($day^{-1}$)")
+    plt.xlabel(f"Frequency (${x_unit}^{{-1}}$)")
     plt.ylabel("Spectral power")
     plt.savefig(f"Results/periodograms/Periodograms/{name}_FOURIER.pdf")
     plt.show()
@@ -133,7 +134,7 @@ def tumbler_periodogram(
     ax1.set_xlim(x_border[0], x_border[1])
 
     ax2.plot(freq, np.abs(residuals) ** 2, label="Residual spectrum")
-    ax2.set_xlabel("Frequency ($day^{-1}$)")
+    ax2.set_xlabel(f"Frequency (${x_unit}^{{-1}}$)")
     ax2.legend()
     ax2.tick_params(bottom=True, top=True, left=True, right=True)
     ax2.set_xlim(x_border[0], x_border[1])
@@ -205,6 +206,7 @@ def tumbler_genetic_algorithm_fit(
     mutation_rate: float = 0.01,
     mutation_range: float = 0.1,
     limit_fitness: float = 1000000,
+    x_unit="day",
 ) -> None:
     """
     Run a genetic algorithm to fit a model to data and visualize results.
@@ -293,7 +295,7 @@ def tumbler_genetic_algorithm_fit(
     )"""
 
     # Plot settings
-    plt.xlabel("Time [day]")
+    plt.xlabel(f"Time [{x_unit}]")
     plt.ylabel("Normalized light flux")
     # plt.title("Genetic Algorithm Fit")
     plt.tick_params(bottom=True, top=True, left=True, right=True)
@@ -359,7 +361,7 @@ def tumbler_genetic_algorithm_fit(
         s=5,
         label="Overall best",
     )"""
-    plt.xlabel("Time [day]")
+    plt.xlabel(f"Time [{x_unit}]")
     plt.ylabel("O - C (normalized light flux)")
     plt.tick_params(bottom=True, top=True, left=True, right=True)
     plt.savefig(f"Results/genetic_algorithm/oc_diag/{name}_o-c_{ending}.pdf")
