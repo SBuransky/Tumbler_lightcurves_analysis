@@ -233,10 +233,11 @@ def tumbler_genetic_algorithm_fit(
 
     """
     # Ensure directories exist
-    os.makedirs("Results/genetic_algorithm/graphs/", exist_ok=True)
+    # os.makedirs("Results/genetic_algorithm/graphs/", exist_ok=True)
     os.makedirs("Results/genetic_algorithm/fitness/", exist_ok=True)
     os.makedirs("Results/genetic_algorithm/results/", exist_ok=True)
-    os.makedirs("Results/genetic_algorithm/oc_diag/", exist_ok=True)
+    # os.makedirs("Results/genetic_algorithm/oc_diag/", exist_ok=True)
+    os.makedirs("Results/genetic_algorithm/fit/", exist_ok=True)
 
     # Run genetic algorithm
     start = time.time()
@@ -271,9 +272,18 @@ def tumbler_genetic_algorithm_fit(
     days = data["julian_day"].values
     days_to_plot = np.linspace(min(days), max(days), num=len(days) * 500)
 
-    # Plot noisy data
-    plt.scatter(days, data["noisy_flux"].values, c="gray", marker="+", s=5)
-    plt.errorbar(
+    # Set up figure with two rows: main plot + O–C
+    fig, (ax1, ax2) = plt.subplots(
+        2,
+        1,
+        sharex=True,
+        figsize=(8, 6),
+        gridspec_kw={"height_ratios": [4, 1], "hspace": 0.05},
+    )
+
+    # --- Upper plot: Data + Fit ---
+    ax1.scatter(days, data["noisy_flux"].values, c="gray", marker="+", s=5)
+    ax1.errorbar(
         days,
         data["noisy_flux"].values,
         yerr=np.abs(data["deviation_used"].values),
@@ -282,28 +292,51 @@ def tumbler_genetic_algorithm_fit(
         elinewidth=1.5,
         capsize=0,
     )
+    fit_values = double_fourier_sequence(final_generation[0], m_, days_to_plot)
+    ax1.plot(days_to_plot, fit_values, label="Last Generation Best", color="tab:blue")
+    ax1.set_ylabel("Normalized light flux")
+    ax1.tick_params(bottom=True, top=True, left=True, right=True, labelbottom=False)
+    ax1.legend()
 
-    plt.plot(
-        days_to_plot,
-        double_fourier_sequence(final_generation[0], m_, days_to_plot),
-        label="Last Generation Best",
+    # --- Lower plot: O−C residuals ---
+    residuals = data["noisy_flux"] - double_fourier_sequence(
+        final_generation[0], m_, days
     )
-    """plt.plot(
-        days,
-        double_fourier_sequence(final_generation[4], m_, days),
-        label="Best in all",
-    )"""
+    ax2.axhline(0, color="gray", linestyle="--", linewidth=1)
+    ax2.scatter(days, residuals, c="gray", marker="+", s=5, label="Best in last gen")
+    ax2.set_xlabel(f"Time [{x_unit}]")
+    ax2.set_ylabel("O − C")
+    ax2.tick_params(bottom=True, top=True, left=True, right=True)
 
-    # Plot settings
-    plt.xlabel(f"Time [{x_unit}]")
-    plt.ylabel("Normalized light flux")
-    # plt.title("Genetic Algorithm Fit")
-    plt.tick_params(bottom=True, top=True, left=True, right=True)
-    plt.legend()
+    # --- Match y-axis unit size ---
+    # Get upper plot limits and scale
+    ymin1, ymax1 = ax1.get_ylim()
+    unit_range = ymax1 - ymin1
 
-    # Save and display plot
-    plt.savefig(f"Results/genetic_algorithm/graphs/{name}_graph_{ending}.pdf")
-    plt.show()
+    # Set symmetric y-limits for O−C with same unit height
+    # (centered at 0 to fit typical residuals)
+    fig.canvas.draw()
+
+    # Get bounding boxes in inches
+    bbox1 = ax1.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    bbox2 = ax2.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+
+    # Heights in inches
+    height1 = bbox1.height
+    height2 = bbox2.height
+
+    # Y range in data units (upper plot)
+    ymin1, ymax1 = ax1.get_ylim()
+    yrange1 = ymax1 - ymin1
+
+    # Compute data-units per inch
+    units_per_inch = yrange1 / height1
+
+    # Now use this to set lower y-limits
+    yrange2 = units_per_inch * height2
+    ax2.set_ylim(-yrange2 / 4, yrange2 / 4)
+    # Final layout
+    plt.savefig(f"Results/genetic_algorithm/fit/{name}_fit_{ending}.pdf")
     plt.close()
 
     # Plot fitness over generations
@@ -311,7 +344,6 @@ def tumbler_genetic_algorithm_fit(
     plt.xlabel("Generation")
     plt.ylabel("Best Fitness")
     plt.tick_params(bottom=True, top=True, left=True, right=True)
-    # plt.title("Fitness Over Generations")
 
     # Save fitness plot
     plt.savefig(f"Results/genetic_algorithm/fitness/{name}_fitness_{ending}.pdf")
@@ -343,29 +375,6 @@ def tumbler_genetic_algorithm_fit(
         file.write("\nmutation range = " + str(mutation_range))
         file.write("\norder = " + str(m_))
         file.write("\ngene ranges = " + str(gene_range))
-
-    # O - C diagram
-    plt.scatter(
-        days,
-        data["noisy_flux"] - double_fourier_sequence(final_generation[0], m_, days),
-        c="gray",
-        marker="+",
-        s=5,
-        label="Best in last gen",
-    )
-    """plt.scatter(
-        days,
-        data["noisy_flux"] - double_fourier_sequence(final_generation[4], m_, days),
-        c="gray",
-        marker="+",
-        s=5,
-        label="Overall best",
-    )"""
-    plt.xlabel(f"Time [{x_unit}]")
-    plt.ylabel("O - C (normalized light flux)")
-    plt.tick_params(bottom=True, top=True, left=True, right=True)
-    plt.savefig(f"Results/genetic_algorithm/oc_diag/{name}_o-c_{ending}.pdf")
-    plt.close()
 
 
 def pa_rotator_genetic_algorithm_fit(

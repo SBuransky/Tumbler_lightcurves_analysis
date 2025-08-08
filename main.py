@@ -1,6 +1,8 @@
 # name: Samuel Buranský
 # MUNI UČO: 506073
 # mail: 506073@mail.muni.cz
+import matplotlib.pyplot as plt
+
 from service import (
     tumbler_periodogram,
     tumbler_genetic_algorithm_fit,
@@ -41,20 +43,26 @@ if __name__ == "__main__":
     # Load data (common to both parts)
     # For use follow these instructions:
 
-    name = "TC4_01"  # Set the name of your data file
+    name = "ID1916_001"  # Set the name of your data file
 
     data = load_data(
         name,
-        column_names=("julian_day", "noisy_flux", "x", "y", "z", "a", "b", "c"),
+        # column_names=("julian_day", "noisy_flux", "x", "y", "z", "a", "b", "c"),
         # column_names=("julian_day", "noisy_flux", "deviation_used"),
-        # column_names=("julian_day", "noiseless_flux", "noisy_flux", "sigma", "deviation_used",),
+        column_names=(
+            "julian_day",
+            "noiseless_flux",
+            "noisy_flux",
+            "sigma",
+            "deviation_used",
+        ),
         appendix=".txt",  # Set the appendix of your data file
     )
     if "deviation_used" not in data.columns:
         data["deviation_used"] = 0.01
 
     data["julian_day"] -= min(data["julian_day"])
-    data["julian_day"] *= 24
+    # data["julian_day"] *= 24
     print(len(data["julian_day"]))
     print(data)
 
@@ -71,7 +79,7 @@ if __name__ == "__main__":
             final_noise=0.00002,
             dev=data["deviation_used"],
             x_border=(-0.1, 20),
-            x_unit="hour",
+            x_unit="day",
         )
 
     # Run genetic algorithm fit
@@ -102,7 +110,7 @@ if __name__ == "__main__":
             data,
             fitness,
             m_=m_,
-            population_size=250,
+            population_size=400,
             num_genes=2 * m_ + 2 * m_ * (2 * m_ + 1) + 4,
             gene_range=(
                 [(-1, 1)] * (m_ * (2 * m_ + 1))
@@ -112,12 +120,12 @@ if __name__ == "__main__":
                 + [
                     (0.98, 1.02),
                     (-0.00001, 0.00001),
-                    (6.95, 7.15),
-                    (2.05, 2.25),
+                    (0.30, 0.36),
+                    (0.74, 0.80),
                 ]  # phi, psi
             ),
             name=name,
-            num_generations=15000,
+            num_generations=20000,
             elitism=2,
             mutation_rate=0.01,
             mutation_range=np.concatenate(
